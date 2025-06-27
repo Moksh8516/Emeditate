@@ -1,20 +1,28 @@
 // app/chat/page.jsx
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FaPaperPlane, FaLeaf, FaBrain, FaMedal } from "react-icons/fa";
+import { FaPaperPlane, FaLeaf } from "react-icons/fa";
+// FaBrain, FaMedal
 import { BsMoonStars } from "react-icons/bs";
 import { GiLotus } from "react-icons/gi";
 import { IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { useRouter } from "next/navigation";
 
 const ChatPage = () => {
+  const router = useRouter();
   const [messages, setMessages] = useState([
     {
       text: "Namaste 🙏 I'm your Sahaja Yoga guide. How can I help you find inner peace today?",
       isUser: false,
     },
   ]);
+
+  const handleNavigate = () => {
+    router.push("/");
+  };
+
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -76,7 +84,10 @@ const ChatPage = () => {
       {/* Header */}
       <header className="sticky top-0 bg-gray-900/80 backdrop-blur-md border-b border-indigo-800/50 z-50">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center">
-          <button className="p-2 rounded-full hover:bg-indigo-900/50 mr-2 transition-colors">
+          <button
+            className="p-2 rounded-full hover:bg-indigo-900/50 mr-2 transition-colors"
+            onClick={handleNavigate}
+          >
             <IoIosArrowBack className="text-indigo-300 text-xl" />
           </button>
           <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-1 rounded-full mr-3">
@@ -89,14 +100,14 @@ const ChatPage = () => {
               Online - Ready to guide you
             </p>
           </div>
-          <div className="ml-auto flex space-x-3">
+          {/* <div className="ml-auto flex space-x-3">
             <button className="p-2 rounded-lg hover:bg-gray-800 transition-colors">
               <FaBrain className="text-indigo-300" />
             </button>
             <button className="p-2 rounded-lg hover:bg-gray-800 transition-colors">
               <FaMedal className="text-indigo-300" />
             </button>
-          </div>
+          </div> */}
         </div>
       </header>
 
@@ -204,30 +215,6 @@ const ChatPage = () => {
         {/* Input Area */}
         <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-gray-900/0 pb-6 pt-12">
           <div className="max-w-4xl mx-auto px-4">
-            {/* Quick Prompts */}
-            <div className="relative mb-2">
-              <div
-                className="flex overflow-x-auto no-scrollbar scroll-smooth gap-2 pb-3"
-                style={{
-                  scrollbarWidth: "none",
-                  WebkitOverflowScrolling: "touch",
-                  scrollBehavior: "smooth",
-                }}
-              >
-                {quickPrompts.map((prompt) => (
-                  <motion.button
-                    key={prompt}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setInput(prompt)}
-                    className="flex-shrink-0 text-sm bg-gray-800/50 text-indigo-200 rounded-full px-4 py-2 hover:bg-indigo-800/50 transition-colors border border-gray-700 backdrop-blur-sm"
-                  >
-                    {prompt}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
             <form onSubmit={handleSubmit} className="relative">
               <input
                 type="text"
@@ -250,7 +237,29 @@ const ChatPage = () => {
                 <FaPaperPlane />
               </motion.button>
             </form>
-
+            {/* Quick Prompts */}
+            <div className="relative my-2">
+              <div
+                className="flex overflow-x-auto no-scrollbar scroll-smooth gap-2 pb-3"
+                style={{
+                  scrollbarWidth: "none",
+                  WebkitOverflowScrolling: "touch",
+                  scrollBehavior: "smooth",
+                }}
+              >
+                {quickPrompts.map((prompt) => (
+                  <motion.button
+                    key={prompt}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setInput(prompt)}
+                    className="flex-shrink-0 text-sm bg-gray-800/50 text-indigo-200 rounded-full px-4 py-2 hover:bg-indigo-800/50 transition-colors border border-gray-700 backdrop-blur-sm"
+                  >
+                    {prompt}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
             <p className="text-center text-xs text-indigo-400/70 mt-3">
               Mindful AI assistant • Your journey to self-realization begins
               here
