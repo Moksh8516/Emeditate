@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 export default function Home() {
   return (
     <MyBackground>
-      <Navbar/>
+      <Navbar />
       <HeroBackgroundLineDesgin className="bg-transparent z-0">
         <div className="flex flex-col items-center gap-2 justify-center h-full text-slate-50">
           <div className="relative w-32 sm:w-40 md:w-44 lg:w-48 aspect-square z-10 mb-2">
@@ -35,7 +35,7 @@ export default function Home() {
             <Button className="z-10">Download</Button>
             <Link
               className="flex z-10 gap-2 items-center align-middle bg-transparent text-gray-100 font-semibold py-2 px-4 hover:scale-105 rounded-lg shadow-sm duration-100 md:px-6 md:py-3 md:text-md"
-              href={"/chat"}
+              href={"/newChat"}
             >
               Chat us
               <svg
