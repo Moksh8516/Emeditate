@@ -41,27 +41,49 @@ const ChatPage = () => {
 
     const userMessage = { text: input, isUser: true };
     setMessages((prev) => [...prev, userMessage]);
-    setInput("");
     setIsLoading(true);
+    setInput("");
+    try {
+      const res = await fetch("/api/gemini", {
+        method: "POST",
+        body: JSON.stringify({ prompt: input }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-    setTimeout(() => {
-      const botResponses = [
-        "Meditation helps calm the mind. Try sitting quietly for 5 minutes, focusing on your breath.",
-        "True peace comes from within. Reflect on what brings you joy without external validation.",
-        "Imagine a gentle stream washing away your thoughts. Visualize clarity flowing through you.",
-        "Self-realization begins with self-acceptance. What qualities do you appreciate about yourself?",
-        "Connect with nature today. Feel the earth beneath your feet and the air around you.",
-        "Release tension by focusing on your crown chakra. Visualize a warm, golden light above your head.",
-        "Inner peace is found in the present moment. Close your eyes and notice what you can hear right now.",
-        "Your journey to self-discovery is unique. Honor your path without comparing it to others.",
-        "Clarity comes when we quiet the mind. Try journaling your thoughts without judgment.",
-      ];
-
-      const response =
-        botResponses[Math.floor(Math.random() * botResponses.length)];
-      setMessages((prev) => [...prev, { text: response, isUser: false }]);
+      if (!res.ok) {
+        throw new Error("API request failed");
+      }
+      const data = await res.json();
+      setMessages((prev) => [...prev, { text: data.message, isUser: false }]);
+    } catch (error) {
+      console.error("Error fetching response:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: "Sorry, I'm having trouble connecting to inner wisdom. Please try again.",
+          isUser: false,
+        },
+      ]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
+    // setTimeout(() => {
+    //   // const botResponses = [
+    //   //   "Meditation helps calm the mind. Try sitting quietly for 5 minutes, focusing on your breath.",
+    //   //   "True peace comes from within. Reflect on what brings you joy without external validation.",
+    //   //   "Imagine a gentle stream washing away your thoughts. Visualize clarity flowing through you.",
+    //   //   "Self-realization begins with self-acceptance. What qualities do you appreciate about yourself?",
+    //   //   "Connect with nature today. Feel the earth beneath your feet and the air around you.",
+    //   //   "Release tension by focusing on your crown chakra. Visualize a warm, golden light above your head.",
+    //   //   "Inner peace is found in the present moment. Close your eyes and notice what you can hear right now.",
+    //   //   "Your journey to self-discovery is unique. Honor your path without comparing it to others.",
+    //   //   "Clarity comes when we quiet the mind. Try journaling your thoughts without judgment.",
+    //   // ];
+
+    //   // const response =
+    //   // botResponses[Math.floor(Math.random() * botResponses.length)];
+    //   setIsLoading(false);
+    // }, 1500);
   };
 
   const quickPrompts = [

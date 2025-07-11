@@ -28,7 +28,7 @@ function Button({children, type="button", variant="primary",size="md", disabled=
     <button
     type={type}
     disabled={disabled}
-    className={`${variants[variant]} ${sizes[size]} ${className} rounded-lg shadow-sm focus:outline-none border-none hover:scale-105 duration-100`}
+    className={`${variants[variant]} ${sizes[size]} ${className} rounded-lg shadow-sm transition ease-in-out focus:outline-none border-none hover:scale-105 duration-150 whitespace-nowrap `}
     {...props}
   >
     {Icon}

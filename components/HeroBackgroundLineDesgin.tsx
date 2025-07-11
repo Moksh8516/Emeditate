@@ -18,12 +18,14 @@ export const HeroBackgroundLineDesgin = ({
   return (
     <div
       className={cn(
-        "h-[85vh] bg-white dark:bg-black",
+        "h-[85vh] relative overflow-hidden bg-white dark:bg-black",
         className
       )}
     >
       <SVG svgOptions={svgOptions} />
+      <div className="relative z-10 h-full">
       {children}
+      </div>
     </div>
   );
 };
@@ -94,6 +96,7 @@ const SVG = ({
   return (
     <motion.svg
       viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid meet"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       initial={{ opacity: 0 }}

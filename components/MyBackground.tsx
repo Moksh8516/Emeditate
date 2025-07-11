@@ -6,7 +6,7 @@ type MyBackgroundProps = {
 
 const MyBackground: React.FC<MyBackgroundProps> = ({ children }) => {
   return (
-    <div className="min-h-screen w-full px-6 md:px-10 pt-4 bg-gradient-to-br from-slate-800 via-indigo-900 to-blue-400">
+    <div className="min-h-screen w-full px-6 md:px-10 pt-4 bg-gradient-to-br from-indigo-800 via-gray-800 to-blue-700">
     {children}
 </div>
   );
