@@ -7,14 +7,16 @@ import { BsMoonStars } from "react-icons/bs";
 import { GiLotus } from "react-icons/gi";
 import { IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
-import { AnimatedBackground } from "@/components/AnimatedBackground";
+// import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { API_URL } from "@/lib/config";
 
 const ChatPage = () => {
   const router = useRouter();
   const [messages, setMessages] = useState([
     {
-      text: "Namaste 🙏 I'm your Sahaja Yoga guide. How can I help you find inner peace today?",
+      text: "Namaste 🙏 I'm your Sahaja Yoga AI Assistant. How can I help you find inner peace today?",
       isUser: false,
     },
   ]);
@@ -44,17 +46,14 @@ const ChatPage = () => {
     setIsLoading(true);
     setInput("");
     try {
-      const res = await fetch("/api/gemini", {
-        method: "POST",
-        body: JSON.stringify({ prompt: input }),
-        headers: { "Content-Type": "application/json" },
-      });
+      const res = await axios.post(`${API_URL}/chat`,{message:input})
+      const data =  res.data.data;
+      console.log(data);
 
-      if (!res.ok) {
-        throw new Error("API request failed");
-      }
-      const data = await res.json();
-      setMessages((prev) => [...prev, { text: data.message, isUser: false }]);
+      const pagecontent = data.chatResult.kwargs.content;
+      // console.log("pagecontent", pagecontent);
+
+      setMessages((prev)=>[...prev, {text:pagecontent, isUser:false}])
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -84,7 +83,10 @@ const ChatPage = () => {
     //   // botResponses[Math.floor(Math.random() * botResponses.length)];
     //   setIsLoading(false);
     // }, 1500);
+      // setMessages((prev) => [...prev, { text: data.message, isUser: false }]);
+
   };
+
 
   const quickPrompts = [
     "How to meditate?",
@@ -98,10 +100,10 @@ const ChatPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-gray-100">
-      {/* Animated Background */}
+      {/* Animated Background
       <div className="fixed inset-0 overflow-hidden">
         <AnimatedBackground />
-      </div>
+      </div> */}
 
       {/* Header */}
       <header className="sticky top-0 bg-gray-900/80 backdrop-blur-md border-b border-indigo-800/50 z-50">
@@ -264,7 +266,7 @@ const ChatPage = () => {
               <div
                 className="flex overflow-x-auto no-scrollbar scroll-smooth gap-2 pb-3"
                 style={{
-                  scrollbarWidth: "none",
+                  scrollbarWidth: "none", 
                   WebkitOverflowScrolling: "touch",
                   scrollBehavior: "smooth",
                 }}

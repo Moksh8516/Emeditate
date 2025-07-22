@@ -15,7 +15,7 @@ function FileUpload() {
         if(file){
           const formData = new FormData();
           formData.append("pdf", file); 
-          await fetch(`${API_URL}`,{
+          await fetch(`${API_URL}/upload`,{
             method: "POST",
             body:formData
           }
