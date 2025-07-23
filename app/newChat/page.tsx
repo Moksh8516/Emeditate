@@ -11,12 +11,37 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { API_URL } from "@/lib/config";
+// import { FiFileText } from "react-icons/fi";
+// import { TypingEffect } from "@/components/TypingEffect";
+
+type DocType = {
+  metaData?: {
+    fileName?: string;
+    source?: string;
+    details?: {
+      loc?: {
+        pageNumber?: number;
+        [key: string]: unknown;
+      };
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
+type MessageType = {
+  text: string;
+  doc: DocType[];
+  isUser: boolean;
+};
 
 const ChatPage = () => {
   const router = useRouter();
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<MessageType[]>([
     {
       text: "Namaste 🙏 I'm your Sahaja Yoga AI Assistant. How can I help you find inner peace today?",
+      doc:[],
       isUser: false,
     },
   ]);
@@ -41,62 +66,43 @@ const ChatPage = () => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage = { text: input, isUser: true };
+    const userMessage = { text: input, doc:[], isUser: true };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
     setInput("");
     try {
       const res = await axios.post(`${API_URL}/chat`,{message:input})
       const data =  res.data.data;
-      console.log(data);
 
       const pagecontent = data.chatResult.kwargs.content;
-      // console.log("pagecontent", pagecontent);
+      console.log("pagecontent", data.doc);
 
-      setMessages((prev)=>[...prev, {text:pagecontent, isUser:false}])
+      setMessages((prev)=>[...prev, {text:pagecontent, doc:data.doc, isUser:false}])
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
         ...prev,
         {
           text: "Sorry, I'm having trouble connecting to inner wisdom. Please try again.",
+          doc:[],
           isUser: false,
         },
       ]);
     } finally {
       setIsLoading(false);
     }
-    // setTimeout(() => {
-    //   // const botResponses = [
-    //   //   "Meditation helps calm the mind. Try sitting quietly for 5 minutes, focusing on your breath.",
-    //   //   "True peace comes from within. Reflect on what brings you joy without external validation.",
-    //   //   "Imagine a gentle stream washing away your thoughts. Visualize clarity flowing through you.",
-    //   //   "Self-realization begins with self-acceptance. What qualities do you appreciate about yourself?",
-    //   //   "Connect with nature today. Feel the earth beneath your feet and the air around you.",
-    //   //   "Release tension by focusing on your crown chakra. Visualize a warm, golden light above your head.",
-    //   //   "Inner peace is found in the present moment. Close your eyes and notice what you can hear right now.",
-    //   //   "Your journey to self-discovery is unique. Honor your path without comparing it to others.",
-    //   //   "Clarity comes when we quiet the mind. Try journaling your thoughts without judgment.",
-    //   // ];
-
-    //   // const response =
-    //   // botResponses[Math.floor(Math.random() * botResponses.length)];
-    //   setIsLoading(false);
-    // }, 1500);
-      // setMessages((prev) => [...prev, { text: data.message, isUser: false }]);
-
   };
 
 
-  const quickPrompts = [
-    "How to meditate?",
-    "Find inner peace",
-    "Overcome anxiety",
-    "Life purpose",
-    "Improve focus",
-    "Chakra balancing",
-    "Chakra balance",
-  ];
+  // const quickPrompts = [
+  //   "How to meditate?",
+  //   "Find inner peace",
+  //   "Overcome anxiety",
+  //   "Life purpose",
+  //   "Improve focus",
+  //   "Chakra balancing",
+  //   "how to get self-relization",
+  // ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-gray-100">
@@ -118,7 +124,7 @@ const ChatPage = () => {
             <GiLotus className="text-white text-lg" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Inner Peace Guide</h1>
+            <h1 className="text-xl font-bold text-white">Sahaja Yoga AI </h1>
             <p className="text-xs text-indigo-300 flex items-center">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
               Online - Ready to guide you
@@ -154,7 +160,7 @@ const ChatPage = () => {
               <p className="text-indigo-200">AI-guided spiritual growth</p>
             </div>
           </div>
-          <p className="text-indigo-100 mb-4">
+          <p className="text-indigo-50 mb-4">
             Ask me about meditation techniques, overcoming anxiety, finding life
             purpose, or achieving mental clarity. I am here to guide your
             spiritual growth.
@@ -178,43 +184,40 @@ const ChatPage = () => {
         {/* Chat Container */}
         <div className="mb-24 p-10">
           {messages.map((msg, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className={`flex mb-6 ${msg.isUser ? "justify-end" : "justify-start"}`}
-            >
-              <div className="flex items-end gap-2">
-                {!msg.isUser && (
-                  <div className="self-end">
-                    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-full">
-                      <GiLotus className="text-white text-sm" />
-                    </div>
-                  </div>
-                )}
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className={`flex flex-col mb-6 ${msg.isUser ? "items-end" : "items-start"}`}
+    >
+      <div className="flex items-end gap-2 max-w-full">
+        {!msg.isUser && (
+          <div className="self-end">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-full">
+              <GiLotus className="text-white text-sm" />
+            </div>
+          </div>
+        )}
 
-                <div
-                  className={`max-w-[85%] lg:max-w-[70%] rounded-3xl px-5 py-3 ${
-                    msg.isUser
-                      ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
-                      : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
-                  }`}
-                >
-                  <div className="flex items-start">
-                    <p
-                      className={
-                        msg.isUser ? "text-indigo-50" : "text-gray-200"
-                      }
-                    >
-                      {msg.text}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div
+          className={`max-w-[85%] lg:max-w-[70%] rounded-3xl px-5 py-3 ${
+            msg.isUser
+              ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
+              : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
+          }`}
+        >
+          <div className="flex flex-wrap items-start">
+            <p className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
+              {msg.text}
+            </p>
+          </div>
+        </div>
+      </div>
 
+   
+    </motion.div>
+  ))}
           {isLoading && (
             <div className="flex mb-6 justify-start">
               <div className="bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-3xl rounded-bl-none px-5 py-3 border border-gray-700">
@@ -262,7 +265,7 @@ const ChatPage = () => {
               </motion.button>
             </form>
             {/* Quick Prompts */}
-            <div className="relative my-2">
+            {/* <div className="relative my-2">
               <div
                 className="flex overflow-x-auto no-scrollbar scroll-smooth gap-2 pb-3"
                 style={{
@@ -283,7 +286,8 @@ const ChatPage = () => {
                   </motion.button>
                 ))}
               </div>
-            </div>
+            </div> */}
+
             <p className="text-center text-xs text-indigo-400/70 mt-3">
               Mindful AI assistant • Your journey to self-realization begins
               here

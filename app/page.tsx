@@ -5,13 +5,90 @@ import MyBackground from "@/components/MyBackground";
 import Button from "@/components/Button";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { FaGooglePlay, FaAppStore, FaComments } from "react-icons/fa";
+import { FaGooglePlay, FaAppStore, FaComments, FaPaperPlane } from "react-icons/fa";
 import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { API_URL } from "@/lib/config";
+import { GiLotus } from "react-icons/gi";
+
+type DocType = {
+  metaData?: {
+    fileName?: string;
+    source?: string;
+    details?: {
+      loc?: {
+        pageNumber?: number;
+        [key: string]: unknown;
+      };
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
+type MessageType = {
+  text: string;
+  doc: DocType[];
+  isUser: boolean;
+};
+
 
 
  function Home() {
+    const [messages, setMessages] = useState<MessageType[]>([
+      {
+        text: "Namaste 🙏 I'm your Sahaja Yoga AI Assistant. How can I help you find inner peace today?",
+        doc:[],
+        isUser: false,
+      },
+    ]);
+     const [input, setInput] = useState("");
+      const [isLoading, setIsLoading] = useState(false);
+      const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    
+      const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      };
+    
+      useEffect(() => {
+        scrollToBottom();
+      }, [messages]);
+
+      const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const userMessage = { text: input, doc:[], isUser: true };
+    setMessages((prev) => [...prev, userMessage]);
+    setIsLoading(true);
+    setInput("");
+    try {
+      const res = await axios.post(`${API_URL}/chat`,{message:input})
+      const data =  res.data.data;
+
+      const pagecontent = data.chatResult.kwargs.content;
+      console.log("pagecontent", data.doc);
+
+      setMessages((prev)=>[...prev, {text:pagecontent, doc:data.doc, isUser:false}])
+    } catch (error) {
+      console.error("Error fetching response:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: "Sorry, I'm having trouble connecting to inner wisdom. Please try again.",
+          doc:[],
+          isUser: false,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <MyBackground>
+    <MyBackground>  
       <Navbar />
       
       <div className="flex flex-col md:flex-row min-h-[85vh]">
@@ -77,67 +154,116 @@ import { motion } from "motion/react";
         </div>
         
         {/* Right Column - Preview (Desktop Only) */}
-        <div className="hidden md:flex md:w-1/2 p-8 items-center justify-center">
-          <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-            {/* Chat Header */}
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-4">
-              <div className="flex items-center gap-3">
-                <div className="bg-white p-1 rounded-full">
-                  <div className="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10 flex items-center" >
-                     <Image
-                                src="/heroImage.jpg"
-                                width={40}
-                                height={40}
-                                alt="Logo"
-                                className="rounded-full w-10 h-auto "
-                              />
-                </div>
-                </div>
-                <div>
-                  <h3 className="font-bold text-white">Sahaja Yoga AI</h3>
-                  <p className="text-indigo-100 text-sm">Online • Ready to chat</p>
+<div className="hidden md:flex md:w-1/2 p-8 relative items-center justify-center">
+  <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 flex flex-col h-[600px]">
+    
+    {/* Chat Header */}
+    <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-4 flex-shrink-0">
+      <div className="flex items-center gap-3">
+        <div className="bg-white p-1 rounded-full">
+          <div className="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10 flex items-center">
+            <Image
+              src="/heroImage.jpg"
+              width={40}
+              height={40}
+              alt="Logo"
+              className="rounded-full w-10 h-auto"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col align-middle">
+          <h3 className="font-bold text-white">Sahaja Yoga AI</h3>
+         <p className="text-sm text-indigo-50 flex items-center">
+              <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+              Online - Ready to guide you
+            </p>
+        </div>
+      </div>
+    </div>
+
+    {/* Scrollable Chat Messages Container */}
+    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {messages.map((msg, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
+        >
+          <div className="flex items-end gap-2 max-w-[85%]">
+            {!msg.isUser && (
+              <div className="self-end">
+                <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-2 rounded-full">
+                  <GiLotus className="text-white text-sm" />
                 </div>
               </div>
+            )}
+
+            <div
+              className={`rounded-3xl px-4 py-2 ${
+                msg.isUser
+                  ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
+                  : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
+              }`}
+            >
+              <p className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
+                {msg.text}
+              </p>
             </div>
-            
-            {/* Chat Messages */}
-            <div className="p-4 h-96 overflow-y-auto flex flex-col gap-4">
-              <div className="flex justify-start">
-                <div className="bg-slate-100 dark:bg-slate-700 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
-                  <p className="text-slate-700 dark:text-slate-200">{"Welcome! I'm here to guide you on your spiritual journey. How can I help you find peace today?"}</p>
-                </div>
-              </div>
-              
-              <div className="flex justify-end">
-                <div className="bg-indigo-500 text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%]">
-                  <p>How can I start with meditation?</p>
-                </div>
-              </div>
-              
-              <div className="flex justify-start">
-                <div className="bg-slate-100 dark:bg-slate-700 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
-                  <p className="text-slate-700 dark:text-slate-200">{`Begin by finding a quiet space. Sit comfortably and focus on your breath. Let's start with 5 minutes of mindful breathing...`}</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Chat Input */}
-            <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-              <div className="flex items-center gap-2">
-                <input 
-                  type="text" 
-                  placeholder="Type your message..."
-                  className="flex-1 bg-slate-100 dark:bg-slate-700 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                />
-                <button className="bg-indigo-500 text-white p-2 rounded-full hover:bg-indigo-600 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
+          </div>
+        </motion.div>
+      ))}
+
+      {isLoading && (
+        <div className="flex justify-start">
+          <div className="bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-3xl rounded-bl-none px-4 py-2 border border-gray-700">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
+              <div
+                className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"
+                style={{ animationDelay: "0.2s" }}
+              ></div>
+              <div
+                className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"
+                style={{ animationDelay: "0.4s" }}
+              ></div>
+              <span className="text-sm text-indigo-300">Reflecting...</span>
             </div>
           </div>
         </div>
+      )}
+
+      <div ref={messagesEndRef} />
+    </div>
+
+    {/* Input Area - Fixed at Bottom */}
+    <div className="p-4 pt-6 flex-shrink-0">
+      <form onSubmit={handleSubmit} className="relative">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask about meditation, peace, or self-discovery..."
+          className="w-full bg-gray-800/80 backdrop-blur-md border border-gray-700 rounded-full px-5 py-3 pr-14 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-indigo-300"
+        />
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
+          type="submit"
+          disabled={isLoading || !input.trim()}
+          className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full ${
+            isLoading || !input.trim()
+              ? "bg-gray-700 text-gray-500"
+              : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
+          }`}
+        >
+          <FaPaperPlane />
+        </motion.button>
+      </form>
+    </div>
+  </div>
+</div>
       </div>
       
       {/* Mobile Chat Prompt */}
