@@ -1,5 +1,5 @@
 "use client"
-import { HeroBackgroundLineDesgin } from "@/components/HeroBackgroundLineDesgin";
+
 import Image from "next/image";
 import MyBackground from "@/components/MyBackground";
 import Button from "@/components/Button";
@@ -34,8 +34,6 @@ type MessageType = {
   isUser: boolean;
 };
 
-
-
  function Home() {
     const [messages, setMessages] = useState<MessageType[]>([
       {
@@ -44,7 +42,8 @@ type MessageType = {
         isUser: false,
       },
     ]);
-     const [input, setInput] = useState("");
+
+      const [input, setInput] = useState("");
       const [isLoading, setIsLoading] = useState(false);
       const messagesEndRef = useRef<HTMLDivElement | null>(null);
     
@@ -91,13 +90,12 @@ type MessageType = {
     <MyBackground>  
       <Navbar />
       
-      <div className="flex flex-col md:flex-row min-h-[85vh]">
+      <div className="flex flex-col md:flex-row justify-center min-h-[85vh]">
         {/* Left Column - Hero Content */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
-          <HeroBackgroundLineDesgin className="bg-transparent z-0 rounded-2xl overflow-hidden">
-            <div className="flex flex-col items-center justify-center h-full py-8 px-4 text-center">
+        <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">    
+            <div className="flex flex-col justify-center items-center py-8 px-4 text-center">
               {/* Profile Image with Glow Effect */}
-              <div className="relative w-32 sm:w-40 md:w-44 lg:w-48 aspect-square z-10 mb-4 md:mb-6">
+              <div className="relative w-32 sm:w-40 md:w-44 lg:w-48 align-middle aspect-square z-10 mb-4 md:mb-6">
                 <div className="absolute inset-0 rounded-full blur-xl animate-pulse"></div>
                 <Image
                   className="rounded-full object-cover border-4 border-white/20 shadow-lg"
@@ -116,7 +114,7 @@ type MessageType = {
                 transition={{ duration: 0.5 }}
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 text-gray-50"
               >
-                Sahaja Yoga AI
+                Emeditate App
               </motion.h1>
 
               {/* Description with Fade-in */}
@@ -131,7 +129,7 @@ type MessageType = {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full max-w-md">
-                <Button className="z-10 flex items-center gap-2 px-5 py-3 bg-gradient-to-r text-white from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
+                <Button className="z-10 flex items-center gap-2 px-5 py-3 bg-gradient-to-r text-white from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600">
                   <FaGooglePlay className="text-xl" />
                   <span>Android</span>
                 </Button>
@@ -150,7 +148,6 @@ type MessageType = {
                 </Link>
               </div>
             </div>
-          </HeroBackgroundLineDesgin>
         </div>
         
         {/* Right Column - Preview (Desktop Only) */}
