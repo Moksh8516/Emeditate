@@ -96,9 +96,9 @@ type MessageType = {
             <div className="flex flex-col justify-center items-center py-8 px-4 text-center">
               {/* Profile Image with Glow Effect */}
               <div className="relative w-32 sm:w-40 md:w-44 lg:w-48 align-middle aspect-square z-10 mb-4 md:mb-6">
-                <div className="absolute inset-0 rounded-full blur-xl animate-pulse"></div>
+                <div className="absolute inset-0 border-4 bg-gray-200 rounded-full blur-xl animate-pulse"></div>
                 <Image
-                  className="rounded-full object-cover border-4 border-white/20 shadow-lg"
+                  className="rounded-full object-cover border-4 border-white/40 shadow-lg"
                   src="/heroImage.jpg"
                   alt="Sahaja Yoga AI"
                   fill
