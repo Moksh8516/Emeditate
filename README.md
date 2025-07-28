@@ -97,6 +97,67 @@ The application uses a secure authentication system with:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Deployment
+
+### Deploy on Firebase
+
+1. Install Firebase CLI globally:
+```bash
+npm install -g firebase-tools
+```
+
+2. Login to Firebase:
+```bash
+firebase login
+```
+
+3. Initialize Firebase in your project:
+```bash
+firebase init
+```
+Select the following options:
+- Choose 'Hosting'
+- Select your Firebase project or create a new one
+- Use `.next` as your public directory
+- Configure as a single-page app: `No`
+- Set up automatic builds and deploys with GitHub: `No`
+
+4. Build your Next.js application:
+```bash
+npm run build
+```
+
+5. Deploy to Firebase:
+```bash
+firebase deploy
+```
+
+Your application will be live at `https://your-project-id.web.app`
+
+### Environment Setup for Firebase
+
+1. Set up Firebase configuration in your `.env.local`:
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
+
+2. Update your `next.config.js` to include Firebase domain in images config:
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ['your-project-id.web.app']
+  }
+}
+
+module.exports = nextConfig
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
