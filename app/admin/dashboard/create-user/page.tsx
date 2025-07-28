@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ "use client";
 // pages/register.tsx
 import { useState } from 'react';
 import axios from 'axios';
