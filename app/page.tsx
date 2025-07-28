@@ -68,9 +68,8 @@ type MessageType = {
       const data =  res.data.data;
 
       const pagecontent = data.chatResult.kwargs.content;
-      console.log("pagecontent", data.doc);
-
       setMessages((prev)=>[...prev, {text:pagecontent, doc:data.doc, isUser:false}])
+      console.log("pagecontent", data );
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [

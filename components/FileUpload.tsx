@@ -15,19 +15,20 @@ function FileUpload() {
         if(file){
           const formData = new FormData();
           formData.append("pdf", file); 
-          await fetch(`${API_URL}/upload`,{
-            method: "POST",
-            body:formData
+            await fetch(`${API_URL}/upload`, {
+              method: "POST",
+              body: formData,
+              credentials: "include"
+            });
+            console.log("file uploaded");
           }
-          )
-          console.log("file uploaded")        }
       }
     });
     el.click();
   };
 
   return (
-    <div className="bg-slate-500 text-white shadow-2xl items-center align-middle rounded-lg p-4">
+    <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-2xl items-center align-middle rounded-lg p-4">
       <div className="flex flex-col items-center justify-center">
         <div
           className="flex flex-col items-center justify-center gap-2 cursor-pointer"
