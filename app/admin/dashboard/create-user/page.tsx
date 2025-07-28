@@ -74,7 +74,7 @@ export default function RegisterPage() {
       });
 
       // Redirect to dashboard after successful registration
-      router.push('/dashboard');
+      router.push('/admin/dashboard/upload');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
@@ -179,7 +179,7 @@ export default function RegisterPage() {
                 className={`w-full flex justify-center items-center py-2.5 px-4 rounded-md shadow-sm text-sm font-medium text-white ${
                   isLoading 
                     ? 'bg-gray-400' 
-                    : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                    : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 }`}
               >
                 {isLoading ? (
