@@ -75,6 +75,7 @@ export default function RegisterPage() {
 
       // Redirect to dashboard after successful registration
       router.push('/dashboard');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message || 
