@@ -2,7 +2,7 @@
 // pages/register.tsx
 import { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import MyBackground from '@/components/MyBackground';
 import { Loader } from '@/components/loader';
 import { API_URL } from '@/lib/config';
