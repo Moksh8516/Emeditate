@@ -23,9 +23,21 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Nav Links */}
         <div className="hidden md:flex gap-6 text-white font-medium text-lg z-10">
-          <span className="hover:text-gray-300 cursor-pointer">About</span>
-          <span className="hover:text-gray-300 cursor-pointer">Blog</span>
-          <span className="hover:text-gray-300 cursor-pointer">Contact Us</span>
+          <Link href="/about" className='decoration-none no-underline'>
+          <span className="hover:text-gray-300 cursor-pointer">
+            About
+            </span>
+            </Link>
+           <Link href="/Blog" className='decoration-none no-underline'>
+           <span className="hover:text-gray-300 cursor-pointer">
+            Blog
+            </span>
+            </Link>
+          <Link href="/contact-us" className='decoration-none no-underline'>
+           <span className="hover:text-gray-300 cursor-pointer">
+            Contact us
+            </span>
+            </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -71,9 +83,21 @@ const Navbar: React.FC = () => {
       {/* Mobile Nav Links */}
       {menuOpen && (
         <div className="md:hidden mt-2 flex flex-col gap-3 px-2 py-2 absolute left-0 top-10 w-full text-white bg-white/10 shadow-lg rounded-b-xl text-lg backdrop-blur-md">
-          <span className="hover:text-gray-300 cursor-pointer">About</span>
-          <span className="hover:text-gray-300 cursor-pointer">Blog</span>
-          <span className="hover:text-gray-300 cursor-pointer">Contact Us</span>
+            <Link href="/about" className='decoration-none no-underline'>
+          <span className="hover:text-gray-300 cursor-pointer">
+            About
+            </span>
+            </Link>
+           <Link href="/blog" className='decoration-none no-underline'>
+           <span className="hover:text-gray-300 cursor-pointer">
+            Blog
+            </span>
+            </Link>
+           <Link href="/contact-us" className='decoration-none no-underline'>
+           <span className="hover:text-gray-300 cursor-pointer">
+            Contact us
+            </span>
+            </Link>
         </div>
       )}
     </nav>
