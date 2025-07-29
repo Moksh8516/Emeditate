@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Sahaja Yoga AI | emeditate.ai – Your Guide to Inner Silence & Self-Realization",
   description: "emeditate.ai's Sahaja Yoga AI chatbot offers spiritual insights from Shri Mataji’s talks and books, guiding you to inner silence and self-realization.",
+  icons:{
+    icon: "/favicon.ico",
+  }
 };
 
 export default function RootLayout({
