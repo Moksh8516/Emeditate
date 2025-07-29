@@ -66,10 +66,8 @@ type MessageType = {
     try {
       const res = await axios.post(`${API_URL}/chat`,{message:input})
       const data =  res.data.data;
-
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev)=>[...prev, {text:pagecontent, doc:data.doc, isUser:false}])
-      console.log("pagecontent", data );
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
