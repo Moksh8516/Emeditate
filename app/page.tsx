@@ -128,7 +128,6 @@ function Home() {
             <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full max-w-md">
               <Button
                 onClick={() => {
-                  console.log("Opening Android app link");
                   window.open("https://play.google.com/store/apps/details?id=com.sahajayoga.emeditate", "_blank");
                 }}
                 Icon = {<FaGooglePlay className="text-xl" />}
