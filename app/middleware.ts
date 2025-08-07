@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
@@ -10,7 +10,6 @@ export function middleware(request: NextRequest) {
 
   // Get the accessToken from cookies (matching backend cookie name)
   const token = request.cookies.get('accessToken')?.value
-
   // redirect to dashboard
   if (isPublicPath && token) {
     // console.log('↪️ Redirecting authenticated user from login to dashboard');

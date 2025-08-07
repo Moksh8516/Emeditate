@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
             alt="Logo"
             className="rounded-full w-10 h-auto "
           />
-          <h1 className="font-bold text-white text-2xl">Sahaja yoga AI</h1>
+          <h1 className="font-bold text-white text-2xl">SAHAJA YOGA AI</h1>
         </Link>
 
         {/* Desktop Nav Links */}

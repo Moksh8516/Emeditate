@@ -18,8 +18,7 @@ export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Just set loading to false since axios interceptor will handle unauthorized responses
-    setIsLoading(false);
+      setIsLoading(false);
   }, []);
 
   return { isLoading };

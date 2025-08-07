@@ -14,8 +14,6 @@ export default function LoginPage() {
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const router = useRouter();
 
-    
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrors({});
@@ -34,7 +32,6 @@ export default function LoginPage() {
                 // Get the callback URL from the query parameters
                 const searchParams = new URLSearchParams(window.location.search);
                 const callbackUrl = searchParams.get('callbackUrl');
-                
                 // Redirect to the callback URL if it exists, otherwise go to dashboard
                 router.push(callbackUrl || '/admin/dashboard/upload');
             } else {

@@ -64,7 +64,10 @@ function Home() {
     setIsLoading(true);
     setInput("");
     try {
-      const res = await axios.post(`${API_URL}/chat`, { message: input })
+      const res = await axios.post(`${API_URL}/chat`, { message: input },{
+        withCredentials: true, 
+      })
+      console.log(input)
       const data = res.data.data;
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
