@@ -2,10 +2,12 @@
 import React from "react";
 import FileUpload from "@/components/FileUpload";
 import { useRouter } from "next/navigation";
+import ProtectedLayout from "@/components/ProtectedLayout";
 
 function Page() {
   const router = useRouter();
   return (
+    <ProtectedLayout>
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
@@ -144,6 +146,7 @@ function Page() {
         </div> */}
       </main>
     </div>
+    </ProtectedLayout>
   );
 }
 

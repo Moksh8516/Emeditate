@@ -6,6 +6,7 @@ import { FiFile, FiFolder, FiClock, FiDownload, FiMoreVertical } from 'react-ico
 import { FaFilePdf, FaFileAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import ProtectedLayout from '@/components/ProtectedLayout';
 
 interface Document {
   id: string;
@@ -91,6 +92,7 @@ function DocumentListPage() {
   }
 
   return (
+    <ProtectedLayout>
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       {/* Header */}
       <header className="bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg">
@@ -183,6 +185,7 @@ function DocumentListPage() {
         )}
       </main>
     </div>
+    </ProtectedLayout>
   );
 }
 
