@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  images: {
-    unoptimized: true, // required for static export with next/image
-  },
+  reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_API_URL: 'https://api.emeditate.ai' // Your VPS backend
+  }
 };
 
-export default nextConfig;
+module.exports = nextConfig;
+

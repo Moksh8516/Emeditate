@@ -1,12 +1,31 @@
 {
   "hosting": {
+    "source": ".",
     "public": "out",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "github": {
+    "enabled": true
+  },
+  "apphosting": {
+    "backendId": "emeditate",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+    ],
     "rewrites": [
       {
         "source": "**",
