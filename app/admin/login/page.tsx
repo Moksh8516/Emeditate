@@ -5,7 +5,7 @@ import MyBackground from '@/components/MyBackground';
 import { API_URL } from '@/lib/config';
 import axios from 'axios';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
@@ -13,6 +13,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -27,13 +28,12 @@ export default function LoginPage() {
             const res = await axios.post(`${API_URL}/login`, 
               formData,{withCredentials: true}// Important: This allows cookies to be set}
             );
-            
+            console.log('Login response:', res.data);
             if (res.data.success) {
-                // Get the callback URL from the query parameters
-                const searchParams = new URLSearchParams(window.location.search);
-                const callbackUrl = searchParams.get('callbackUrl');
-                // Redirect to the callback URL if it exists, otherwise go to dashboard
-                router.push(callbackUrl || '/admin/dashboard/upload');
+              const callback = searchParams.get('callbackUrl')||"/admin/dashboard";
+            console.log(callback)
+                // Redirect to the callback URL
+              router.push(callback);
             } else {
                 setErrors({ 
                     form: res.data.message || 'Login failed. Please try again.' 

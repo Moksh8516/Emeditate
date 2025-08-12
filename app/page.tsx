@@ -67,8 +67,8 @@ function Home() {
       const res = await axios.post(`${API_URL}/chat`, { message: input },{
         withCredentials: true, 
       })
-      console.log(input)
       const data = res.data.data;
+      console.log("Response data:", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
     } catch (error) {

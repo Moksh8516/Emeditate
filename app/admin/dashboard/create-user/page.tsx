@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import MyBackground from '@/components/MyBackground';
 import { Loader } from '@/components/loader';
 import { API_URL } from '@/lib/config';
-import ProtectedLayout from '@/components/ProtectedLayout';
 
 interface RegisterFormData {
   name: string;
@@ -88,7 +87,6 @@ export default function RegisterPage() {
   };
 
   return (
-    <ProtectedLayout>
     <MyBackground>
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
@@ -207,6 +205,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </MyBackground>
-    </ProtectedLayout>
   );
 }
