@@ -5,7 +5,7 @@ import MyBackground from '@/components/MyBackground';
 import { API_URL } from '@/lib/config';
 import axios from 'axios';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
@@ -13,7 +13,6 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const router = useRouter();
-    const searchParams = useSearchParams();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,10 +29,8 @@ export default function LoginPage() {
             );
             console.log('Login response:', res.data);
             if (res.data.success) {
-              const callback = searchParams.get('callbackUrl')||"/admin/dashboard";
-            console.log(callback)
-                // Redirect to the callback URL
-              router.push(callback);
+              // const callback = searchParams.get('callbackUrl')||"/admin/dashboard/upload";
+              router.push('/admin/dashboard/upload');
             } else {
                 setErrors({ 
                     form: res.data.message || 'Login failed. Please try again.' 
