@@ -21,16 +21,15 @@ export default function LoginPage() {
         if(password.length < 8) {
            return setErrors({ password: 'Password must be at least 8 characters long.' });  
         }
-        
         try {
             const formData = { email, password, role: "admin" as const };
             const res = await axios.post(`${API_URL}/login`, 
               formData,{withCredentials: true}// Important: This allows cookies to be set}
             );
-            console.log('Login response:', res.data);
+            console.log('Login response:', res.data.success);
             if (res.data.success) {
               // const callback = searchParams.get('callbackUrl')||"/admin/dashboard/upload";
-              router.push('/admin/dashboard/upload');
+              router.push('/admin/dashboard');
             } else {
                 setErrors({ 
                     form: res.data.message || 'Login failed. Please try again.' 

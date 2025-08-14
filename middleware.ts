@@ -6,9 +6,8 @@ export function middleware(req: NextRequest) {
 
   // Protect only admin dashboard routes
   if (pathname.startsWith("/admin/dashboard")) {
-    const token = req.cookies.getAll();
+     const token = req.cookies.get("accessToken")?.value;
     const fullPath = pathname + search;
-    console.log(token)
     if (!token) {
         console.log('token is missing, redirecting to login');
         // Create absolute URL for login

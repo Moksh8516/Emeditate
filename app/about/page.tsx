@@ -42,7 +42,7 @@ export default function IntroductionPage() {
         {/* Hero Section */}
         <div className="relative h-[80vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-purple-900/30 to-indigo-900/50 z-10"></div>
-          <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10"></div>
+          <div className="absolute inset-0 opacity-10"></div>
           <div className="relative z-20 text-center px-4 max-w-4xl">
             <motion.h1 
               className="text-4xl md:text-6xl font-bold text-white mb-6"
@@ -119,6 +119,7 @@ export default function IntroductionPage() {
           </motion.div>
 
           {/* Animated Sections */}
+
      {/* Subtle System */}
 <motion.div
   ref={ref1}
@@ -213,12 +214,14 @@ export default function IntroductionPage() {
       </div>
 
       {/* View More / Less Button */}
+      <div className='text-center mt-4'>
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="mt-4 self-start px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg shadow-md hover:opacity-90 transition"
-      >
+        className="self-start px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg shadow-md hover:opacity-90 transition"
+        >
         {isExpanded ? "View Less" : "View More"}
       </button>
+        </div>
     </div>
   </div>
 </motion.div>
@@ -267,6 +270,12 @@ export default function IntroductionPage() {
     </div>
     
     <div className="md:w-1/2">
+              <div
+            className={`overflow-hidden transition-all duration-500 ${
+              isExpanded ? "max-h-[2000px]" : "max-h-[400px]"
+            } md:max-h-none`}
+          >
+
       <p className="text-gray-700 text-lg mb-4">
         The subtle system is composed of three main energy channels:
       </p>
@@ -332,6 +341,17 @@ export default function IntroductionPage() {
         </li>
       </ul>
     </div>
+    
+     {/* Expand Button - Mobile Only */}
+          <div className="mt-4 text-center md:hidden">
+         <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="self-start px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg shadow-md hover:opacity-90 transition"
+        >
+        {isExpanded ? "View Less" : "View More"}
+      </button>
+          </div>
+  </div>
   </div>
 </motion.div>
           
@@ -356,9 +376,33 @@ export default function IntroductionPage() {
       <div className="aspect-square bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl overflow-hidden border-4 border-white shadow-lg">
         <div className="bg-[url('/kundalini-awakening.gif')] bg-center bg-contain bg-no-repeat w-full h-full"></div>
       </div>
+          {/* View More Link */}
+      <div className="mt-6 p-3 text-center bg-white rounded-3xl border-gray-200">
+        <a 
+          href="https://sahajayogakar.org/Kundalini/" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors group"
+        >
+          <span>Learn more about the Kundalni</span>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 20 20" 
+            fill="currentColor" 
+            className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1"
+          >
+            <path fillRule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clipRule="evenodd" />
+          </svg>
+        </a>
+      </div>
     </div>
     
     <div className="md:w-1/2">
+            <div
+            className={`overflow-hidden transition-all duration-500 ${
+              isExpanded ? "max-h-[2000px]" : "max-h-[400px]"
+            } md:max-h-none`}
+          >
       <p className="text-gray-700 text-lg mb-4">
         Kundalini is the power of pure desire within us - a motherly and soothing spiritual energy 
         that lies dormant at the base of the spine in the sacrum bone. Ancient civilizations recognized 
@@ -383,32 +427,24 @@ export default function IntroductionPage() {
         <span className="font-semibold text-purple-600"> dweejaha</span> in Sanskrit, meaning 
         <span className="italic"> {"twice born."}</span>
       </p>
-      
-    {/* View More Link */}
-      <div className="mt-6 p-3 text-center bg-white rounded-3xl border-gray-200">
-        <a 
-          href="https://sahajayogakar.org/Kundalini/" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors group"
-        >
-          <span>Learn more about the Kundalni</span>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 20 20" 
-            fill="currentColor" 
-            className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1"
-          >
-            <path fillRule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clipRule="evenodd" />
-          </svg>
-        </a>
-      </div>
     </div>
+       {/* Expand Button - Mobile Only */}
+          <div className="mt-4 text-center md:hidden">
+           <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="self-start px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg shadow-md hover:opacity-90 transition"
+        >
+        {isExpanded ? "View Less" : "View More"}
+      </button> 
+          </div>
   </div>
+  </div>
+
 </motion.div>
           
 
 {/* Self Realization */}
+
 <motion.div
   ref={ref4}
   variants={{
@@ -458,6 +494,11 @@ export default function IntroductionPage() {
 
     {/* Text */}
     <div className="md:w-1/2 text-gray-700 text-lg space-y-4">
+            <div
+            className={`overflow-hidden transition-all duration-500 ${
+              isExpanded ? "max-h-[2000px]" : "max-h-[400px]"
+            } md:max-h-none`}
+          >
       <p>
         I bow to all the seekers of truth. As I told you yesterday that truth is truth, 
         and cannot be changed, or cannot be molded and cannot be organized. And if we are 
@@ -494,6 +535,16 @@ export default function IntroductionPage() {
         <span className="italic">– H.H. Shri Mataji Nirmala Devi – Part of the letter written in 1972 during Her trip to America</span>
       </p>
     </div>
+      {/* Expand Button - Mobile Only */}
+          <div className="mt-4 text-center md:hidden">
+           <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="self-start px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg shadow-md hover:opacity-90 transition"
+        >
+        {isExpanded ? "View Less" : "View More"}
+      </button> 
+          </div>
+  </div>
   </div>
 </motion.div>
 
