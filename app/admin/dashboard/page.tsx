@@ -10,7 +10,7 @@ function DashboardPage() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   // Mock admin data - replace with real data from your API
   const admins = [
-    { id: 1, name: 'Admin User', email: 'admin@example.com', role: 'Super Admin' },
+    { id: 1, name: 'Admin User', email: 'mk@example.com', role: 'Super Admin' },
     { id: 2, name: 'Jane Doe', email: 'jane@example.com', role: 'Content Manager' },
     { id: 3, name: 'John Smith', email: 'john@example.com', role: 'Support Admin' },
   ];
@@ -21,9 +21,9 @@ function DashboardPage() {
 
     // Mock current user
   const currentUser = {
-    name: 'Alex Johnson',
-    email: 'alex@example.com',
-    initial: 'A'
+    name: 'MOKSH',
+    email: 'mk@example.com',
+    initial: 'M'
   };
     // Close dropdown when clicking outside
   useEffect(() => {

@@ -180,7 +180,7 @@ const ChatPage = () => {
         </motion.div>
 
         {/* Chat Container */}
-        <div className="mb-24 p-10">
+        <div className="mb-24 p-4 md:p-10">
           {messages.map((msg, index) => (
     <motion.div
       key={index}
