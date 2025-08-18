@@ -68,7 +68,7 @@ function Home() {
         withCredentials: true, 
       })
       const data = res.data.data;
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
     } catch (error) {
@@ -270,7 +270,7 @@ function Home() {
       {/* Mobile Chat Prompt */}
       <div className="md:hidden fixed bottom-6 right-6 z-20">
         <Link
-          href={"/newChat"}
+          href={"/chat"}
           className="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg text-white hover:scale-110 transition-transform duration-300"
         >
           <FaComments className="text-2xl" />
