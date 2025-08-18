@@ -4,8 +4,7 @@
 import MyBackground from '@/components/MyBackground';
 import { API_URL } from '@/lib/config';
 import axios from 'axios';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter} from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
@@ -15,6 +14,7 @@ export default function LoginPage() {
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  
         e.preventDefault();
         setErrors({});
 
@@ -26,10 +26,10 @@ export default function LoginPage() {
             const res = await axios.post(`${API_URL}/login`, 
               formData,{withCredentials: true}// Important: This allows cookies to be set}
             );
-            console.log('Login response:', res.data.success);
+            console.log('Login successful:', res.data);
             if (res.data.success) {
-              // const callback = searchParams.get('callbackUrl')||"/admin/dashboard/upload";
-              router.push('/admin/dashboard');
+              //  const callback = useSearchParams.get('callbackUrl')||"/admin/dashboard";
+              router.push(`/admin/dashboard`);
             } else {
                 setErrors({ 
                     form: res.data.message || 'Login failed. Please try again.' 
@@ -129,7 +129,7 @@ export default function LoginPage() {
                 Sign In
               </button>
             </form>
-            
+{/*             
             <div className="mt-6 text-center">
               <p className="text-gray-600">
                 {"Don't have an account?  "}
@@ -137,7 +137,8 @@ export default function LoginPage() {
                   Sign up
                 </Link>
               </p>
-            </div>
+            </div> 
+            */}
           </div>
         </div>
       </div>
