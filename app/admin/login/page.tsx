@@ -26,7 +26,7 @@ export default function LoginPage() {
             const res = await axios.post(`${API_URL}/login`, 
               formData,{withCredentials: true}// Important: This allows cookies to be set}
             );
-            console.log('Login successful:', res.data);
+            // console.log('Login successful:', res.data);
             if (res.data.success) {
               //  const callback = useSearchParams.get('callbackUrl')||"/admin/dashboard";
               router.push(`/admin/dashboard`);
