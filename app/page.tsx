@@ -68,7 +68,7 @@ function Home() {
         withCredentials: true, 
       })
       const data = res.data.data;
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
     } catch (error) {
