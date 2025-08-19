@@ -188,11 +188,9 @@ function Home() {
               {messages.map((msg, index) => { 
                 const [firstDoc, secondDoc] = msg.doc || [];
                 const isDuplicate = firstDoc && secondDoc
-                 && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName 
-                 && firstDoc?.metadata?.details?.loc?.pageNumber === secondDoc?.metadata?.details?.loc?.pageNumber;
+                 && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
+
                  console.log("Message:", isDuplicate);
-                 console.log("Message:", firstDoc?.metadata);
-                 console.log("second docs:", secondDoc)
 
                 return(
                 <motion.div
@@ -226,7 +224,7 @@ function Home() {
                   {!msg.isUser && firstDoc && (
                     <>
                     <div className="mt-4 text-sm text-gray-200">
-                      <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="text-lg"><FaFilePdf className="text-red-500"/> PDF</Link></span>
+                      <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="text-lg flex"><FaFilePdf className="text-red-500"/>PDF</Link></span>
                       fileName: {firstDoc?.metadata?.fileName || "N/A"} <br />
                       pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
                     </div>
