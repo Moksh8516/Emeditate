@@ -140,7 +140,7 @@ const ChatPage = () => {
         </div>
       </header>
 
-      <main className="relative max-w-6xl mx-auto px-4 py-8 min-h-[calc(100vh-140px)]">
+      <main className="relative max-w-6xl mx-auto px-2 md:px-4 py-8 min-h-[calc(100vh-140px)]">
         {/* Welcome Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -181,7 +181,7 @@ const ChatPage = () => {
         </motion.div>
 
         {/* Chat Container */}
-        <div className="mb-24 p-4 md:p-10">
+        <div className="mb-24 p-3 md:p-10">
           {messages.map((msg, index) =>{
               const [firstDoc, secondDoc] = msg.doc || [];
                 const isDuplicate = firstDoc && secondDoc
@@ -204,18 +204,17 @@ const ChatPage = () => {
           </div>
         )}
 
-        <div
-          className={`max-w-[85%] lg:max-w-[70%] rounded-3xl px-5 py-3 ${
-            msg.isUser
-              ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
-              : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
-          }`}
-        >
-          <div className="flex flex-wrap items-start" style={{ whiteSpace:"pre-wrap", wordBreak: 'break-word' }}>
-            <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
-              {msg.text}
-            </div>
-          </div>
+         <div
+                      className={`rounded-3xl px-5 py-3 ${msg.isUser
+                          ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
+                          : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
+                        }`}
+                      style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                    >
+                      <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
+                        {msg.text}
+                    </div>
+
           
                       {/* source Display */}
                   {!msg.isUser && firstDoc && (
