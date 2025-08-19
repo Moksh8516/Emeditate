@@ -13,7 +13,7 @@ import { API_URL } from "@/lib/config";
 import { GiLotus } from "react-icons/gi";
 
 type DocType = {
-  metaData?: {
+  metadata?: {
     fileName?: string;
     source?: string;
     details?: {
@@ -188,11 +188,12 @@ function Home() {
               {messages.map((msg, index) => { 
                 const [firstDoc, secondDoc] = msg.doc || [];
                 const isDuplicate = firstDoc && secondDoc
-                 && firstDoc?.metaData?.fileName === secondDoc?.metaData?.fileName 
-                 && firstDoc?.metaData?.details?.loc?.pageNumber === secondDoc?.metaData?.details?.loc?.pageNumber;
+                 && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName 
+                 && firstDoc?.metadata?.details?.loc?.pageNumber === secondDoc?.metadata?.details?.loc?.pageNumber;
                  console.log("Message:", isDuplicate);
-                 console.log("Message:", firstDoc?.metaData);
+                 console.log("Message:", firstDoc?.metadata);
                  console.log("second docs:", secondDoc)
+
                 return(
                 <motion.div
                   key={index}
@@ -219,29 +220,30 @@ function Home() {
                     >
                       <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
                         {msg.text}
-                      </div>
+                    </div>
 
                       {/* source Display */}
                   {!msg.isUser && firstDoc && (
                     <>
-                    <div className="mt-2 text-sm text-gray-200">
-                      <span className="flex gap-2">source : <Link href={firstDoc?.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
-                      fileName: {firstDoc?.metaData?.fileName || "N/A"} <br />
-                      pageNumber: {firstDoc?.metaData?.details?.loc?.pageNumber || "N/A"}
+                    <div className="mt-4 text-sm text-gray-200">
+                      <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="text-lg"><FaFilePdf className="text-red-500"/> PDF</Link></span>
+                      fileName: {firstDoc?.metadata?.fileName || "N/A"} <br />
+                      pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
                     </div>
+
                   {/* Additional Document Display */}
                   {secondDoc && !isDuplicate && (
-                    <div className="mt-2 text-sm text-gray-200">
-                      <span className="flex">source : <Link href={secondDoc?.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
-                      fileName: {secondDoc?.metaData?.fileName || "N/A"} <br />
-                      pageNumber: {secondDoc?.metaData?.details?.loc?.pageNumber || "N/A"}
+                    <div className="mt-4 text-sm text-gray-200">
+                      <span className="flex">source : <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
+                      fileName: {secondDoc?.metadata?.fileName || "N/A"} <br />
+                      pageNumber: {secondDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
                     </div>
                   )}
                   </>
                 )}
+                   </div>
                 </div>
-                  </div>
-                </motion.div>
+              </motion.div>
               )}
               )}
 
