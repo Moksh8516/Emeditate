@@ -188,10 +188,10 @@ function Home() {
               {messages.map((msg, index) => { 
                 const [firstDoc, secondDoc] = msg.doc || [];
                 const isDuplicate = firstDoc && secondDoc
-                 && firstDoc.metaData?.fileName === secondDoc.metaData?.fileName 
-                 && firstDoc.metaData?.details?.loc?.pageNumber === secondDoc.metaData?.details?.loc?.pageNumber;
+                 && firstDoc?.metaData?.fileName === secondDoc?.metaData?.fileName 
+                 && firstDoc?.metaData?.details?.loc?.pageNumber === secondDoc?.metaData?.details?.loc?.pageNumber;
                  console.log("Message:", isDuplicate);
-                 console.log("Message:", firstDoc);
+                 console.log("Message:", firstDoc?.metaData);
                  console.log("second docs:", secondDoc)
                 return(
                 <motion.div
@@ -220,7 +220,6 @@ function Home() {
                       <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
                         {msg.text}
                       </div>
-                    </div>
 
                       {/* source Display */}
                   {!msg.isUser && firstDoc && (
@@ -233,13 +232,14 @@ function Home() {
                   {/* Additional Document Display */}
                   {secondDoc && !isDuplicate && (
                     <div className="mt-2 text-sm text-gray-200">
-                      <span className="flex gap-2">source : <Link href={secondDoc?.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
+                      <span className="flex">source : <Link href={secondDoc?.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
                       fileName: {secondDoc?.metaData?.fileName || "N/A"} <br />
                       pageNumber: {secondDoc?.metaData?.details?.loc?.pageNumber || "N/A"}
                     </div>
                   )}
                   </>
                 )}
+                </div>
                   </div>
                 </motion.div>
               )}
