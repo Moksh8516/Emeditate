@@ -46,7 +46,6 @@ function Home() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -188,7 +187,6 @@ function Home() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((msg, index) => { 
                 const [firstDoc, secondDoc] = msg.doc || [];
-                console.log("Message docs:", msg.doc)
                 const isDuplicate = firstDoc && secondDoc
                  && firstDoc.metaData?.fileName === secondDoc.metaData?.fileName 
                  && firstDoc.metaData?.details?.loc?.pageNumber === secondDoc.metaData?.details?.loc?.pageNumber;
@@ -220,21 +218,24 @@ function Home() {
                         {msg.text}
                       </div>
                       {/* source Display */}
-                      {firstDoc && (
-                        <div className="mt-2 text-xs text-gray-200">
-                          <Link href={firstDoc.metaData?.source || "Unknown File"}>source: <FaFilePdf className="text-red-500"/></Link> 
-                          fileName: {firstDoc.metaData?.fileName || "N/A"} <br />
-                          pageNumber: {firstDoc.metaData?.details?.loc?.pageNumber || "N/A"}
-                        </div>
-                      )}
-                      {/* Additional Document Display */}
-                      {secondDoc && !isDuplicate && (
-                        <div className="mt-2 text-xs text-gray-200">
-                          <Link href={secondDoc.metaData?.source || "Unknown File"}>source: <FaFilePdf className="text-red-500"/></Link> 
-                          fileName: {secondDoc.metaData?.fileName || "N/A"} <br />
-                          pageNumber: {secondDoc.metaData?.details?.loc?.pageNumber || "N/A"}
-                        </div>
-                      )}
+
+                  {!msg.isUser && firstDoc && (
+                    <>
+                    <div className="mt-2 text-xs text-gray-200">
+                      <Link href={firstDoc.metaData?.source || "Unknown File"}>source: <FaFilePdf className="text-red-500"/></Link> 
+                      fileName: {firstDoc.metaData?.fileName || "N/A"} <br />
+                      pageNumber: {firstDoc.metaData?.details?.loc?.pageNumber || "N/A"}
+                    </div>
+                  {/* Additional Document Display */}
+                  {secondDoc && !isDuplicate && (
+                    <div className="mt-2 text-xs text-gray-200">
+                      <Link href={secondDoc.metaData?.source || "Unknown File"}>source: <FaFilePdf className="text-red-500"/></Link> 
+                      fileName: {secondDoc.metaData?.fileName || "N/A"} <br />
+                      pageNumber: {secondDoc.metaData?.details?.loc?.pageNumber || "N/A"}
+                    </div>
+                  )}
+                  </>
+                )}
                     </div>
                   </div>
                 </motion.div>
