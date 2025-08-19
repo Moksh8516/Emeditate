@@ -208,7 +208,7 @@ function Home() {
                           ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
                           : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
                         }`}
-                        style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}
+                      style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
                     >
                       <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
                         {msg.text}
