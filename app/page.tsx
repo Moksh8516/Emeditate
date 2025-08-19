@@ -67,7 +67,6 @@ function Home() {
         withCredentials: true, 
       })
       const data = res.data.data;
-      console.log("Response data:", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
     } catch (error) {
@@ -80,6 +79,7 @@ function Home() {
           isUser: false,
         },
       ]);
+      console.log("Response data:", messages);
     } finally {
       setIsLoading(false);
     }
@@ -190,6 +190,8 @@ function Home() {
                 const isDuplicate = firstDoc && secondDoc
                  && firstDoc.metaData?.fileName === secondDoc.metaData?.fileName 
                  && firstDoc.metaData?.details?.loc?.pageNumber === secondDoc.metaData?.details?.loc?.pageNumber;
+                 console.log("Message:", isDuplicate);
+                 console.log("Message:", firstDoc, secondDoc);
                 return(
                 <motion.div
                   key={index}
