@@ -191,7 +191,7 @@ function Home() {
                  && firstDoc.metaData?.fileName === secondDoc.metaData?.fileName 
                  && firstDoc.metaData?.details?.loc?.pageNumber === secondDoc.metaData?.details?.loc?.pageNumber;
                  console.log("Message:", isDuplicate);
-                 console.log("Message:", firstDoc.metaData?.fileName);
+                 console.log("Message:", firstDoc);
                  console.log("second docs:", secondDoc)
                 return(
                 <motion.div
@@ -226,16 +226,16 @@ function Home() {
                   {!msg.isUser && firstDoc && (
                     <>
                     <div className="mt-2 text-sm text-gray-200">
-                      <span className="flex gap-2">source : <Link href={firstDoc.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
-                      fileName: {firstDoc.metaData?.fileName || "N/A"} <br />
-                      pageNumber: {firstDoc.metaData?.details?.loc?.pageNumber || "N/A"}
+                      <span className="flex gap-2">source : <Link href={firstDoc?.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
+                      fileName: {firstDoc?.metaData?.fileName || "N/A"} <br />
+                      pageNumber: {firstDoc?.metaData?.details?.loc?.pageNumber || "N/A"}
                     </div>
                   {/* Additional Document Display */}
                   {secondDoc && !isDuplicate && (
                     <div className="mt-2 text-sm text-gray-200">
-                      <span className="flex gap-2">source : <Link href={firstDoc.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
-                      fileName: {secondDoc.metaData?.fileName || "N/A"} <br />
-                      pageNumber: {secondDoc.metaData?.details?.loc?.pageNumber || "N/A"}
+                      <span className="flex gap-2">source : <Link href={secondDoc?.metaData?.source || "Unknown File"} className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
+                      fileName: {secondDoc?.metaData?.fileName || "N/A"} <br />
+                      pageNumber: {secondDoc?.metaData?.details?.loc?.pageNumber || "N/A"}
                     </div>
                   )}
                   </>
