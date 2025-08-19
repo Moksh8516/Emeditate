@@ -5,7 +5,7 @@ import MyBackground from "@/components/MyBackground";
 import Button from "@/components/Button";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { FaGooglePlay, FaAppStore, FaComments, FaPaperPlane } from "react-icons/fa";
+import { FaGooglePlay, FaAppStore, FaComments, FaPaperPlane, FaFilePdf } from "react-icons/fa";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -68,7 +68,7 @@ function Home() {
         withCredentials: true, 
       })
       const data = res.data.data;
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
     } catch (error) {
@@ -186,7 +186,12 @@ function Home() {
 
             {/* Scrollable Chat Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((msg, index) => (
+              {messages.map((msg, index) => { 
+                const [firstDoc, secondDoc] = msg.doc || [];
+                const isDuplicate = firstDoc && secondDoc
+                 && firstDoc.metaData?.fileName === secondDoc.metaData?.fileName 
+                 && firstDoc.metaData?.details?.loc?.pageNumber === secondDoc.metaData?.details?.loc?.pageNumber;
+                return(
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -213,10 +218,27 @@ function Home() {
                       <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
                         {msg.text}
                       </div>
+                      {/* source Display */}
+                      {firstDoc && (
+                        <div className="mt-2 text-xs text-gray-200">
+                          <Link href={firstDoc.metaData?.source || "Unknown File"}>source: <FaFilePdf className="text-red-500"/></Link> 
+                          fileName: {firstDoc.metaData?.fileName || "N/A"} <br />
+                          pageNumber: {firstDoc.metaData?.details?.loc?.pageNumber || "N/A"}
+                        </div>
+                      )}
+                      {/* Additional Document Display */}
+                      {secondDoc && !isDuplicate && (
+                        <div className="mt-2 text-xs text-gray-200">
+                          <Link href={secondDoc.metaData?.source || "Unknown File"}>source: <FaFilePdf className="text-red-500"/></Link> 
+                          fileName: {secondDoc.metaData?.fileName || "N/A"} <br />
+                          pageNumber: {secondDoc.metaData?.details?.loc?.pageNumber || "N/A"}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>
-              ))}
+              )}
+              )}
 
               {isLoading && (
                 <div className="flex justify-start">
