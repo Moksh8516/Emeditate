@@ -191,7 +191,7 @@ function Home() {
                 const isDuplicate = firstDoc && secondDoc
                  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
 
-                 console.log("Message:", isDuplicate);
+                //  console.log("Message:", isDuplicate);
 
                 return(
                 <motion.div
