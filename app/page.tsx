@@ -191,7 +191,8 @@ function Home() {
                  && firstDoc.metaData?.fileName === secondDoc.metaData?.fileName 
                  && firstDoc.metaData?.details?.loc?.pageNumber === secondDoc.metaData?.details?.loc?.pageNumber;
                  console.log("Message:", isDuplicate);
-                 console.log("Message:", firstDoc.metaData?.fileName, secondDoc);
+                 console.log("Message:", firstDoc.metaData?.fileName);
+                 console.log("second docs:", secondDoc)
                 return(
                 <motion.div
                   key={index}
