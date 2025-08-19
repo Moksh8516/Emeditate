@@ -209,9 +209,9 @@ function Home() {
                           : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
                         }`}
                     >
-                      <pre className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
+                      <p className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
                         {msg.text}
-                      </pre>
+                      </p>
                     </div>
                   </div>
                 </motion.div>
