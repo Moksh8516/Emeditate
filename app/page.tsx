@@ -224,18 +224,18 @@ function Home() {
                       {/* source Display */}
                   {!msg.isUser && firstDoc && (
                     <>
-                    <div className="mt-4 text-sm text-gray-200">
-                      <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="text-lg flex"><FaFilePdf className="text-red-500"/>PDF</Link></span>
+                    <div className="mt-4 text-sm leading-1 text-gray-400">
+                      <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center p-1 text-gray-700 rounded-full bg-blue-300 hover:bg-blue-400"><FaFilePdf className="text-red-500 text-lg"/>PDF</Link></span>
                       fileName: {firstDoc?.metadata?.fileName || "N/A"} <br />
                       pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
                     </div>
 
                   {/* Additional Document Display */}
                   {secondDoc && !isDuplicate && (
-                    <div className="mt-4 text-sm text-gray-200">
-                      <span className="flex">source : <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="text-lg"><FaFilePdf className="text-red-500"/></Link></span>
-                      fileName: {secondDoc?.metadata?.fileName || "N/A"} <br />
-                      pageNumber: {secondDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
+                    <div className="mt-4 text-sm leading-1 text-gray-400">
+                      <span className="flex">source :- <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center p-1 rounded-full text-gray-700 bg-blue-300 hover:bg-blue-400"><FaFilePdf className="text-red-500"/>PDF</Link></span>
+                      fileName :- {secondDoc?.metadata?.fileName || "N/A"} <br />
+                      pageNumber :- {secondDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
                     </div>
                   )}
                   </>
