@@ -1,7 +1,7 @@
 // app/chat/page.jsx
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FaPaperPlane, FaLeaf, FaFilePdf } from "react-icons/fa";
+import { FaPaperPlane, FaLeaf } from "react-icons/fa";
 // FaBrain, FaMedal
 import { BsMoonStars } from "react-icons/bs";
 import { GiLotus } from "react-icons/gi";
@@ -11,9 +11,6 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { API_URL } from "@/lib/config";
-import Link from "next/link";
-// import { FiFileText } from "react-icons/fi";
-// import { TypingEffect } from "@/components/TypingEffect";
 
 type DocType = {
   metadata?: {
@@ -183,9 +180,9 @@ const ChatPage = () => {
         {/* Chat Container */}
         <div className="mb-24 p-3 md:p-10">
           {messages.map((msg, index) =>{
-              const [firstDoc, secondDoc] = msg.doc || [];
-                const isDuplicate = firstDoc && secondDoc
-                 && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
+              // const [firstDoc, secondDoc] = msg.doc || [];
+                // const isDuplicate = firstDoc && secondDoc
+                //  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
 
             return(
     <motion.div
@@ -217,16 +214,16 @@ const ChatPage = () => {
 
           
                       {/* source Display */}
-                  {!msg.isUser && firstDoc && (
+                  {/* {!msg.isUser && firstDoc && (
                     <>
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500 text-lg"/>PDF</Link></span>
                       fileName: {firstDoc?.metadata?.fileName || "N/A"} <br />
                       pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
-                    </div>
+                    </div> */}
 
                   {/* Additional Document Display */}
-                  {secondDoc && !isDuplicate && (
+                  {/* {secondDoc && !isDuplicate && (
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex">source :- <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500"/>PDF</Link></span>
                       fileName :- {secondDoc?.metadata?.fileName || "N/A"} <br />
@@ -234,7 +231,7 @@ const ChatPage = () => {
                     </div>
                   )}
                   </>
-                )}
+                )} */}
         </div>
       </div>
     </motion.div>

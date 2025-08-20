@@ -5,7 +5,7 @@ import MyBackground from "@/components/MyBackground";
 import Button from "@/components/Button";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { FaGooglePlay, FaAppStore, FaComments, FaPaperPlane, FaFilePdf } from "react-icons/fa";
+import { FaGooglePlay, FaAppStore, FaComments, FaPaperPlane } from "react-icons/fa";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -187,9 +187,9 @@ function Home() {
             {/* Scrollable Chat Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((msg, index) => { 
-                const [firstDoc, secondDoc] = msg.doc || [];
-                const isDuplicate = firstDoc && secondDoc
-                 && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
+                // const [firstDoc, secondDoc] = msg.doc || [];
+                // const isDuplicate = firstDoc && secondDoc;
+                //  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
 
                 //  console.log("Message:", isDuplicate);
 
@@ -222,16 +222,16 @@ function Home() {
                     </div>
 
                       {/* source Display */}
-                  {!msg.isUser && firstDoc && (
+                  {/* {!msg.isUser && firstDoc && (
                     <>
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500 text-lg"/>PDF</Link></span>
                       fileName: {firstDoc?.metadata?.fileName || "N/A"} <br />
                       pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
-                    </div>
+                    </div> */}
 
                   {/* Additional Document Display */}
-                  {secondDoc && !isDuplicate && (
+                  {/* {secondDoc && !isDuplicate && (
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex">source :- <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500"/>PDF</Link></span>
                       fileName :- {secondDoc?.metadata?.fileName || "N/A"} <br />
@@ -239,7 +239,7 @@ function Home() {
                     </div>
                   )}
                   </>
-                )}
+                )} */}
                    </div>
                 </div>
               </motion.div>
