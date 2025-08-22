@@ -57,9 +57,9 @@ function BlogPage() {
   
   if (loading) {
     return (
-      <MyBackground>
+      <div className="flex items-center justify-center min-h-screen">
         <Loader size='md' color='white' text={"Loading Blogs ..."}/>
-      </MyBackground>
+      </div>
     );
   }
 
