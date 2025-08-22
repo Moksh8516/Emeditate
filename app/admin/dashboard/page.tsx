@@ -4,6 +4,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaFileAlt, FaUpload, FaUserPlus, FaSignOutAlt, FaUsers, FaUserCircle, FaCog } from 'react-icons/fa';
 import {useRouter} from 'next/navigation';
 import { FiChevronDown } from 'react-icons/fi';
+import axios from 'axios';
+import { API_URL } from '@/lib/config';
+import toast from 'react-hot-toast';
 function DashboardPage() {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -15,8 +18,14 @@ function DashboardPage() {
     { id: 3, name: 'John Smith', email: 'john@example.com', role: 'Support Admin' },
   ];
 
-  const handleSignOut = () => {
-    router.push('/login');
+  const handleSignOut = async() => {
+   const res = await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+   if(res.data.success){
+    toast.success('Logged out successfully!');
+     router.push('/admin/login');
+   }else{
+    toast.error('Logout failed. Please try again.');
+   }
   };
 
     // Mock current user
@@ -73,7 +82,7 @@ function DashboardPage() {
                     </div>
                     <div className="py-1">
                       <Link
-                        href="/admin/profile"
+                        href="/admin/dashboard/profile"
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsDropdownOpen(false)}
                       >
@@ -81,7 +90,7 @@ function DashboardPage() {
                         My Profile
                       </Link>
                       <Link
-                        href="/admin/change-password"
+                        href="/admin/dashboard/change-password"
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsDropdownOpen(false)}
                       >

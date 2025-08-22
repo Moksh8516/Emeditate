@@ -1,24 +1,22 @@
- "use client";
-// pages/register.tsx
+"use client";
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import MyBackground from '@/components/MyBackground';
 import { Loader } from '@/components/loader';
 import { API_URL } from '@/lib/config';
+import toast from 'react-hot-toast';
 
-interface RegisterFormData {
-  name: string;
-  email: string;
+interface PasswordChangeFormData {
+  oldPassword: string;
   password: string;
   confirmPassword: string;
 }
 
-export default function RegisterPage() {
+function ChangePassword() { // Changed to PascalCase
   const router = useRouter();
-  const [formData, setFormData] = useState<RegisterFormData>({
-    name: '',
-    email: '',
+  const [formData, setFormData] = useState<PasswordChangeFormData>({
+    oldPassword: '',
     password: '',
     confirmPassword: '',
   });
@@ -31,7 +29,7 @@ export default function RegisterPage() {
   };
 
   const validateForm = (): boolean => {
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.oldPassword || !formData.password || !formData.confirmPassword) {
       setError('All fields are required');
       return false;
     }
@@ -41,13 +39,8 @@ export default function RegisterPage() {
       return false;
     }
     
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return false;
-    }
-    
-    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      setError('Please enter a valid email address');
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters');
       return false;
     }
     
@@ -63,24 +56,24 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      // Send registration request to backend
-      await axios.post(`${API_URL}/register`, {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: 'admin' // Assuming role is required
+      // Send password change request to backend
+      await axios.post(`${API_URL}/change-password`, {
+        oldPassword: formData.oldPassword,
+        newPassword: formData.password,
       }, {
-        withCredentials: true, // Include cookies
+        withCredentials: true,
       });
+      toast.success('Password changed successfully!');
+      // Redirect to dashboard after successful password change
+      router.push('/admin/dashboard');
 
-      // Redirect to dashboard after successful registration
-      router.push('/admin/dashboard/upload');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message || 
-        'Registration failed. Please try again.'
+        'Password change failed. Please try again.'
       );
+      toast.error('Password change failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -92,11 +85,8 @@ export default function RegisterPage() {
         <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-800">
-              Create Account
+              Change Password
             </h1>
-            <p className="mt-2 text-gray-600">
-              Join us today and unlock exclusive features
-            </p>
           </div>
           
           {error && (
@@ -107,44 +97,27 @@ export default function RegisterPage() {
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Full Name
+              <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-700">
+                Old Password
               </label>
               <input
-                id="name"
-                name="name"
-                type="text"
+                id="oldPassword"
+                name="oldPassword"
+                type="password"
                 required
-                value={formData.name}
+                value={formData.oldPassword}
                 onChange={handleChange}
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                placeholder="John Doe"
+                placeholder="••••••••"
               />
             </div>
-            
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700"> {/* Fixed: Changed id to "password" */}
+                New Password
               </label>
               <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
+                id="password" 
+                name="password" 
                 type="password"
                 required
                 minLength={6}
@@ -178,32 +151,22 @@ export default function RegisterPage() {
                 disabled={isLoading}
                 className={`w-full flex justify-center items-center py-2.5 px-4 rounded-md shadow-sm text-sm font-medium text-white ${
                   isLoading 
-                    ? 'bg-gray-400' 
+                    ? 'bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50' 
                     : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 }`}
               >
                 {isLoading ? (
-                  <Loader size="md" color="white" />
+                  <Loader size="md" color="purple" text={"Changing Password... "}/>
                 ) : (
-                  'Create Account'
+                  'Change Password'
                 )}
               </button>
             </div>
           </form>
-
-          <div className="text-center pt-4">
-            <p className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <button
-                onClick={() => router.push('/admin/login')}
-                className="font-medium text-blue-600 hover:text-blue-500"
-              >
-                Sign in
-              </button>
-            </p>
-          </div>
         </div>
       </div>
     </MyBackground>
   );
 }
+
+export default ChangePassword; 

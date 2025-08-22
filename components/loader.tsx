@@ -2,38 +2,36 @@
 import React from 'react';
 
 interface LoaderProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?:  'md' | 'lg' | 'xl';
   color?: 'primary' | 'white' | 'purple';
   className?: string;
+  text?: React.ReactNode;
 }
 
 const Loader: React.FC<LoaderProps> = ({
-  size = 'md',
-  color = 'primary',
+  color = 'purple',
+  size = 'lg',
   className = '',
+  text = ""
 }) => {
   const sizeClasses = {
-    sm: 'h-4 w-4 border-2',
-    md: 'h-8 w-8 border-4',
-    lg: 'h-12 w-12 border-4',
+    md: 'h-8 w-8 mb-2',
+    lg: 'h-12 w-12 mb-4',
+    xl: 'h-16 w-16 mb-6'
   };
   
   const colorClasses = {
-    primary: 'border-t-blue-500 border-r-blue-500 border-b-transparent border-l-transparent',
-    white: 'border-t-white border-r-white border-b-transparent border-l-transparent',
-    purple: 'border-t-purple-600 border-r-purple-600 border-b-transparent border-l-transparent',
+    primary: 'rounded-full border-t-2 border-b-2 border-indigo-600',
+    white: 'rounded-full border-t-2 border-b-2 border-white',
+    purple: 'rounded-full border-t-2 border-b-2 border-purple-500',
   };
 
+
   return (
-    <div className={`flex justify-center items-center ${className}`}>
-      <div
-        className={`rounded-full animate-spin ${
-          sizeClasses[size]
-        } ${
-          colorClasses[color]
-        }`}
-      />
-    </div>
+        <div className={`text-center ${className}`}>
+          <div className={`inline-block animate-spin ${sizeClasses[size]} ${colorClasses[color]}`}></div>
+          <p className="text-gray-300">{text}</p>
+        </div>
   );
 };
 

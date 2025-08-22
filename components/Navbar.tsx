@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
             About
             </span>
             </Link>
-           <Link href="/Blog" className='decoration-none no-underline'>
+           <Link href="/blog" className='decoration-none no-underline'>
            <span className="hover:text-gray-300 cursor-pointer">
             Blog
             </span>

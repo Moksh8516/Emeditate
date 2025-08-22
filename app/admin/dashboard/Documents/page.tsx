@@ -6,6 +6,7 @@ import { FiFile, FiFolder, FiClock, FiDownload, FiMoreVertical } from 'react-ico
 import { FaFilePdf, FaFileAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Loader } from '@/components/loader';
 interface Document {
   id: string;
   fileName: string;
@@ -16,15 +17,18 @@ interface Document {
 
 function DocumentListPage() {
     const [documents, setDocuments] = useState<Document[]>([]);
+    const [totalFiles, setTotalFiles] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();  
+    
   useEffect(() => {
     async function fetchDocuments() {
       try {
         setLoading(true);
         const res = await axios.post(`${API_URL}/get-files`, {}, { withCredentials: true });
         setDocuments(res.data.data.documents);
+        setTotalFiles(res.data.data.Pagination.totalCount)
       } catch (err) {
         setError('Failed to load documents. Please try again later.');
         console.error(err);
@@ -58,11 +62,8 @@ function DocumentListPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500 mb-4"></div>
-          <p className="text-gray-600">Loading your documents...</p>
-        </div>
+        <div className={`min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center`}>
+      <Loader size='md' color='purple' text={"Loading Your documents"} />
       </div>
     );
   }
@@ -104,7 +105,7 @@ function DocumentListPage() {
             <div className="mt-4 md:mt-0 flex items-center space-x-4">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
                 <p className="text-white font-medium">
-                  {documents.length} {documents.length === 1 ? 'File' : 'Files'}
+                  {totalFiles} {totalFiles === 1 ? 'File' : 'Files'}
                 </p>
               </div>
               <button

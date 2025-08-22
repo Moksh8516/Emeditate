@@ -63,11 +63,11 @@ function Home() {
     setIsLoading(true);
     setInput("");
     try {
+      console.log("Response data:", API_URL);
       const res = await axios.post(`${API_URL}/chat`, { message: input },{
         withCredentials: true, 
       })
       const data = res.data.data;
-      // console.log("Response data:", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
     } catch (error) {
