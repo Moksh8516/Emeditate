@@ -6,7 +6,7 @@ function Footer() {
   return (
 <>
 {/* Footer */}
-<div className="bg-gradient-to-r from-purple-900 to-indigo-900 text-white py-12">
+<div className="bg-gradient-to-r from-purple-900 to-indigo-900 text-white py-12 rounded-t-2xl">
   <div className="container mx-auto px-4 text-center">
     <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center border-4 border-white/20">
       <div className="w-16 h-16  border-4 border-white rounded-full">

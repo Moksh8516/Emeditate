@@ -8,7 +8,7 @@ import { API_URL } from '@/lib/config';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
+import { motion } from 'framer-motion';
 interface Blog {
   id: string;
   Title: string;
@@ -32,7 +32,7 @@ function BlogPage() {
       try {
         setLoading(true);
         // Replace with your actual API endpoint
-        const response = await axios.get(`${API_URL}/blog?page=${currentPage}&limit=${blogsPerPage}`);
+        const response = await axios.get(`${API_URL}/blog/publish/blogs?page=${currentPage}&limit=${blogsPerPage}`);
              // Check the actual structure of your API response
         if (response.data.success) {
           setBlogs(response.data.data.blogs || []);
@@ -76,8 +76,19 @@ function BlogPage() {
   return (
     <MyBackground>
       <Navbar></Navbar>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-white mb-8 text-center">Blog</h1>
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8 py-12">
+           <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Blog</h1>
+          <p className="text-purple-100 text-xl max-w-2xl mx-auto">
+            {"Discover the wisdom of Sahaja Yoga – insights, experiences, and guidance for inner peace and spiritual growth."}
+          </p>
+        </motion.div>
+
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
             <div key={blog.id} className="bg-white/10 backdrop-blur-md rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
