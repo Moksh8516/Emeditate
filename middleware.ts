@@ -4,16 +4,17 @@ import { jwtVerify } from "jose";
 import { JWT_SECRET } from "./lib/config";
 // ✅ Role-based route rules
 const ROUTE_PERMISSIONS = {
-  admin: /^\/admin\/dashboard(\/.*)?$/,                // admin can access all dashboard
-    "content Manager": [
-    /^\/admin\/dashboard\/blog(\/.*)?$/,         // blog
-    /^\/admin\/dashboard\/change-password$/,      // change password
-    /^\/admin\/dashboard\/profile$/              // profile
-  ]// contentManager only blog section
+  admin: /^\/admin\/dashboard(\/.*)?$/, // admin can access all dashboard
+  "content Manager": [
+    /^\/admin\/dashboard\/blog(\/.*)?$/, // blog
+    /^\/admin\/dashboard\/change-password$/, // change password
+    /^\/admin\/dashboard\/profile$/, // profile
+  ], // contentManager only blog section
 } as const;
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("accessToken")?.value;
+  console.log("Middleware token:", token);
   const { pathname } = req.nextUrl;
 
   // 🚦 No token → go to login
@@ -25,7 +26,7 @@ export async function middleware(req: NextRequest) {
     // ✅ Verify JWT with jose
     const secret = new TextEncoder().encode(JWT_SECRET!);
     const { payload } = await jwtVerify(token, secret);
-    console.log(payload)
+    console.log(payload);
 
     const role = payload.role as string;
 
@@ -45,7 +46,10 @@ export async function middleware(req: NextRequest) {
 // 🔒 Permission check
 function checkPermission(role: string, pathname: string): boolean {
   if (role === "admin") return ROUTE_PERMISSIONS.admin.test(pathname);
-  if (role === "content Manager") return ROUTE_PERMISSIONS["content Manager"].some((regex)=> regex.test(pathname));
+  if (role === "content Manager")
+    return ROUTE_PERMISSIONS["content Manager"].some((regex) =>
+      regex.test(pathname)
+    );
   return false;
 }
 
