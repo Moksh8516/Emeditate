@@ -73,7 +73,7 @@ function ViewBlog() {
     return (
       <MyBackground>
         <div className="min-h-screen flex items-center justify-center md:px-4">
-          <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg text-center">
+          <div className="w-full max-w-md p-2 md:p-6 space-y-6 bg-white rounded-xl shadow-lg text-center">
             <h1 className="text-2xl font-bold text-gray-800">Blog Not Found</h1>
             <p className="text-gray-600">
               {error || "The blog post you're looking for doesn't exist."}
@@ -93,7 +93,7 @@ function ViewBlog() {
   return (
     <MyBackground>
       <Navbar />
-      <div className="min-h-screen py-12 px-4">
+      <div className="min-h-screen py-12 px-2 md:px-4 lg:px-6">
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Blog Header Image */}
 
