@@ -1,5 +1,4 @@
- "use client";
-// pages/register.tsx
+"use client";
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -7,11 +6,14 @@ import MyBackground from '@/components/MyBackground';
 import { Loader } from '@/components/loader';
 import { API_URL } from '@/lib/config';
 
+type Role = 'admin' | 'content Manager';
+
 interface RegisterFormData {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
+  role: Role;
 }
 
 export default function RegisterPage() {
@@ -21,11 +23,12 @@ export default function RegisterPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'admin',
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -41,12 +44,13 @@ export default function RegisterPage() {
       return false;
     }
     
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters');
       return false;
     }
     
-    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
       setError('Please enter a valid email address');
       return false;
     }
@@ -63,18 +67,20 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      // Send registration request to backend
-      await axios.post(`${API_URL}/register`, {
+      const response = await axios.post(`${API_URL}/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        role: 'admin' // Assuming role is required
+        role: formData.role
       }, {
-        withCredentials: true, // Include cookies
+        withCredentials: true,
       });
 
-      // Redirect to dashboard after successful registration
-      router.push('/admin/dashboard/upload');
+      if (response.data.success) {
+        router.push('/admin/dashboard');
+      } else {
+        setError(response.data.message || 'Registration failed. Please try again.');
+      }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
@@ -95,7 +101,7 @@ export default function RegisterPage() {
               Create Account
             </h1>
             <p className="mt-2 text-gray-600">
-              Join us today and unlock exclusive features
+              Register a new admin or content manager account
             </p>
           </div>
           
@@ -139,6 +145,22 @@ export default function RegisterPage() {
             </div>
 
             <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                Role
+              </label>
+              <select 
+                id="role"
+                name="role" 
+                value={formData.role} 
+                onChange={handleChange} 
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="admin">Admin</option>
+                <option value="content Manager">Content Manager</option>
+              </select>
+            </div>
+
+            <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
@@ -147,7 +169,6 @@ export default function RegisterPage() {
                 name="password"
                 type="password"
                 required
-                minLength={6}
                 value={formData.password}
                 onChange={handleChange}
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -164,7 +185,6 @@ export default function RegisterPage() {
                 name="confirmPassword"
                 type="password"
                 required
-                minLength={6}
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -178,12 +198,12 @@ export default function RegisterPage() {
                 disabled={isLoading}
                 className={`w-full flex justify-center items-center py-2.5 px-4 rounded-md shadow-sm text-sm font-medium text-white ${
                   isLoading 
-                    ? 'bg-gray-400' 
+                    ? 'bg-blue-400' 
                     : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 }`}
               >
                 {isLoading ? (
-                  <Loader size="md" color="white" />
+                  <Loader size="md" color="white" text={"creating..."}/>
                 ) : (
                   'Create Account'
                 )}
@@ -193,12 +213,13 @@ export default function RegisterPage() {
 
           <div className="text-center pt-4">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
+              Go back to Dashboard?{' '}
               <button
-                onClick={() => router.push('/admin/login')}
+                type="button"
+                onClick={() => router.push('/admin/dashboard')}
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
-                Sign in
+                dashboard
               </button>
             </p>
           </div>

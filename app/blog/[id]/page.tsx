@@ -89,14 +89,16 @@ function ViewBlog() {
         <Navbar/>
       <div className="min-h-screen py-12 px-4">
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Blog Header Image */}
-          <div className="w-full h-80 overflow-hidden">
-            <img 
-              src={blog.image} 
-              alt={blog.Title}
-              className="w-full h-full object-contain"
-            />
-          </div>
+     {/* Blog Header Image */}
+{/* Blog Header Image */}
+<div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl shadow-md">
+  <img 
+    src={blog.image} 
+    alt={blog.Title}
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+</div>
+
           
           {/* Blog Content */}
           <div className="p-8">

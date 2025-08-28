@@ -8,9 +8,9 @@ import Navbar from "@/components/Navbar";
 import { FaGooglePlay, FaAppStore, FaComments, FaPaperPlane } from "react-icons/fa";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import { GiLotus } from "react-icons/gi";
+import api from "@/lib/axios";
 
 type DocType = {
   metadata?: {
@@ -63,8 +63,7 @@ function Home() {
     setIsLoading(true);
     setInput("");
     try {
-      console.log("Response data:", API_URL);
-      const res = await axios.post(`${API_URL}/chat`, { message: input },{
+      const res = await api.post(`${API_URL}/chat`, { message: input },{
         withCredentials: true, 
       })
       const data = res.data.data;
@@ -80,7 +79,7 @@ function Home() {
           isUser: false,
         },
       ]);
-      console.log("Response data:", messages);
+      // console.log("Response data:", messages);
     } finally {
       setIsLoading(false);
     }

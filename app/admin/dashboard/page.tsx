@@ -1,39 +1,89 @@
 "use client";
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
-import { FaFileAlt, FaUpload, FaUserPlus, FaSignOutAlt, FaUsers, FaUserCircle, FaCog } from 'react-icons/fa';
+import React, {useEffect, useRef, useState } from 'react';
+import { FaFileAlt, FaUpload, FaUserPlus, FaSignOutAlt, FaUsers, FaUserCircle, FaCogs } from 'react-icons/fa';
+import { BiBookContent } from "react-icons/bi";
 import {useRouter} from 'next/navigation';
 import { FiChevronDown } from 'react-icons/fi';
 import axios from 'axios';
 import { API_URL } from '@/lib/config';
 import toast from 'react-hot-toast';
+import { useAuthStore } from '@/store/useAuthModel';
+interface CurrentUser {
+  name: string;
+  email: string;
+  initial: string;
+}
+interface AdminUser {
+  uid: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
 function DashboardPage() {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<CurrentUser>({
+    name: '',
+    email: '',
+    initial: ''
+  });
+  const [admins, setAdmins] = useState<AdminUser[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  // Mock admin data - replace with real data from your API
-  const admins = [
-    { id: 1, name: 'Admin User', email: 'mk@example.com', role: 'Super Admin' },
-    { id: 2, name: 'Jane Doe', email: 'jane@example.com', role: 'Content Manager' },
-    { id: 3, name: 'John Smith', email: 'john@example.com', role: 'Support Admin' },
-  ];
+
+  const authuser = async()=>{
+    try{
+      const res = await axios.get(`${API_URL}/all-auth-user`, { withCredentials: true });
+      if(res.data.success){
+        setAdmins(res.data.data);
+      }
+    }catch(err){
+       console.error("Failed to fetch admin users:", err);
+      toast.error("Failed to load admin users");
+    }
+  }
+
+  const getProfile = async()=>{
+    try{
+      const res = await axios.post(`${API_URL}/profile`,{}, { withCredentials: true });
+      if(res.data.success){
+        setCurrentUser({
+          name: res.data.data.name,
+          email: res.data.data.email,
+          initial: res.data.data.name.charAt(0).toUpperCase()
+        })
+        useAuthStore.getState().setCurrentUser({
+          name: res.data.data.name,
+          email: res.data.data.email,
+          role: res.data.data.role,
+          initial: res.data.data.name.charAt(0).toUpperCase(),
+          dob: res.data.data?.dob,
+          profileImage: res.data.data?.profileImage,
+          age: res.data.data?.age 
+        })
+      }else {
+        throw new Error(res.data.message || "Failed to fetch profile");
+      }
+    }catch(err){
+      console.error("Profile fetch error:", err);
+      toast.error("Authentication failed. Redirecting to login...");
+      router.push('/admin/login');
+    }
+  }
+
 
   const handleSignOut = async() => {
    const res = await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
    if(res.data.success){
     toast.success('Logged out successfully!');
+    useAuthStore.getState().clearUser();
      router.push('/admin/login');
    }else{
     toast.error('Logout failed. Please try again.');
    }
   };
 
-    // Mock current user
-  const currentUser = {
-    name: 'MOKSH',
-    email: 'mk@example.com',
-    initial: 'M'
-  };
     // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -47,8 +97,15 @@ function DashboardPage() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  useEffect(()=>{
+    getProfile();
+    authuser(); 
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
+      
       {/* Top Navigation Bar */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -94,7 +151,7 @@ function DashboardPage() {
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        <FaCog className="mr-3 text-gray-500" />
+                        <FaCogs className="mr-3 text-gray-500" />
                         Change Password
                       </Link>
                       <button
@@ -160,6 +217,20 @@ function DashboardPage() {
               </div>
             </div>
           </Link>
+          <Link 
+            href="/admin/dashboard/blog" 
+            className="bg-gradient-to-r from-purple-600 to-cyan-500 rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
+          >
+            <div className="flex items-center">
+              <div className="bg-white/20 p-3 rounded-lg">
+                <BiBookContent className="h-8 w-8" />
+              </div>
+              <div className="ml-4">
+                <h2 className="text-xl font-bold">Register New Blog</h2>
+                <p className="opacity-80 mt-1">Add new Blogs for Site</p>
+              </div>
+            </div>
+          </Link>
         </div>
 
         {/* Admin List Section */}
@@ -186,9 +257,9 @@ function DashboardPage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {admins.map((admin) => (
-                  <tr key={admin.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{admin.id}</td>
+                {admins.map((admin,index) => (
+                  <tr key={admin.uid} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{index+1}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{admin.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{admin.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap">

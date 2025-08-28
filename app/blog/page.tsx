@@ -58,7 +58,7 @@ function BlogPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader size='md' color='white' text={"Loading Blogs ..."}/>
+        <Loader size='md' color='purple' text={"Loading Blogs ..."}/>
       </div>
     );
   }
@@ -92,11 +92,13 @@ function BlogPage() {
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
             <div key={blog.id} className="bg-white/10 backdrop-blur-md rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
-              <img 
-                src={blog.image || '/default-blog-image.jpg'} 
-                alt={blog.Title} 
-                className="w-full h-52 object-contain"
-              />
+      <div className="relative w-full aspect-[16/9]">
+        <img 
+          src={blog.image} 
+          alt={blog.Title}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
               <div className="p-6">
                 <h2 className="text-2xl font-semibold text-white mb-2">{blog.Title}</h2>
                 <h3 className="text-lg font-medium text-gray-300 mb-4">{blog.subTitle}</h3>

@@ -6,6 +6,7 @@ import MyBackground from '@/components/MyBackground';
 import { Loader } from '@/components/loader';
 import { API_URL } from '@/lib/config';
 import toast from 'react-hot-toast';
+import { useAuthStore } from '@/store/useAuthModel';
 
 interface PasswordChangeFormData {
   oldPassword: string;
@@ -22,6 +23,8 @@ function ChangePassword() { // Changed to PascalCase
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const CurrentUser = useAuthStore((state) => state.currentUser);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -65,8 +68,11 @@ function ChangePassword() { // Changed to PascalCase
       });
       toast.success('Password changed successfully!');
       // Redirect to dashboard after successful password change
+      if (CurrentUser?.role === 'admin') {
       router.push('/admin/dashboard');
-
+      }else if (CurrentUser?.role === 'content Manager') {
+        router.push('/admin/dashboard/blog');
+      }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
