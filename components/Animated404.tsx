@@ -1,12 +1,12 @@
-'use client';
+"use client";
 // components/NotFoundPage.js
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 const Animated404 = () => {
   const [stars, setStars] = useState<star[]>([]);
-  interface star{
+  interface star {
     id: string;
     x: number;
     y: number;
@@ -16,7 +16,7 @@ const Animated404 = () => {
 
   // Generate random stars for the background
   useEffect(() => {
-    const generatedStars:star[] = Array.from({ length: 150 }).map(() => ({
+    const generatedStars: star[] = Array.from({ length: 150 }).map(() => ({
       id: Math.random().toString(36).substring(2, 9),
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -45,17 +45,18 @@ const Animated404 = () => {
           />
         ))}
       </div>
-      
+
       {/* Background image with overlay */}
-      <div 
+      <div
         className="absolute inset-0 z-0 opacity-30"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1792&q=80')",
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1792&q=80')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      
+
       {/* Content container */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-12 text-center">
         <motion.div
@@ -65,22 +66,22 @@ const Animated404 = () => {
           className="max-w-3xl w-full"
         >
           {/* Floating 404 text */}
-          <motion.div 
+          <motion.div
             className="relative mb-4"
-            animate={{ 
+            animate={{
               y: [0, -15, 0],
             }}
-            transition={{ 
+            transition={{
               duration: 4,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
           >
             <div className="text-[12rem] md:text-[16rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 opacity-80">
               404
             </div>
           </motion.div>
-          
+
           {/* Main content */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -91,10 +92,10 @@ const Animated404 = () => {
               Lost in Space?
             </h1>
             <p className="text-lg text-indigo-200 max-w-md mx-auto mb-8">
-             {` Oops! The page you’re looking for doesn’t exist or may have been moved.`}
+              {` Oops! The page you’re looking for doesn’t exist or may have been moved.`}
             </p>
           </motion.div>
-          
+
           {/* Actions */}
           <motion.div
             initial={{ opacity: 0 }}

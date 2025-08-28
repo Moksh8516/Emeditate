@@ -22,7 +22,6 @@ interface AuthState {
   clearUser: () => void;
 }
 
-
 export const useAuthModal = create<AuthModalState>((set) => ({
   isOpen: false,
   openModal: () => set({ isOpen: true }),

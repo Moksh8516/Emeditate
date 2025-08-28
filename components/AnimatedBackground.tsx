@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 type Bubble = {
   top: string;
@@ -26,7 +26,7 @@ export function AnimatedBackground() {
       animateX: Math.random() * 100 - 50,
       animateY: Math.random() * 100 - 50,
       scale: 1 + Math.random() * 0.5,
-      duration: 20 + Math.random() * 20
+      duration: 20 + Math.random() * 20,
     }));
     setBubbles(newBubbles);
   }, []);

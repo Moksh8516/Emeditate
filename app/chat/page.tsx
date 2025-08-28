@@ -39,7 +39,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState<MessageType[]>([
     {
       text: "Namaste 🙏 I'm your Sahaja Yoga AI Assistant. How can I help you find inner peace today?",
-      doc:[],
+      doc: [],
       isUser: false,
     },
   ]);
@@ -64,23 +64,26 @@ const ChatPage = () => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage = { text: input, doc:[], isUser: true };
+    const userMessage = { text: input, doc: [], isUser: true };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
     setInput("");
     try {
-      const res = await axios.post(`${API_URL}/chat`,{message:input})
-      const data =  res.data.data;
+      const res = await axios.post(`${API_URL}/chat`, { message: input });
+      const data = res.data.data;
 
       const pagecontent = data.chatResult.kwargs.content;
-      setMessages((prev)=>[...prev, {text:pagecontent, doc:data.doc, isUser:false}])
+      setMessages((prev) => [
+        ...prev,
+        { text: pagecontent, doc: data.doc, isUser: false },
+      ]);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
         ...prev,
         {
           text: "Sorry, I'm having trouble connecting to inner wisdom. Please try again.",
-          doc:[],
+          doc: [],
           isUser: false,
         },
       ]);
@@ -88,7 +91,6 @@ const ChatPage = () => {
       setIsLoading(false);
     }
   };
-
 
   // const quickPrompts = [
   //   "How to meditate?",
@@ -179,42 +181,46 @@ const ChatPage = () => {
 
         {/* Chat Container */}
         <div className="mb-24 p-3 md:p-10">
-          {messages.map((msg, index) =>{
-              // const [firstDoc, secondDoc] = msg.doc || [];
-                // const isDuplicate = firstDoc && secondDoc
-                //  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
+          {messages.map((msg, index) => {
+            // const [firstDoc, secondDoc] = msg.doc || [];
+            // const isDuplicate = firstDoc && secondDoc
+            //  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
 
-            return(
-    <motion.div
-      key={index}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`flex flex-col mb-6 ${msg.isUser ? "items-end" : "items-start"}`}
-    >
-      <div className="flex items-end gap-2 max-w-full">
-        {!msg.isUser && (
-          <div className="self-end">
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-full">
-              <GiLotus className="text-white text-sm" />
-            </div>
-          </div>
-        )}
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`flex flex-col mb-6 ${msg.isUser ? "items-end" : "items-start"}`}
+              >
+                <div className="flex items-end gap-2 max-w-full">
+                  {!msg.isUser && (
+                    <div className="self-end">
+                      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-full">
+                        <GiLotus className="text-white text-sm" />
+                      </div>
+                    </div>
+                  )}
 
-         <div
-                      className={`rounded-3xl px-5 py-3 ${msg.isUser
-                          ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
-                          : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
-                        }`}
-                      style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                  <div
+                    className={`rounded-3xl px-5 py-3 ${
+                      msg.isUser
+                        ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
+                        : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
+                    }`}
+                    style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+                  >
+                    <div
+                      className={
+                        msg.isUser ? "text-indigo-50" : "text-gray-200"
+                      }
                     >
-                      <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
-                        {msg.text}
+                      {msg.text}
                     </div>
 
-          
-                      {/* source Display */}
-                  {/* {!msg.isUser && firstDoc && (
+                    {/* source Display */}
+                    {/* {!msg.isUser && firstDoc && (
                     <>
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500 text-lg"/>PDF</Link></span>
@@ -222,8 +228,8 @@ const ChatPage = () => {
                       pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
                     </div> */}
 
-                  {/* Additional Document Display */}
-                  {/* {secondDoc && !isDuplicate && (
+                    {/* Additional Document Display */}
+                    {/* {secondDoc && !isDuplicate && (
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex">source :- <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500"/>PDF</Link></span>
                       fileName :- {secondDoc?.metadata?.fileName || "N/A"} <br />
@@ -232,11 +238,11 @@ const ChatPage = () => {
                   )}
                   </>
                 )} */}
-        </div>
-      </div>
-    </motion.div>
-  )}
-  )}
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
           {isLoading && (
             <div className="flex mb-6 justify-start">
               <div className="bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-3xl rounded-bl-none px-5 py-3 border border-gray-700">

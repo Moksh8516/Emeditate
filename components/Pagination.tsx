@@ -5,7 +5,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
@@ -18,21 +22,21 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
         >
           Previous
         </button>
-        
-        {pages.map(page => (
+
+        {pages.map((page) => (
           <button
             key={page}
             onClick={() => onPageChange(page)}
             className={`px-3 py-1 rounded-md ${
               currentPage === page
-                ? 'bg-white text-indigo-700 font-bold'
-                : 'bg-white/20 text-white'
+                ? "bg-white text-indigo-700 font-bold"
+                : "bg-white/20 text-white"
             }`}
           >
             {page}
           </button>
         ))}
-        
+
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}

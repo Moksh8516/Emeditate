@@ -4,7 +4,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "@/lib/config";
 import { BlogPost } from "@/app/admin/dashboard/blog/page";
-import { FiX, FiImage, FiType, FiFileText, FiUser, FiTag, FiSave } from "react-icons/fi";
+import {
+  FiX,
+  FiImage,
+  FiType,
+  FiFileText,
+  FiUser,
+  FiTag,
+  FiSave,
+} from "react-icons/fi";
 
 interface EditPostModalProps {
   currentPost: BlogPost;
@@ -12,9 +20,15 @@ interface EditPostModalProps {
   onUpdateSuccess: () => void;
 }
 
-export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }: EditPostModalProps) {
+export default function EditPostModal({
+  currentPost,
+  onClose,
+  onUpdateSuccess,
+}: EditPostModalProps) {
   const [formData, setFormData] = useState<BlogPost>(currentPost);
-  const [preview, setPreview] = useState<string | null>(currentPost?.image || null);
+  const [preview, setPreview] = useState<string | null>(
+    currentPost?.image || null
+  );
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +58,7 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
   const handleUpdatePost = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const form = new FormData();
       form.append("Title", formData.Title);
@@ -53,7 +67,6 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
       form.append("content", formData.content);
       if (formData.author) form.append("author", formData.author);
       if (formData.category) form.append("category", formData.category);
-    
 
       if (file) {
         form.append("Image", file); // file upload
@@ -110,7 +123,9 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                   type="text"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                   value={formData.Title}
-                  onChange={(e) => setFormData({ ...formData, Title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, Title: e.target.value })
+                  }
                   placeholder="Enter post title"
                 />
               </div>
@@ -125,7 +140,9 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                   type="text"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                   value={formData.subTitle}
-                  onChange={(e) => setFormData({ ...formData, subTitle: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subTitle: e.target.value })
+                  }
                   placeholder="Enter sub title"
                 />
               </div>
@@ -140,7 +157,9 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                   rows={4}
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   placeholder="Enter a short description"
                 ></textarea>
               </div>
@@ -156,7 +175,9 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                     type="text"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                     value={formData.author}
-                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, author: e.target.value })
+                    }
                     placeholder="Author name"
                   />
                 </div>
@@ -169,7 +190,9 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                     type="text"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
                     placeholder="Category"
                   />
                 </div>
@@ -188,7 +211,9 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                   rows={8}
                   value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, content: e.target.value })
+                  }
                   placeholder="Write your content here..."
                 ></textarea>
               </div>
@@ -199,7 +224,7 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                   <FiImage className="mr-2" />
                   Featured Image
                 </label>
-                
+
                 <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 transition hover:border-indigo-400">
                   {preview ? (
                     <div className="relative w-full">
@@ -218,21 +243,23 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                         <FiX size={12} />
                       </button>
                       <div className="text-center">
-                      <FiImage className="mx-auto h-12 w-12 text-gray-400" />
-                      <div className="mt-4 flex text-sm justify-center text-gray-600">
-                        <label className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
-                          <span>Upload an image</span>
-                          <input 
-                            type="file" 
-                            className="sr-only" 
-                            accept="image/*" 
-                            onChange={handleFileChange} 
-                          />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
+                        <FiImage className="mx-auto h-12 w-12 text-gray-400" />
+                        <div className="mt-4 flex text-sm justify-center text-gray-600">
+                          <label className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
+                            <span>Upload an image</span>
+                            <input
+                              type="file"
+                              className="sr-only"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                            />
+                          </label>
+                          <p className="pl-1">or drag and drop</p>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                          PNG, JPG, GIF up to 10MB
+                        </p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
-                    </div>
                     </div>
                   ) : (
                     <div className="text-center">
@@ -240,16 +267,18 @@ export default function EditPostModal({ currentPost, onClose, onUpdateSuccess }:
                       <div className="mt-4 flex text-sm text-gray-600">
                         <label className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
                           <span>Upload an image</span>
-                          <input 
-                            type="file" 
-                            className="sr-only" 
-                            accept="image/*" 
-                            onChange={handleFileChange} 
+                          <input
+                            type="file"
+                            className="sr-only"
+                            accept="image/*"
+                            onChange={handleFileChange}
                           />
                         </label>
                         <p className="pl-1">or drag and drop</p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        PNG, JPG, GIF up to 10MB
+                      </p>
                     </div>
                   )}
                 </div>

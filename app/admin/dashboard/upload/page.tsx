@@ -6,7 +6,6 @@ import Link from "next/link";
 function Page() {
   const router = useRouter();
   return (
-
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
@@ -14,13 +13,24 @@ function Page() {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <div className="bg-indigo-600 w-8 h-8 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  ></path>
                 </svg>
               </div>
               <h1 className="ml-3 text-2xl font-bold text-gray-900">
                 <Link href="/admin/dashboard">AI Data Manager</Link>
-                </h1>
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
@@ -44,7 +54,7 @@ function Page() {
           <div className="mt-4 flex md:mt-0 md:ml-4">
             <button
               type="button"
-              onClick={()=>router.push('/admin/dashboard/Documents')}
+              onClick={() => router.push("/admin/dashboard/Documents")}
               className="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               View Deployments
@@ -58,21 +68,32 @@ function Page() {
               <div className="bg-gray-50 rounded-lg p-8 border-2 border-dashed border-gray-300">
                 <FileUpload />
               </div>
-              
+
               <div className="mt-10">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Deployment Guidelines</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Deployment Guidelines
+                </h3>
                 <ul className="space-y-3">
                   {[
                     "Supported formats: PDF",
                     "Maximum file size: 50MB per file",
                     "Files will be processed and added to the knowledge base",
                     "Previous versions will be archived automatically",
-                    "Processing typically takes 2-5 minutes per file"
+                    "Processing typically takes 2-5 minutes per file",
                   ].map((item, index) => (
                     <li key={index} className="flex items-start">
                       <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        <svg
+                          className="h-5 w-5 text-green-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       </div>
                       <p className="ml-3 text-sm text-gray-700">{item}</p>

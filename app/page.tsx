@@ -1,11 +1,16 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import MyBackground from "@/components/MyBackground";
 import Button from "@/components/Button";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { FaGooglePlay, FaAppStore, FaComments, FaPaperPlane } from "react-icons/fa";
+import {
+  FaGooglePlay,
+  FaAppStore,
+  FaComments,
+  FaPaperPlane,
+} from "react-icons/fa";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { API_URL } from "@/lib/config";
@@ -63,12 +68,19 @@ function Home() {
     setIsLoading(true);
     setInput("");
     try {
-      const res = await api.post(`${API_URL}/chat`, { message: input },{
-        withCredentials: true, 
-      })
+      const res = await api.post(
+        `${API_URL}/chat`,
+        { message: input },
+        {
+          withCredentials: true,
+        }
+      );
       const data = res.data.data;
       const pagecontent = data.chatResult.kwargs.content;
-      setMessages((prev) => [...prev, { text: pagecontent, doc: data.doc, isUser: false }])
+      setMessages((prev) => [
+        ...prev,
+        { text: pagecontent, doc: data.doc, isUser: false },
+      ]);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -123,21 +135,24 @@ function Home() {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="text-base sm:text-lg md:text-xl text-gray-100 dark:text-slate-200 max-w-md mb-6 md:mb-8 leading-relaxed"
             >
-              Spiritual AI companion guiding you to inner peace, clarity, and self-realization through Sahaja Yoga principles.
+              Spiritual AI companion guiding you to inner peace, clarity, and
+              self-realization through Sahaja Yoga principles.
             </motion.p>
 
             {/* Action Buttons */}
             <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full max-w-md">
               <Button
                 onClick={() => {
-                  window.open("https://play.google.com/store/apps/details?id=com.sahajayoga.emeditate", "_blank");
+                  window.open(
+                    "https://play.google.com/store/apps/details?id=com.sahajayoga.emeditate",
+                    "_blank"
+                  );
                 }}
-                Icon = {<FaGooglePlay className="text-xl" />}
+                Icon={<FaGooglePlay className="text-xl" />}
                 className="z-10 flex items-center gap-2 px-5 py-3 bg-gradient-to-r text-white from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
               >
                 <span>Android</span>
               </Button>
-
 
               <Button className="z-10 flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-gray-600 to-black hover:from-gray-800 hover:to-gray-700">
                 <FaAppStore className="text-xl text-white" />
@@ -158,7 +173,6 @@ function Home() {
         {/* Right Column - Preview (Desktop Only) */}
         <div className="hidden md:flex md:w-1/2 p-8 relative items-center justify-center">
           <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 flex flex-col h-[600px]">
-
             {/* Chat Header */}
             <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-4 flex-shrink-0">
               <div className="flex items-center gap-3">
@@ -185,43 +199,51 @@ function Home() {
 
             {/* Scrollable Chat Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((msg, index) => { 
+              {messages.map((msg, index) => {
                 // const [firstDoc, secondDoc] = msg.doc || [];
                 // const isDuplicate = firstDoc && secondDoc;
                 //  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
 
                 //  console.log("Message:", isDuplicate);
 
-                return(
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
-                >
-                  <div className="flex items-end gap-2 max-w-[85%]">
-                    {!msg.isUser && (
-                      <div className="self-end">
-                        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-2 rounded-full">
-                          <GiLotus className="text-white text-sm" />
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
+                  >
+                    <div className="flex items-end gap-2 max-w-[85%]">
+                      {!msg.isUser && (
+                        <div className="self-end">
+                          <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-2 rounded-full">
+                            <GiLotus className="text-white text-sm" />
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    <div
-                      className={`rounded-3xl px-4 py-2 ${msg.isUser
-                          ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
-                          : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
+                      <div
+                        className={`rounded-3xl px-4 py-2 ${
+                          msg.isUser
+                            ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
+                            : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
                         }`}
-                      style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
-                    >
-                      <div className={msg.isUser ? "text-indigo-50" : "text-gray-200"}>
-                        {msg.text}
-                    </div>
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        <div
+                          className={
+                            msg.isUser ? "text-indigo-50" : "text-gray-200"
+                          }
+                        >
+                          {msg.text}
+                        </div>
 
-                      {/* source Display */}
-                  {/* {!msg.isUser && firstDoc && (
+                        {/* source Display */}
+                        {/* {!msg.isUser && firstDoc && (
                     <>
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500 text-lg"/>PDF</Link></span>
@@ -229,8 +251,8 @@ function Home() {
                       pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
                     </div> */}
 
-                  {/* Additional Document Display */}
-                  {/* {secondDoc && !isDuplicate && (
+                        {/* Additional Document Display */}
+                        {/* {secondDoc && !isDuplicate && (
                     <div className="mt-4 text-sm text-gray-400">
                       <span className="flex">source :- <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500"/>PDF</Link></span>
                       fileName :- {secondDoc?.metadata?.fileName || "N/A"} <br />
@@ -239,11 +261,11 @@ function Home() {
                   )}
                   </>
                 )} */}
-                   </div>
-                </div>
-              </motion.div>
-              )}
-              )}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
 
               {isLoading && (
                 <div className="flex justify-start">
@@ -258,7 +280,9 @@ function Home() {
                         className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"
                         style={{ animationDelay: "0.4s" }}
                       ></div>
-                      <span className="text-sm text-indigo-300">Reflecting...</span>
+                      <span className="text-sm text-indigo-300">
+                        Reflecting...
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -282,10 +306,11 @@ function Home() {
                   whileTap={{ scale: 0.9 }}
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full ${isLoading || !input.trim()
+                  className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full ${
+                    isLoading || !input.trim()
                       ? "bg-gray-700 text-gray-500"
                       : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
-                    }`}
+                  }`}
                 >
                   <FaPaperPlane />
                 </motion.button>
@@ -306,6 +331,6 @@ function Home() {
       </div>
     </MyBackground>
   );
-};
+}
 
 export default Home;

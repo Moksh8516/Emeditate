@@ -1,7 +1,7 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,21 +23,17 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Nav Links */}
         <div className="hidden md:flex gap-6 text-white font-medium text-lg z-10">
-          <Link href="/about" className='decoration-none no-underline'>
-          <span className="hover:text-gray-300 cursor-pointer">
-            About
+          <Link href="/about" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">About</span>
+          </Link>
+          <Link href="/blog" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">Blog</span>
+          </Link>
+          <Link href="/contact-us" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">
+              Contact us
             </span>
-            </Link>
-           <Link href="/blog" className='decoration-none no-underline'>
-           <span className="hover:text-gray-300 cursor-pointer">
-            Blog
-            </span>
-            </Link>
-          <Link href="/contact-us" className='decoration-none no-underline'>
-           <span className="hover:text-gray-300 cursor-pointer">
-            Contact us
-            </span>
-            </Link>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -73,7 +69,7 @@ const Navbar: React.FC = () => {
                   strokeLinejoin="round"
                   strokeWidth={2}
                   d="M4 6h16M4 12h16M4 18h16"
-                />  
+                />
               </svg>
             )}
           </button>
@@ -83,21 +79,17 @@ const Navbar: React.FC = () => {
       {/* Mobile Nav Links */}
       {menuOpen && (
         <div className="md:hidden mt-2 flex flex-col gap-3 px-2 py-2 absolute left-0 top-10 w-full text-white bg-white/10 shadow-lg rounded-b-xl text-lg backdrop-blur-md">
-            <Link href="/about" className='decoration-none no-underline'>
-          <span className="hover:text-gray-300 cursor-pointer">
-            About
+          <Link href="/about" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">About</span>
+          </Link>
+          <Link href="/blog" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">Blog</span>
+          </Link>
+          <Link href="/contact-us" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">
+              Contact us
             </span>
-            </Link>
-           <Link href="/blog" className='decoration-none no-underline'>
-           <span className="hover:text-gray-300 cursor-pointer">
-            Blog
-            </span>
-            </Link>
-           <Link href="/contact-us" className='decoration-none no-underline'>
-           <span className="hover:text-gray-300 cursor-pointer">
-            Contact us
-            </span>
-            </Link>
+          </Link>
         </div>
       )}
     </nav>

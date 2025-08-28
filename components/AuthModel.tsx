@@ -46,7 +46,9 @@ export default function AuthModal() {
                 Welcome Back
               </h2>
               <p className="text-gray-300 text-center text-sm mb-6">
-                {"You've reached the guest limit. Please login or create a free account to continue."}
+                {
+                  "You've reached the guest limit. Please login or create a free account to continue."
+                }
               </p>
             </div>
 
