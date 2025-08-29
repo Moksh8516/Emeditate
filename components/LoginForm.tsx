@@ -43,7 +43,7 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
 
       if (res.data.success) {
         const callback = callbackUrl as string;
-        console.log("Redirecting to:", callback);
+        // console.log("Redirecting to:", callback);
         // Small delay to ensure cookie is set
         setTimeout(() => {
           router.push(callback);

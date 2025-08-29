@@ -20,23 +20,23 @@ if (!JWT_SECRET) {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("accessToken")?.value;
-  console.log("Middleware token:", token);
+  // console.log("Middleware token:", token);
 
   // 🚦 No token → go to login
   if (!token) {
     const loginUrl = new URL("/admin/login", req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
-    console.log("➡️ Redirect URL:", loginUrl.toString());
+    // console.log("➡️ Redirect URL:", loginUrl.toString());
     return NextResponse.redirect(loginUrl);
   }
 
   try {
     // ✅ Verify JWT with jose
-    console.log(JWT_SECRET);
+    // console.log(JWT_SECRET);
     const secret = new TextEncoder().encode(JWT_SECRET);
-    console.log("secret:", secret);
+    // console.log("secret:", secret);
     const { payload } = await jwtVerify(token, secret);
-    console.log(payload);
+    // console.log(payload);
 
     const role = payload.role as string;
 

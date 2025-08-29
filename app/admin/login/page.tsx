@@ -7,7 +7,7 @@ export default async function LoginPage({
 }) {
   // Handle both Promise and resolved object cases
   const params = await Promise.resolve(searchParams);
-  console.log(params);
+  // console.log(params);
 
   // Handle both string and array cases
   const callbackUrl = Array.isArray(params?.callbackUrl)
