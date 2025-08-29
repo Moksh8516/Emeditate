@@ -42,7 +42,7 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
       });
 
       if (res.data.success) {
-        const callback = (callbackUrl as string) || "/admin/dashboard";
+        const callback = callbackUrl as string;
         console.log("Redirecting to:", callback);
         // Small delay to ensure cookie is set
         setTimeout(() => {
