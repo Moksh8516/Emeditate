@@ -3,11 +3,15 @@ import { LoginForm } from "@/components/LoginForm";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ callbackUrl?: string | string[] }>;
+  searchParams: { callbackUrl?: string | string[] };
 }) {
-  const params = await searchParams;
-  console.log(params);
-  const callbackUrl = (params?.callbackUrl as string) || "/admin/dashboard";
+  // No need for await - searchParams is already resolved
+  console.log(searchParams);
+
+  // Handle both string and array cases
+  const callbackUrl = Array.isArray(searchParams?.callbackUrl)
+    ? searchParams.callbackUrl[0] || "/admin/dashboard"
+    : searchParams?.callbackUrl || "/admin/dashboard";
 
   return <LoginForm callbackUrl={callbackUrl} />;
 }
