@@ -15,6 +15,8 @@ const ROUTE_PERMISSIONS = {
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  console.log("🎯 Middleware triggered for:", pathname);
+
   const token = req.cookies.get("accessToken")?.value;
   console.log("Middleware token:", token);
 
@@ -22,6 +24,7 @@ export async function middleware(req: NextRequest) {
   if (!token) {
     const loginUrl = new URL("/admin/login", req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
+    console.log("➡️ Redirect URL:", loginUrl.toString());
     return NextResponse.redirect(loginUrl);
   }
 
