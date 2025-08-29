@@ -41,7 +41,9 @@ export default function LoginPage() {
       if (res.data.success) {
         // Handle callback URL from query params
         const urlParams = new URLSearchParams(window.location.search);
+        console.log("urlParams:", urlParams);
         const callbackUrl = urlParams.get("callbackUrl") || "/admin/dashboard";
+        console.log("callbackUrl:", callbackUrl);
 
         // Small delay to ensure cookie is set
         setTimeout(() => {
