@@ -6,6 +6,7 @@ export default async function LoginPage({
   searchParams: Promise<{ callbackUrl?: string | string[] }>;
 }) {
   const params = await searchParams;
+  console.log(params);
   const callbackUrl = (params?.callbackUrl as string) || "/admin/dashboard";
 
   return <LoginForm callbackUrl={callbackUrl} />;
