@@ -47,14 +47,14 @@ export default function IntroductionPage() {
   return (
     <MyBackground>
       <Navbar />
-      <div className="min-h-screen py-5">
+      <div className="min-h-screen pt-5">
         {/* Hero Section */}
-        <div className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+        <div className="relative min-h-[70vh] md:h-[80vh] flex items-center justify-center overflow-hidden px-4 py-8 md:py-0">
           <div className="absolute inset-0 bg-gradient-to-b from-purple-900/30 to-indigo-900/50 z-10"></div>
           <div className="absolute inset-0 opacity-10"></div>
-          <div className="relative z-20 text-center px-2 md:px-4 max-w-4xl">
+          <div className="relative z-20 text-center w-full max-w-4xl mx-auto">
             <motion.h1
-              className="text-4xl md:text-6xl font-bold text-white mb-6"
+              className="text-4xl md:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -62,7 +62,7 @@ export default function IntroductionPage() {
               Sahaja Yoga
             </motion.h1>
             <motion.h2
-              className="text-2xl md:text-4xl font-light text-purple-200 mb-8"
+              className="text-2xl md:text-4xl font-light text-purple-200 mb-6 md:mb-8 px-2 leading-snug"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -73,16 +73,16 @@ export default function IntroductionPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="max-w-3xl mx-auto"
+              className="w-full max-w-3xl mx-auto"
             >
-              <div className="bg-purple-900/50 backdrop-blur-sm p-6 rounded-2xl border border-purple-700/30">
+              <div className="bg-purple-900/50 backdrop-blur-sm p-4 md:p-6 rounded-2xl border border-purple-700/30">
                 <blockquote className="text-white text-lg md:text-xl italic leading-relaxed">
                   The time has come for all of you to get your self-realisation,
                   by which your attention becomes enlightened, your health gets
                   completely all right, your mental processes are sensible, but
                   above all you stand in your present.
                 </blockquote>
-                <p className="mt-4 text-purple-300 font-medium">
+                <p className="mt-4 text-purple-300 font-medium text-sm md:text-base">
                   – H.H. Shri Mataji Nirmala Devi, 29.09.1994, Los Angeles, USA
                 </p>
               </div>
@@ -137,8 +137,6 @@ export default function IntroductionPage() {
               </div>
             </div>
           </motion.div>
-
-          {/* Animated Sections */}
 
           {/* Subtle System */}
           <motion.div

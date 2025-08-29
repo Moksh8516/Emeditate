@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex gap-6 text-white font-medium text-lg z-10">
+        <div className="hidden md:flex gap-6 text-white font-medium text-lg z-40">
           <Link href="/about" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">About</span>
           </Link>
@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden z-10">
+        <div className="md:hidden z-50">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-white focus:outline-none"
@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Nav Links */}
       {menuOpen && (
-        <div className="md:hidden mt-2 flex flex-col gap-3 px-2 py-2 absolute left-0 top-10 w-full text-white bg-white/10 shadow-lg rounded-b-xl text-lg backdrop-blur-md">
+        <div className="md:hidden mt-2 flex flex-col gap-3 px-2 py-2 absolute left-0 top-10 w-full text-white bg-white/10 shadow-lg rounded-b-xl text-lg backdrop-blur-md z-40">
           <Link href="/about" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">About</span>
           </Link>
