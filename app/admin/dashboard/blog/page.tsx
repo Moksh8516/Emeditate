@@ -125,7 +125,7 @@ export default function BlogDashboard() {
 
   const handleChangeStatus = async (currentPost: BlogPost) => {
     if (!currentPost) return;
-    console.log(currentPost);
+
     const newStatus =
       currentPost.status === "published" ? "draft" : "published";
 

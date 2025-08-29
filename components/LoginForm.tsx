@@ -43,11 +43,10 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
 
       if (res.data.success) {
         const callback = (callbackUrl as string) || "/admin/dashboard";
-        console.log("callbackUrl:", callback);
-
+        console.log("Redirecting to:", callback);
         // Small delay to ensure cookie is set
         setTimeout(() => {
-          router.push(callbackUrl);
+          router.push(callback);
           toast.success("Login successfully");
         }, 100);
       } else {

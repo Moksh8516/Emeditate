@@ -1,12 +1,10 @@
 import { LoginForm } from "@/components/LoginForm";
 
-interface LoginPageProps {
-  searchParams?: {
-    callbackUrl?: string | string[];
-  };
-}
-
-export default async function LoginPage({ searchParams }: LoginPageProps) {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ callbackUrl?: string | string[] }>;
+}) {
   const params = await searchParams;
   const callbackUrl = (params?.callbackUrl as string) || "/admin/dashboard";
 
