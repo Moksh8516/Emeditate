@@ -14,7 +14,7 @@ const ROUTE_PERMISSIONS = {
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("accessToken")?.value;
-  console.log("Middleware token:", token);
+  console.log("Middleware token:", req.cookies.get("accessToken"));
   const { pathname } = req.nextUrl;
 
   // 🚦 No token → go to login
