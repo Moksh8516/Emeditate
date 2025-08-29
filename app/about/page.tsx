@@ -52,7 +52,7 @@ export default function IntroductionPage() {
         <div className="relative h-[80vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-purple-900/30 to-indigo-900/50 z-10"></div>
           <div className="absolute inset-0 opacity-10"></div>
-          <div className="relative z-20 text-center px-4 max-w-4xl">
+          <div className="relative z-20 text-center px-2 md:px-4 max-w-4xl">
             <motion.h1
               className="text-4xl md:text-6xl font-bold text-white mb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -91,7 +91,7 @@ export default function IntroductionPage() {
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto px-4 py-16 max-w-6xl">
+        <div className="container mx-auto px-2 md:px-4 py-16 max-w-6xl">
           {/* Introduction */}
           <motion.div
             className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 mb-16"
