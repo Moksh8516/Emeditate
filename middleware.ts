@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
-import { JWT_SECRET } from "./lib/config";
 
 // ✅ Role-based route rules
 const ROUTE_PERMISSIONS = {
@@ -13,6 +12,7 @@ const ROUTE_PERMISSIONS = {
   ],
 } as const;
 
+const JWT_SECRET = process.env.JWT_SECRET!;
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("accessToken")?.value;
