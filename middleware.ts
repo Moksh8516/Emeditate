@@ -15,8 +15,6 @@ const ROUTE_PERMISSIONS = {
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  console.log("🎯 Middleware triggered for:", pathname);
-
   const token = req.cookies.get("accessToken")?.value;
   console.log("Middleware token:", token);
 
@@ -30,7 +28,9 @@ export async function middleware(req: NextRequest) {
 
   try {
     // ✅ Verify JWT with jose
-    const secret = new TextEncoder().encode(JWT_SECRET!);
+    console.log(JWT_SECRET);
+    const secret = new TextEncoder().encode(JWT_SECRET);
+    console.log("secret:", secret);
     const { payload } = await jwtVerify(token, secret);
     console.log(payload);
 
