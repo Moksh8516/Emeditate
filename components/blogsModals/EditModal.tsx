@@ -115,7 +115,7 @@ export default function EditPostModal({
             <div className="space-y-5">
               {/* Title */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 flex items-center">
+                <label className="text-sm font-medium text-gray-700 flex items-center">
                   <FiType className="mr-2" />
                   Title
                 </label>
@@ -132,7 +132,7 @@ export default function EditPostModal({
 
               {/* Sub Title */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 flex items-center">
+                <label className="text-sm font-medium text-gray-700 flex items-center">
                   <FiType className="mr-2" />
                   Sub Title
                 </label>
@@ -147,27 +147,27 @@ export default function EditPostModal({
                 />
               </div>
 
-              {/* Description */}
+              {/* Content */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 flex items-center">
+                <label className="text-sm font-medium text-gray-700 flex items-center">
                   <FiFileText className="mr-2" />
-                  Description
+                  Content
                 </label>
                 <textarea
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                  rows={4}
-                  value={formData.description}
+                  rows={8}
+                  value={formData.content}
                   onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
+                    setFormData({ ...formData, content: e.target.value })
                   }
-                  placeholder="Enter a short description"
+                  placeholder="Write your content here..."
                 ></textarea>
               </div>
 
               {/* Author & Category */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 flex items-center">
+                  <label className="text-sm font-medium text-gray-700 flex items-center">
                     <FiUser className="mr-2" />
                     Author
                   </label>
@@ -182,7 +182,7 @@ export default function EditPostModal({
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 flex items-center">
+                  <label className="text-sm font-medium text-gray-700 flex items-center">
                     <FiTag className="mr-2" />
                     Category
                   </label>
@@ -201,26 +201,26 @@ export default function EditPostModal({
 
             {/* Right Column - Content and Image */}
             <div className="space-y-5">
-              {/* Content */}
+              {/* Description */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 flex items-center">
+                <label className="text-sm font-medium text-gray-700 flex items-center">
                   <FiFileText className="mr-2" />
-                  Content
+                  Description
                 </label>
                 <textarea
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                  rows={8}
-                  value={formData.content}
+                  rows={4}
+                  value={formData.description}
                   onChange={(e) =>
-                    setFormData({ ...formData, content: e.target.value })
+                    setFormData({ ...formData, description: e.target.value })
                   }
-                  placeholder="Write your content here..."
+                  placeholder="Enter a short description"
                 ></textarea>
               </div>
 
               {/* Image Upload */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 flex items-center">
+                <label className="text-sm font-medium text-gray-700 flex items-center">
                   <FiImage className="mr-2" />
                   Featured Image
                 </label>

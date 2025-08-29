@@ -13,6 +13,7 @@ import { FaFilePdf, FaFileAlt } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader } from "@/components/loader";
+import Pagination from "@/components/Pagination";
 interface Document {
   id: string;
   fileName: string;
@@ -24,6 +25,8 @@ interface Document {
 function DocumentListPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [totalFiles, setTotalFiles] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -33,11 +36,13 @@ function DocumentListPage() {
       try {
         setLoading(true);
         const res = await axios.post(
-          `${API_URL}/get-files`,
+          `${API_URL}/get-files?page=${currentPage}`,
           {},
           { withCredentials: true }
         );
         setDocuments(res.data.data.documents);
+        setCurrentPage(res.data.data.Pagination.currentPage || 1);
+        setTotalPages(res.data.data.Pagination.totalPages || 1);
         setTotalFiles(res.data.data.Pagination.totalCount);
       } catch (err) {
         setError("Failed to load documents. Please try again later.");
@@ -48,7 +53,7 @@ function DocumentListPage() {
     }
 
     fetchDocuments();
-  }, []);
+  }, [currentPage]);
 
   const getFileIcon = (filename: string) => {
     const extension = filename.split(".").pop()?.toLowerCase();
@@ -68,6 +73,11 @@ function DocumentListPage() {
       day: "numeric",
       year: "numeric",
     });
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (loading) {
@@ -105,7 +115,7 @@ function DocumentListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen pb-5 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       {/* Header */}
       <header className="bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -200,6 +210,12 @@ function DocumentListPage() {
           </div>
         )}
       </main>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        mode="light"
+      />
     </div>
   );
 }
