@@ -6,6 +6,7 @@ import { API_URL } from "@/lib/config";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,32 +18,56 @@ export default function LoginPage() {
     e.preventDefault();
     setErrors({});
 
+    // Basic validation
+    if (!email) {
+      return setErrors({ email: "Email is required." });
+    }
+
     if (password.length < 8) {
       return setErrors({
         password: "Password must be at least 8 characters long.",
       });
     }
+
     try {
       const formData = { email, password };
-      const res = await axios.post(
-        `${API_URL}/login`,
-        formData,
-        { withCredentials: true } // Important: This allows cookies to be set}
-      );
-      // console.log("Login successful:", res.data);
+      const res = await axios.post(`${API_URL}/login`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
       if (res.data.success) {
-        //  const callback = useSearchParams.get('callbackUrl')||"/admin/dashboard";
-        router.push(`/admin/dashboard`);
+        // Handle callback URL from query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const callbackUrl = urlParams.get("callbackUrl") || "/admin/dashboard";
+
+        // Small delay to ensure cookie is set
+        setTimeout(() => {
+          router.push(callbackUrl);
+          toast.success("Login successfully");
+        }, 100);
       } else {
         setErrors({
           form: res.data.message || "Login failed. Please try again.",
         });
       }
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message || "Login failed. Please try again.";
-      console.error("Login failed:", errorMessage);
-      setErrors({ form: errorMessage[0].message || errorMessage });
+      console.error("Login failed:", error);
+
+      let errorMessage = "Login failed. Please try again.";
+
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.errors) {
+        // Handle validation errors array
+        errorMessage = error.response.data.errors[0]?.message || errorMessage;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      setErrors({ form: errorMessage });
     }
   };
 

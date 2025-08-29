@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { JWT_SECRET } from "./lib/config";
+
 // ✅ Role-based route rules
 const ROUTE_PERMISSIONS = {
   admin: /^\/admin\/dashboard(\/.*)?$/, // admin can access all dashboard
@@ -9,17 +10,19 @@ const ROUTE_PERMISSIONS = {
     /^\/admin\/dashboard\/blog(\/.*)?$/, // blog
     /^\/admin\/dashboard\/change-password$/, // change password
     /^\/admin\/dashboard\/profile$/, // profile
-  ], // contentManager only blog section
+  ],
 } as const;
 
 export async function middleware(req: NextRequest) {
-  const token = req.cookies.get("accessToken")?.value;
-  console.log("Middleware token:", req.cookies.get("accessToken"));
   const { pathname } = req.nextUrl;
+  const token = req.cookies.get("accessToken")?.value;
+  console.log("Middleware token:", token);
 
   // 🚦 No token → go to login
   if (!token) {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+    const loginUrl = new URL("/admin/login", req.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   try {
@@ -61,5 +64,5 @@ function getRedirectPath(role: string): string {
 }
 
 export const config = {
-  matcher: ["/admin/dashboard/:path*"], // ✅ only runs for admin/dashboard pages
+  matcher: ["/admin/dashboard", "/admin/dashboard/:path*"], // ✅ only runs for admin/dashboard pages
 };
