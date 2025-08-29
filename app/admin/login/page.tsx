@@ -4,16 +4,19 @@
 import MyBackground from "@/components/MyBackground";
 import { API_URL } from "@/lib/config";
 import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,8 +44,9 @@ export default function LoginPage() {
 
       if (res.data.success) {
         const callbackUrl =
-          searchParams.get("callbackUrl") || "/admin/dashboard";
+          (searchParams.callbackUrl as string) || "/admin/dashboard";
         console.log("callbackUrl:", callbackUrl);
+
         // Small delay to ensure cookie is set
         setTimeout(() => {
           router.push(callbackUrl);
