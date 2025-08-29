@@ -3,12 +3,10 @@ import { LoginForm } from "@/components/LoginForm";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams?: { callbackUrl?: string | string[] };
+  searchParams: Promise<{ callbackUrl?: string | string[] }>;
 }) {
-  // Resolve searchParams if it's a promise (defensive approach)
-  const params =
-    searchParams && typeof searchParams === "object" ? searchParams : {};
-
+  // Handle both Promise and resolved object cases
+  const params = await Promise.resolve(searchParams);
   console.log(params);
 
   // Handle both string and array cases
