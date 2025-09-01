@@ -314,7 +314,7 @@ const ChatPage = () => {
             </div> */}
 
             <p className="text-center text-xs text-indigo-400/70 mt-3">
-              Mindful AI assistant • Your journey to self-realization begins
+              Sahaja yoga AI assistant • Your journey to self-realization begins
               here
             </p>
           </div>
