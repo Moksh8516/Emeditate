@@ -3,8 +3,8 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main  # or 'master' if that's your default branch
-  workflow_dispatch:  # also allows manual deploy from GitHub Actions tab
+      - main # or 'master' if that's your default branch
+  workflow_dispatch: # also allows manual deploy from GitHub Actions tab
 
 jobs:
   build-and-deploy:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18  # or 20, depending on your Next.js version
+          node-version: 18 # or 20, depending on your Next.js version
 
       # ✅ Step 3: Install dependencies
       - name: Install dependencies
@@ -29,6 +29,7 @@ jobs:
       - name: Inject environment variables
         run: |
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
         shell: bash
 
       # ✅ Step 5: Build and export the static site
