@@ -77,7 +77,7 @@ function Home() {
       );
       const data = res.data.data;
       const pagecontent = data.chatResult.kwargs.content;
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
       setMessages((prev) => [
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
