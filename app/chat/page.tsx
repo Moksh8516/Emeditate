@@ -1,7 +1,7 @@
 // app/chat/page.jsx
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FaPaperPlane, FaLeaf } from "react-icons/fa";
+import { FaPaperPlane, FaLeaf, FaYoutube } from "react-icons/fa";
 // FaBrain, FaMedal
 import { BsMoonStars } from "react-icons/bs";
 import { GiLotus } from "react-icons/gi";
@@ -12,8 +12,11 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { API_URL } from "@/lib/config";
 
-type DocType = {
+export type DocType = {
   metadata?: {
+    title?: string;
+    url?: string;
+    type?: string;
     fileName?: string;
     source?: string;
     details?: {
@@ -77,6 +80,7 @@ const ChatPage = () => {
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
+      console.log("response", data);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -92,23 +96,8 @@ const ChatPage = () => {
     }
   };
 
-  // const quickPrompts = [
-  //   "How to meditate?",
-  //   "Find inner peace",
-  //   "Overcome anxiety",
-  //   "Life purpose",
-  //   "Improve focus",
-  //   "Chakra balancing",
-  //   "how to get self-relization",
-  // ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-gray-100">
-      {/* Animated Background
-      <div className="fixed inset-0 overflow-hidden">
-        <AnimatedBackground />
-      </div> */}
-
       {/* Header */}
       <header className="sticky top-0 bg-gray-900/80 backdrop-blur-md border-b border-indigo-800/50 z-50">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center">
@@ -139,7 +128,7 @@ const ChatPage = () => {
         </div>
       </header>
 
-      <main className="relative max-w-6xl mx-auto px-2 md:px-4 py-8 min-h-[calc(100vh-140px)]">
+      <main className="relative max-w-6xl mx-auto px-2 md:px-4 py-8 min-h-[calc(100vh-200px)] pb-32">
         {/* Welcome Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -179,13 +168,9 @@ const ChatPage = () => {
           </div>
         </motion.div>
 
-        {/* Chat Container */}
-        <div className="mb-24 p-3 md:p-10">
+        {/* chat container */}
+        <div className="mb-12 sm:mb-20">
           {messages.map((msg, index) => {
-            // const [firstDoc, secondDoc] = msg.doc || [];
-            // const isDuplicate = firstDoc && secondDoc
-            //  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
-
             return (
               <motion.div
                 key={index}
@@ -195,6 +180,7 @@ const ChatPage = () => {
                 className={`flex flex-col mb-6 ${msg.isUser ? "items-end" : "items-start"}`}
               >
                 <div className="flex items-end gap-2 max-w-full">
+                  {/* Bot Avatar */}
                   {!msg.isUser && (
                     <div className="self-end">
                       <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-full">
@@ -203,6 +189,7 @@ const ChatPage = () => {
                     </div>
                   )}
 
+                  {/* Message Bubble */}
                   <div
                     className={`rounded-3xl px-5 py-3 ${
                       msg.isUser
@@ -211,6 +198,7 @@ const ChatPage = () => {
                     }`}
                     style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
                   >
+                    {/* 📝 Normal Text (if no videos) */}
                     <div
                       className={
                         msg.isUser ? "text-indigo-50" : "text-gray-200"
@@ -219,51 +207,71 @@ const ChatPage = () => {
                       {msg.text}
                     </div>
 
-                    {/* source Display */}
-                    {/* {!msg.isUser && firstDoc && (
-                    <>
-                    <div className="mt-4 text-sm text-gray-400">
-                      <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500 text-lg"/>PDF</Link></span>
-                      fileName: {firstDoc?.metadata?.fileName || "N/A"} <br />
-                      pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
-                    </div> */}
+                    {/* 🎥 Video Response */}
+                    {msg.doc &&
+                      msg.doc.length > 0 &&
+                      msg.doc[0].metadata?.type === "video" && (
+                        <div className="my-4 w-full max-w-2xl">
+                          {/* First video card */}
+                          <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-700 shadow-lg">
+                            <div className="p-4">
+                              <h3 className="text-lg font-semibold text-indigo-300">
+                                {msg.doc[0]?.metadata?.title}
+                              </h3>
+                            </div>
+                            <div className="relative w-full pb-[56.25%]">
+                              <iframe
+                                className="absolute top-0 left-0 w-full h-full"
+                                src={
+                                  msg.doc[0]?.metadata?.url
+                                    ? msg.doc[0]?.metadata?.url.replace(
+                                        "watch?v=",
+                                        "embed/"
+                                      )
+                                    : ""
+                                }
+                                title={msg.doc[0]?.metadata?.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            </div>
+                          </div>
 
-                    {/* Additional Document Display */}
-                    {/* {secondDoc && !isDuplicate && (
-                    <div className="mt-4 text-sm text-gray-400">
-                      <span className="flex">source :- <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500"/>PDF</Link></span>
-                      fileName :- {secondDoc?.metadata?.fileName || "N/A"} <br />
-                      pageNumber :- {secondDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
-                    </div>
-                  )}
-                  </>
-                )} */}
+                          {/* Additional videos */}
+                          {msg.doc.length > 1 && (
+                            <div className="mt-4 bg-gray-800/70 rounded-xl p-3 border border-gray-700">
+                              <h4 className="text-sm text-gray-300 mb-2">
+                                More related videos:
+                              </h4>
+                              <ul className="space-y-2">
+                                {msg.doc
+                                  .slice(1)
+                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                  .map((video: any, i: number) => (
+                                    <li key={i}>
+                                      <a
+                                        href={video.metadata.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-indigo-400 flex gap-2 items-center hover:text-indigo-300 transition-colors"
+                                      >
+                                        <FaYoutube className="text-red-500 text-2xl" />{" "}
+                                        {video.metadata.title}
+                                      </a>
+                                    </li>
+                                  ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      )}
                   </div>
                 </div>
               </motion.div>
             );
           })}
-          {isLoading && (
-            <div className="flex mb-6 justify-start">
-              <div className="bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-3xl rounded-bl-none px-5 py-3 border border-gray-700">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
-                  <div
-                    className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"
-                    style={{ animationDelay: "0.2s" }}
-                  ></div>
-                  <div
-                    className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"
-                    style={{ animationDelay: "0.4s" }}
-                  ></div>
-                  <span className="text-sm text-indigo-300">Reflecting...</span>
-                </div>
-              </div>
-            </div>
-          )}
           <div ref={messagesEndRef} />
         </div>
-
         {/* Input Area */}
         <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-gray-900/0 pb-6 pt-12">
           <div className="max-w-4xl mx-auto px-4">
@@ -333,3 +341,29 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
+
+/*
+  {videoDocs.length > 1 && (
+                          <div className="mt-3">
+                            <h4 className="text-sm text-gray-400 mb-2">
+                              More related videos:
+                            </h4>
+                            <ul className="space-y-2">
+                        //       {videoDocs
+                        //         .slice(1)
+                        //         .map((video: any, i: number) => (
+                        //           <li key={i}>
+                        //             <a
+                        //               href={video.metadata.url}
+                        //               target="_blank"
+                        //               rel="noopener noreferrer"
+                        //               className="text-indigo-400 hover:underline"
+                        //             >
+                        //               🎬 {video.metadata.title}
+                        //             </a>
+                        //           </li>
+                        //         ))}
+                        //     </ul>
+                        //   </div>
+                        // )}
+ */

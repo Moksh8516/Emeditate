@@ -10,28 +10,14 @@ import {
   FaAppStore,
   FaComments,
   FaPaperPlane,
+  FaYoutube,
 } from "react-icons/fa";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { API_URL } from "@/lib/config";
 import { GiLotus } from "react-icons/gi";
 import api from "@/lib/axios";
-
-type DocType = {
-  metadata?: {
-    fileName?: string;
-    source?: string;
-    details?: {
-      loc?: {
-        pageNumber?: number;
-        [key: string]: unknown;
-      };
-      [key: string]: unknown;
-    };
-    [key: string]: unknown;
-  };
-  [key: string]: unknown;
-};
+import { DocType } from "./chat/page";
 
 type MessageType = {
   text: string;
@@ -161,6 +147,14 @@ function Home() {
               </Button>
 
               <Link
+                className="z-10 hidden md:flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg shadow-lg hover:shadow-emerald-500/30 hover:from-emerald-600 hover:to-teal-700 transition-all duration-300"
+                href={"/chat"}
+              >
+                <FaComments className="text-xl" />
+                <span>Chat Now</span>
+              </Link>
+
+              <Link
                 className="z-10  items-center gap-2 px-5 py-3 hidden bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-medium rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-indigo-200 dark:border-slate-700"
                 href={"/newChat"}
               >
@@ -173,11 +167,11 @@ function Home() {
 
         {/* Right Column - Preview (Desktop Only) */}
         <div className="hidden md:flex md:w-1/2 p-8 relative items-center justify-center">
-          <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 flex flex-col h-[600px]">
+          <div className="w-full max-w-md bg-indigo-50 dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 flex flex-col h-[600px]">
             {/* Chat Header */}
             <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-4 flex-shrink-0">
               <div className="flex items-center gap-3">
-                <div className="bg-white p-1 rounded-full">
+                <div className="bg-white p-1 rounded-full shadow-md">
                   <div className="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10 flex items-center">
                     <Image
                       src="/heroImage.jpg"
@@ -201,12 +195,6 @@ function Home() {
             {/* Scrollable Chat Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((msg, index) => {
-                // const [firstDoc, secondDoc] = msg.doc || [];
-                // const isDuplicate = firstDoc && secondDoc;
-                //  && firstDoc?.metadata?.fileName === secondDoc?.metadata?.fileName;
-
-                //  console.log("Message:", isDuplicate);
-
                 return (
                   <motion.div
                     key={index}
@@ -215,7 +203,7 @@ function Home() {
                     transition={{ duration: 0.3 }}
                     className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
                   >
-                    <div className="flex items-end gap-2 max-w-[85%]">
+                    <div className="flex items-end gap-2 max-w-[90%]">
                       {!msg.isUser && (
                         <div className="self-end">
                           <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-2 rounded-full">
@@ -242,26 +230,64 @@ function Home() {
                         >
                           {msg.text}
                         </div>
+                        {/* 🎥 Video Response */}
+                        {msg.doc &&
+                          msg.doc.length > 0 &&
+                          msg.doc[0].metadata?.type === "video" && (
+                            <div className="my-4 w-full max-w-2xl">
+                              {/* First video card */}
+                              <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-700 shadow-lg">
+                                <div className="p-4">
+                                  <h3 className="text-lg font-semibold text-indigo-300">
+                                    {msg.doc[0]?.metadata?.title}
+                                  </h3>
+                                </div>
+                                <div className="relative w-full pb-[56.25%]">
+                                  <iframe
+                                    className="absolute top-0 left-0 w-full h-full"
+                                    src={
+                                      msg.doc[0]?.metadata?.url
+                                        ? msg.doc[0]?.metadata?.url.replace(
+                                            "watch?v=",
+                                            "embed/"
+                                          )
+                                        : ""
+                                    }
+                                    title={msg.doc[0]?.metadata?.title}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                  />
+                                </div>
+                              </div>
 
-                        {/* source Display */}
-                        {/* {!msg.isUser && firstDoc && (
-                    <>
-                    <div className="mt-4 text-sm text-gray-400">
-                      <span className="flex gap-2 p-1">source : <Link href={firstDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500 text-lg"/>PDF</Link></span>
-                      fileName: {firstDoc?.metadata?.fileName || "N/A"} <br />
-                      pageNumber: {firstDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
-                    </div> */}
-
-                        {/* Additional Document Display */}
-                        {/* {secondDoc && !isDuplicate && (
-                    <div className="mt-4 text-sm text-gray-400">
-                      <span className="flex">source :- <Link href={secondDoc?.metadata?.source || "Unknown File"} target="_blank" className="flex gap-2 items-center"><FaFilePdf className="text-red-500"/>PDF</Link></span>
-                      fileName :- {secondDoc?.metadata?.fileName || "N/A"} <br />
-                      pageNumber :- {secondDoc?.metadata?.details?.loc?.pageNumber || "N/A"}
-                    </div>
-                  )}
-                  </>
-                )} */}
+                              {/* Additional videos */}
+                              {msg.doc.length > 1 && (
+                                <div className="mt-4 bg-gray-800/70 rounded-xl p-3 border border-gray-700">
+                                  <h4 className="text-sm text-gray-300 mb-2">
+                                    More related videos:
+                                  </h4>
+                                  <ul className="space-y-2">
+                                    {msg.doc
+                                      .slice(1)
+                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      .map((video: any, i: number) => (
+                                        <li key={i}>
+                                          <a
+                                            href={video.metadata.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-indigo-400 flex gap-2 items-center hover:text-indigo-300 transition-colors"
+                                          >
+                                            <FaYoutube className="text-red-500 text-2xl" />{" "}
+                                            {video.metadata.title}
+                                          </a>
+                                        </li>
+                                      ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          )}
                       </div>
                     </div>
                   </motion.div>

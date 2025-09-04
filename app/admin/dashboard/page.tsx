@@ -17,6 +17,7 @@ import axios from "axios";
 import { API_URL } from "@/lib/config";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthModel";
+import { MdOutlineVideoLibrary } from "react-icons/md";
 interface CurrentUser {
   name: string;
   email: string;
@@ -259,6 +260,20 @@ function DashboardPage() {
               <div className="ml-4">
                 <h2 className="text-xl font-bold">Register New Blog</h2>
                 <p className="opacity-80 mt-1">Add new Blogs for Site</p>
+              </div>
+            </div>
+          </Link>
+          <Link
+            href="/admin/dashboard/videos"
+            className="bg-gradient-to-r from-cyan-500 to-yellow-500 rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
+          >
+            <div className="flex items-center">
+              <div className="bg-white/20 p-3 rounded-lg">
+                <MdOutlineVideoLibrary className="h-8 w-8" />
+              </div>
+              <div className="ml-4">
+                <h2 className="text-xl font-bold">Register New videos</h2>
+                <p className="opacity-80 mt-1">Add new videos</p>
               </div>
             </div>
           </Link>
