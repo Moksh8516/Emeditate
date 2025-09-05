@@ -80,7 +80,7 @@ const ChatPage = () => {
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
-      console.log("response", data);
+      // console.log("response", data);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -273,7 +273,7 @@ const ChatPage = () => {
           <div ref={messagesEndRef} />
         </div>
         {/* Input Area */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-gray-900/0 pb-6 pt-12">
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t z-10 from-gray-900 to-gray-900/0 pb-6 pt-12">
           <div className="max-w-4xl mx-auto px-4">
             <form onSubmit={handleSubmit} className="relative">
               <input
