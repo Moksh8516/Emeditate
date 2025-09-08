@@ -34,12 +34,14 @@ function DocumentListPage() {
   useEffect(() => {
     async function fetchDocuments() {
       try {
+        console.log(currentPage);
         setLoading(true);
         const res = await axios.post(
-          `${API_URL}/get-files?page=${currentPage}`,
+          `${API_URL}/get-files?page=${currentPage}&limit=18`,
           {},
           { withCredentials: true }
         );
+        // console.log(res.data);
         setDocuments(res.data.data.documents);
         setCurrentPage(res.data.data.Pagination.currentPage || 1);
         setTotalPages(res.data.data.Pagination.totalPages || 1);
