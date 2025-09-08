@@ -270,6 +270,24 @@ const ChatPage = () => {
               </motion.div>
             );
           })}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-3xl rounded-bl-none px-4 py-2 border border-gray-700">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
+                  <div
+                    className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"
+                    style={{ animationDelay: "0.2s" }}
+                  ></div>
+                  <div
+                    className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"
+                    style={{ animationDelay: "0.4s" }}
+                  ></div>
+                  <span className="text-sm text-indigo-300">Reflecting...</span>
+                </div>
+              </div>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
         {/* Input Area */}
