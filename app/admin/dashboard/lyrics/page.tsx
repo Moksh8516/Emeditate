@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { API_URL } from "@/lib/config";
+
 function Page() {
   const router = useRouter();
-
   const handleFileUploadComponent = async () => {
     const el = document.createElement("input");
     el.setAttribute("type", "file");
@@ -20,11 +20,13 @@ function Page() {
           formData.append("pdf", file);
 
           try {
-            const res = await fetch(`${API_URL}/upload`, {
+            console.log(API_URL);
+            const res = await fetch(`${API_URL}/lyrics`, {
               method: "POST",
               body: formData,
               credentials: "include",
             });
+            console.log(res);
             if (res.ok) {
               toast.success("File uploaded successfully!");
             } else {

@@ -2,9 +2,33 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useAuthModal, useAuthStore } from "@/store/useAuthModel";
+import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/config";
+import axios from "axios";
+import toast from "react-hot-toast";
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { closeModal, setMode } = useAuthModal();
+  const { currentUser, setCurrentUser } = useAuthStore();
+  const router = useRouter();
+
+  const goToAuthPage = () => {
+    closeModal();
+    router.push("/login-or-create-account");
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+      router.push("/");
+      setCurrentUser(null);
+      toast.success("logout successfully");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("failed to signout user");
+    }
+  };
 
   return (
     <nav className="bg-white/10 md:shadow-lg backdop-blur-md px-4 py-3 rounded-xl relative">
@@ -34,6 +58,37 @@ const Navbar: React.FC = () => {
               Contact us
             </span>
           </Link>
+          {/* Conditional Buttons */}
+          {currentUser ? (
+            <button
+              className="hover:text-gray-300 cursor-pointer"
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <div className="flex items-center gap-6">
+              <button
+                className="hover:text-gray-300 cursor-pointer"
+                onClick={() => {
+                  setMode("login");
+                  goToAuthPage();
+                }}
+              >
+                Login
+              </button>
+
+              <button
+                className="hover:text-gray-300 cursor-pointer"
+                onClick={() => {
+                  setMode("signup");
+                  goToAuthPage();
+                }}
+              >
+                Sign Up for free
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -90,6 +145,34 @@ const Navbar: React.FC = () => {
               Contact us
             </span>
           </Link>
+          {/* Conditional Buttons */}
+          {currentUser ? (
+            <button className="text-left hover:text-gray-300 cursor-pointer">
+              Sign Out
+            </button>
+          ) : (
+            <div className="flex items-center gap-3">
+              <button
+                className="hover:text-gray-300 cursor-pointer text-left"
+                onClick={() => {
+                  setMode("login");
+                  goToAuthPage();
+                }}
+              >
+                Login
+              </button>
+
+              <button
+                className="hover:text-gray-300 cursor-pointer text-left"
+                onClick={() => {
+                  setMode("signup");
+                  goToAuthPage();
+                }}
+              >
+                Sign Up for free
+              </button>
+            </div>
+          )}
         </div>
       )}
     </nav>

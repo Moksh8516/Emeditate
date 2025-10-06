@@ -39,8 +39,10 @@ export default function AddVideoForm() {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
   const lastVideoElementRef = useRef<HTMLDivElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
   const handleChange = (
@@ -81,7 +83,7 @@ export default function AddVideoForm() {
 
       try {
         const res = await axios.get<VideoListResponse>(
-          `${API_URL}/video-list?page=${page}`,
+          `${API_URL}/video-list?page=${page}&limit=8`,
           {
             withCredentials: true,
           }
@@ -95,6 +97,7 @@ export default function AddVideoForm() {
 
         setCurrentPage(res.data.data.currentPage);
         setTotalPages(res.data.data.totalPages);
+        setHasMore(res.data.data.currentPage < res.data.data.totalPages);
       } catch (err) {
         console.error("Error fetching videos:", err);
         toast.error("❌ Failed to get video list");
@@ -108,15 +111,21 @@ export default function AddVideoForm() {
 
   // Set up intersection observer for infinite scrolling
   useEffect(() => {
-    if (loadingMore || currentPage >= totalPages) return;
+    if (!hasMore || loadingMore) return;
 
     if (observer.current) observer.current.disconnect();
 
+    const options = {
+      root: scrollContainerRef.current,
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
+      if (entries[0].isIntersecting && hasMore) {
         getYouTubeVideoList(currentPage + 1);
       }
-    });
+    }, options);
 
     if (lastVideoElementRef.current) {
       observer.current.observe(lastVideoElementRef.current);
@@ -125,7 +134,7 @@ export default function AddVideoForm() {
     return () => {
       if (observer.current) observer.current.disconnect();
     };
-  }, [videoList, loadingMore, currentPage, totalPages, getYouTubeVideoList]);
+  }, [videoList, loadingMore, currentPage, hasMore, getYouTubeVideoList]);
 
   useEffect(() => {
     getYouTubeVideoList(1, true);
@@ -306,101 +315,107 @@ export default function AddVideoForm() {
               </div>
             </div>
 
-            {loading && videoList.length === 0 ? (
-              <div className="space-y-4">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="flex justify-between items-center p-4 border border-gray-100 rounded-xl animate-pulse"
-                  >
-                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/4"></div>
-                  </div>
-                ))}
-              </div>
-            ) : videoList.length === 0 ? (
-              <div className="text-center py-10">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-16 w-16 mx-auto text-gray-300"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  />
-                </svg>
-                <h3 className="mt-4 text-lg font-medium text-gray-700">
-                  No videos yet
-                </h3>
-                <p className="mt-2 text-gray-500">
-                  Get started by adding your first video
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {videoList.map((video, index) => {
-                  if (videoList.length === index + 1) {
-                    return (
-                      <div
-                        key={video.id}
-                        ref={lastVideoElementRef}
-                        className="flex justify-between items-center p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-xl transition-all duration-200 cursor-pointer"
-                      >
-                        <div className="font-medium text-gray-800 truncate max-w-xs">
-                          {video.title}
-                        </div>
-                        <div className="text-sm text-gray-500 whitespace-nowrap bg-white py-1 px-2.5 rounded-lg border border-gray-200">
-                          {formatDate(video.uploadAt)}
-                        </div>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div
-                        key={video.id}
-                        className="flex justify-between items-center p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-xl transition-all duration-200 cursor-pointer"
-                      >
-                        <div className="font-medium text-gray-800 truncate max-w-xs">
-                          {video.title}
-                        </div>
-                        <div className="text-sm text-gray-500 whitespace-nowrap bg-white py-1 px-2.5 rounded-lg border border-gray-200">
-                          {formatDate(video.uploadAt)}
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
-
-                {loadingMore && (
-                  <div className="flex justify-center py-4">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-                  </div>
-                )}
-
-                {currentPage >= totalPages && videoList.length > 0 && (
-                  <div className="text-center py-5 text-sm text-gray-500 bg-blue-50 rounded-xl border border-blue-100">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 inline-block mr-1 text-blue-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+            {/* Scrollable container with fixed height */}
+            <div
+              ref={scrollContainerRef}
+              className="h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100 scrollbar-thumb-rounded-full"
+            >
+              {loading && videoList.length === 0 ? (
+                <div className="space-y-4">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center p-4 border border-gray-100 rounded-xl animate-pulse"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {"You've reached the end of your video list"}
-                  </div>
-                )}
-              </div>
-            )}
+                      <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                      <div className="h-3 bg-gray-200 rounded w-1/4"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : videoList.length === 0 ? (
+                <div className="text-center py-10">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 mx-auto text-gray-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <h3 className="mt-4 text-lg font-medium text-gray-700">
+                    No videos yet
+                  </h3>
+                  <p className="mt-2 text-gray-500">
+                    Get started by adding your first video
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {videoList.map((video, index) => {
+                    if (videoList.length === index + 1) {
+                      return (
+                        <div
+                          key={video.id}
+                          ref={lastVideoElementRef}
+                          className="flex justify-between items-center p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-xl transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="font-medium text-gray-800 truncate max-w-xs">
+                            {video.title}
+                          </div>
+                          <div className="text-sm text-gray-500 whitespace-nowrap bg-white py-1 px-2.5 rounded-lg border border-gray-200">
+                            {formatDate(video.uploadAt)}
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          key={video.id}
+                          className="flex justify-between items-center p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-xl transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="font-medium text-gray-800 truncate max-w-xs">
+                            {video.title}
+                          </div>
+                          <div className="text-sm text-gray-500 whitespace-nowrap bg-white py-1 px-2.5 rounded-lg border border-gray-200">
+                            {formatDate(video.uploadAt)}
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
+
+                  {loadingMore && (
+                    <div className="flex justify-center py-4">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                    </div>
+                  )}
+
+                  {!hasMore && videoList.length > 0 && (
+                    <div className="text-center py-5 text-sm text-gray-500 bg-blue-50 rounded-xl border border-blue-100">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 inline-block mr-1 text-blue-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      {"You've reached the end of your video list"}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -13,8 +13,9 @@ export const setupInterceptors = () => {
     (res) => res,
     (err) => {
       if (
-        err.response?.status === 403 &&
-        err.response?.data?.message?.includes("Guest limit")
+        (err.response?.status === 403 &&
+          err.response?.data?.message?.includes("Guest limit")) ||
+        err.response?.status === 401
       ) {
         const { openModal } = useAuthModal.getState();
         openModal(); // 🚀 Trigger login modal

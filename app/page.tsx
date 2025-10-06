@@ -18,6 +18,8 @@ import { API_URL } from "@/lib/config";
 import { GiLotus } from "react-icons/gi";
 import api from "@/lib/axios";
 import { DocType } from "./chat/page";
+import axios from "axios";
+import { useAuthStore } from "@/store/useAuthModel";
 
 type MessageType = {
   text: string;
@@ -33,13 +35,31 @@ function Home() {
       isUser: false,
     },
   ]);
-
+  const { setCurrentUser } = useAuthStore();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await axios.post(
+          `${API_URL}/profile`,
+          {},
+          { withCredentials: true }
+        );
+        setCurrentUser(res.data.data);
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        // Optionally clear user or redirect
+      }
+    };
+
+    checkAuth();
+  }, []); // ✅ Empty deps — runs once on mount
 
   useEffect(() => {
     scrollToBottom();
@@ -55,7 +75,7 @@ function Home() {
     setInput("");
     try {
       const res = await api.post(
-        `${API_URL}/chat`,
+        `${API_URL}/auth-chat`,
         { message: input },
         {
           withCredentials: true,
@@ -87,7 +107,6 @@ function Home() {
   return (
     <MyBackground>
       <Navbar />
-
       <div className="flex flex-col md:flex-row justify-center min-h-[85vh]">
         {/* Left Column - Hero Content */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">

@@ -34,6 +34,10 @@ interface CurrentUser {
   name: string;
   email: string;
   initial: string;
+  role?: string;
+  dob?: Date;
+  profileImage?: string;
+  age?: number;
 }
 
 export default function BlogDashboard() {
@@ -70,7 +74,7 @@ export default function BlogDashboard() {
         useAuthStore.getState().setCurrentUser({
           name: res.data.data.name,
           email: res.data.data.email,
-          role: res.data.data.role,
+          role: res.data.data?.role,
           initial: res.data.data.name.charAt(0).toUpperCase(),
           dob: res.data.data?.dob,
           profileImage: res.data.data?.profileImage,

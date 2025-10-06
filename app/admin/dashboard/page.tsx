@@ -18,6 +18,7 @@ import { API_URL } from "@/lib/config";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthModel";
 import { MdOutlineVideoLibrary } from "react-icons/md";
+import { IoMdMusicalNote } from "react-icons/io";
 interface CurrentUser {
   name: string;
   email: string;
@@ -273,6 +274,20 @@ function DashboardPage() {
               </div>
               <div className="ml-4">
                 <h2 className="text-xl font-bold">Register New videos</h2>
+                <p className="opacity-80 mt-1">Add new videos</p>
+              </div>
+            </div>
+          </Link>
+          <Link
+            href="/admin/dashboard/lyrics"
+            className="bg-gradient-to-r from-red-500 to-yellow-300  rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
+          >
+            <div className="flex items-center">
+              <div className="bg-white/20 p-3 rounded-lg">
+                <IoMdMusicalNote className="h-8 w-8" />
+              </div>
+              <div className="ml-4">
+                <h2 className="text-xl font-bold">Register New Lyrics</h2>
                 <p className="opacity-80 mt-1">Add new videos</p>
               </div>
             </div>
