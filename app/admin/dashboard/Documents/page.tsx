@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import {
   FiFile,
@@ -14,6 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader } from "@/components/loader";
 import Pagination from "@/components/Pagination";
+import api from "@/lib/axios";
 interface Document {
   id: string;
   fileName: string;
@@ -36,7 +36,7 @@ function DocumentListPage() {
       try {
         console.log(currentPage);
         setLoading(true);
-        const res = await axios.post(
+        const res = await api.post(
           `${API_URL}/get-files?page=${currentPage}&limit=18`,
           {},
           { withCredentials: true }

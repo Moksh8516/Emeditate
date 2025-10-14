@@ -36,11 +36,13 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       currentUser: null,
+
       setCurrentUser: (user) => set({ currentUser: user }),
+
       clearUser: () => set({ currentUser: null }),
     }),
     {
-      name: "auth-storage", // storage key in localStorage
+      name: "auth-storage",
     }
   )
 );

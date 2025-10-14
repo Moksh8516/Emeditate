@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import { completeMagicLinkLogin, getIdToken } from "@/lib/firebaseClient";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import AuthForm from "@/components/AuthForm";
 import { useAuthModal } from "@/store/useAuthModel";
+import api from "@/lib/axios";
 
 export default function LoginOrCreateAccountPage() {
   const { mode } = useAuthModal();
@@ -14,7 +14,7 @@ export default function LoginOrCreateAccountPage() {
       const result = await completeMagicLinkLogin();
       if (result) {
         const idToken = await getIdToken();
-        await axios.post(
+        await api.post(
           `${API_URL}/firebase-login`,
           { provider: "email", credential: idToken },
           { withCredentials: true }

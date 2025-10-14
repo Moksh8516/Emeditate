@@ -17,12 +17,13 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 import { API_URL } from "@/lib/config";
-import { useAuthStore } from "@/store/useAuthModel";
+import { useAuthModal, useAuthStore } from "@/store/useAuthModel";
 import {
   ChatSession,
   groupSessionsByDate,
 } from "@/lib/groupedSessionTimestamp";
 import Image from "next/image";
+import Button from "./Button";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -31,7 +32,8 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
-  const { currentUser, setCurrentUser } = useAuthStore();
+  const { currentUser, setCurrentUser, clearUser } = useAuthStore();
+  const { closeModal, setMode } = useAuthModal();
   // State
   const [chatHistory, setChatHistory] = useState<ChatSession[]>([]);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -167,6 +169,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const goToAuthPage = () => {
+    closeModal();
+    router.push("/login-or-create-account");
+  };
+
   const startRename = (session: ChatSession, e: React.MouseEvent) => {
     e.stopPropagation();
     setRenamingId(session.sessionId);
@@ -200,6 +207,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
       localStorage.removeItem("sessionId");
       setCurrentUser(null);
+      clearUser();
       router.push("/");
       toast.success("Signed out successfully");
     } catch (error) {
@@ -244,15 +252,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       </div>
 
       {/* New Chat Button */}
-      <div className="p-4 border-b border-indigo-800/30">
-        <button
-          onClick={createNewSession}
-          className="w-full flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-2.5 px-4 rounded-lg font-medium transition shadow-md"
-        >
-          <FaPlus size={16} />
-          New Chat
-        </button>
-      </div>
+      {currentUser && (
+        <div className="p-4 border-b border-indigo-800/30">
+          <button
+            onClick={createNewSession}
+            className="w-full flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-2.5 px-4 rounded-lg font-medium transition shadow-md"
+          >
+            <FaPlus size={16} />
+            New Chat
+          </button>
+        </div>
+      )}
 
       {/* Chat History */}
       <div
@@ -398,7 +408,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* User Footer */}
       <div className="relative p-4 border-t border-indigo-800/30 bg-gray-800/20">
-        {currentUser && (
+        {currentUser ? (
           <div
             onClick={() => setIsUserMenuOpen((prev) => !prev)}
             className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700/50 transition group"
@@ -428,6 +438,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             >
               <IoIosArrowBack size={14} />
             </motion.div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <Button
+              onClick={() => {
+                setMode("login");
+                goToAuthPage();
+              }}
+            >
+              Login
+            </Button>
+            <Button
+              variant="dark"
+              onClick={() => {
+                setMode("signup");
+                goToAuthPage();
+              }}
+            >
+              Signup for free
+            </Button>
           </div>
         )}
 
@@ -475,6 +505,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </div>
           </motion.div>
         )}
+        <p className="text-center text-xs p-1 mt-2 text-gray-100">
+          © {new Date().getFullYear()} Sahaja Yoga. All rights reserved.
+        </p>
       </div>
     </motion.div>
   );

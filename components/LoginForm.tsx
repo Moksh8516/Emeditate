@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import MyBackground from "./MyBackground";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
+import api from "@/lib/axios";
 
 interface LoginFormProps {
   callbackUrl: string;
@@ -34,7 +34,7 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
 
     try {
       const formData = { email, password };
-      const res = await axios.post(`${API_URL}/login`, formData, {
+      const res = await api.post(`${API_URL}/login`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",

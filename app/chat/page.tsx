@@ -5,10 +5,9 @@ import { useState, useEffect, useRef } from "react";
 import { FaPaperPlane, FaLeaf, FaYoutube } from "react-icons/fa";
 import { BsMoonStars } from "react-icons/bs";
 import { GiLotus } from "react-icons/gi";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import { useAuthModal, useAuthStore } from "@/store/useAuthModel";
 import toast from "react-hot-toast";
@@ -105,7 +104,7 @@ const ChatPage = () => {
 
   const handleSignOut = async () => {
     try {
-      await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+      await api.post(`${API_URL}/logout`, {}, { withCredentials: true });
       router.push("/");
       setCurrentUser(null);
       toast.success("logout successfully");
@@ -131,7 +130,7 @@ const ChatPage = () => {
               className="p-2 rounded-full hover:bg-indigo-900/50 mr-2 transition-colors"
               aria-label="Open sidebar"
             >
-              <IoIosArrowBack className="text-indigo-300 text-xl" />
+              <IoIosArrowForward className="text-indigo-300 text-xl" />
             </button>
             <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-1 rounded-full mr-3">
               <GiLotus className="text-white text-lg" />
