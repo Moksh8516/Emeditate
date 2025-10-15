@@ -24,6 +24,7 @@ import {
 } from "@/lib/groupedSessionTimestamp";
 import Image from "next/image";
 import Button from "./Button";
+import api from "@/lib/axios";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -51,46 +52,42 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   // ======================
   // Fetch Sessions
   // ======================
-  const fetchSessions = useCallback(
-    async (pageNum: number) => {
-      if (!currentUser || (!hasMore && pageNum > 1) || loading) return;
+  const fetchSessions = useCallback(async (pageNum: number) => {
+    setLoading(true);
+    try {
+      const res = await api.post(
+        `${API_URL}/all-sessions?page=${pageNum}&limit=20`,
+        {},
+        { withCredentials: true }
+      );
 
-      setLoading(true);
-      try {
-        const res = await axios.post(
-          `${API_URL}/all-sessions?page=${pageNum}&limit=20`,
-          {},
-          { withCredentials: true }
-        );
+      if (!res.data.success) throw new Error("Failed to fetch sessions");
 
-        if (!res.data.success) throw new Error("Failed to fetch sessions");
-
-        const { sessions, pagination } = res.data.data;
-        setChatHistory((prev) =>
-          pageNum === 1 ? sessions : [...prev, ...sessions]
-        );
-        setHasMore(!!pagination?.hasMore);
-        setInitialLoad(false);
-      } catch (error) {
-        console.error("Failed to fetch sessions", error);
-        if (pageNum === 1) toast.error("Failed to load chat history");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentUser, hasMore, loading]
-  );
+      const { sessions, pagination } = res.data.data;
+      setChatHistory((prev) =>
+        pageNum === 1 ? sessions : [...prev, ...sessions]
+      );
+      setHasMore(!!pagination?.hasMore);
+      setInitialLoad(false);
+    } catch (error) {
+      console.error("Failed to fetch sessions", error);
+      if (pageNum === 1) toast.error("Failed to load chat history");
+    } finally {
+      setLoading(false);
+    }
+  }, []); // 👈 no dependencies here
 
   // Initial load
   useEffect(() => {
-    if (currentUser) {
-      fetchSessions(1);
-    } else {
+    if (!currentUser) {
       setChatHistory([]);
       setHasMore(false);
       setInitialLoad(false);
+      return;
     }
-  }, [currentUser, fetchSessions]);
+
+    fetchSessions(1);
+  }, [currentUser]); // 👈 only run when user changes
 
   // Infinite scroll
   useEffect(() => {
