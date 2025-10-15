@@ -1,5 +1,3 @@
-import { API_URL } from "./lib/config";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -10,7 +8,7 @@ const nextConfig = {
     ],
   },
   env: {
-    NEXT_PUBLIC_API_URL: API_URL, // Your VPS backend
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL, // Your VPS backend
   },
 };
 
