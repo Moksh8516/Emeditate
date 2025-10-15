@@ -1,13 +1,13 @@
 // app/blog/[uid]/page.tsx
 "use client";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "next/navigation";
 import MyBackground from "@/components/MyBackground";
 import { Loader } from "@/components/loader";
 import { API_URL } from "@/lib/config";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import api from "@/lib/axios";
 interface Blog {
   id: string;
   Title: string;
@@ -30,7 +30,7 @@ function ViewBlog() {
     const fetchBlog = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_URL}/blog/${uid}`);
+        const response = await api.get(`${API_URL}/blog/${uid}`);
         setBlog(response.data.data);
         setError(null);
       } catch (err) {

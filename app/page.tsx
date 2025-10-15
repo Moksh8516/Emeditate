@@ -18,7 +18,6 @@ import { API_URL } from "@/lib/config";
 import { GiLotus } from "react-icons/gi";
 import api from "@/lib/axios";
 import { DocType } from "./chat/page";
-import axios from "axios";
 import { useAuthStore } from "@/store/useAuthModel";
 
 type MessageType = {
@@ -46,7 +45,7 @@ function Home() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.post(
+        const res = await api.post(
           `${API_URL}/profile`,
           {},
           { withCredentials: true }

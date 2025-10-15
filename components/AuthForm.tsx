@@ -11,8 +11,6 @@ import {
   getIdToken,
   sendMagicLink,
 } from "@/lib/firebaseClient";
-
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import { FaGoogle, FaApple, FaSpinner } from "react-icons/fa";
 import { HiMail, HiOutlineExclamationCircle } from "react-icons/hi";
@@ -20,6 +18,7 @@ import { SiFacebook } from "react-icons/si";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthModel";
+import api from "@/lib/axios";
 
 interface AuthFormProps {
   mode: "login" | "signup";
@@ -68,7 +67,7 @@ export default function AuthForm({ mode, onSuccess }: AuthFormProps) {
   const sendTokenToBackend = async (user: any, provider: string) => {
     const idToken = await getIdToken();
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `${API_URL}/firebase-login`,
         { provider, credential: idToken },
         { withCredentials: true }

@@ -114,7 +114,7 @@ const ChatPage = () => {
     }
   };
 
-  console.log("current user", currentUser);
+  // console.log("current user", currentUser);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-gray-100">

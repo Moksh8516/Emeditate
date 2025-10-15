@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { useAuthModal } from "@/store/useAuthModel";
 import { useAuthStore } from "@/store/useAuthModel";
 import { API_URL } from "./config";
 
-// Create Axios instance
+// ✅ Create Axios instance
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  withCredentials: true, // ✅ send cookies
+  baseURL: process.env.NEXT_PUBLIC_API_URL || API_URL,
+  withCredentials: true, // 👈 always send cookies
 });
 
+// 🔄 Control refresh queue to prevent multiple refreshes
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
-// Helper to queue requests while refresh is ongoing
-const processQueue = (error: any, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) prom.reject(error);
-    else prom.resolve(token);
+// ✅ Process all queued requests after refresh completes
+const processQueue = (error: any = null) => {
+  failedQueue.forEach(({ resolve, reject, originalRequest }) => {
+    if (error) reject(error);
+    else resolve(api(originalRequest));
   });
   failedQueue = [];
 };
@@ -26,76 +27,61 @@ export const setupInterceptors = () => {
   api.interceptors.response.use(
     (res) => res,
     async (err) => {
-      const originalRequest = err.config;
-
-      // ⚠️ Case 1: 403 → open login popup (Guest Limit / Forbidden)
+      if (!err || !err.response || !err.config) {
+        return Promise.reject(err);
+      }
+      // console.log("calling");
+      const originalRequest = err.config as AxiosRequestConfig & {
+        _retry?: boolean;
+      };
+      // ⚠️ Case 1: Guest Limit / Forbidden → open login modal
       if (err.response?.status === 403) {
         const { openModal } = useAuthModal.getState();
-        openModal(); // 🚀 Trigger login modal
+        openModal();
         return Promise.reject(err);
       }
 
-      // ⚠️ Case 2: 401 → expired or invalid token → refresh logic
+      // ⚠️ Case 2: Token expired or invalid
       if (
         err.response?.status === 401 &&
         !originalRequest._retry &&
-        (err.response?.data?.message?.includes("Token expired") ||
-          err.response?.data?.message?.includes("invalid token"))
+        err.response?.data?.message?.toLowerCase()?.includes("token expired")
       ) {
         originalRequest._retry = true;
-
+        // If refresh is already in progress → queue this request
+        console.log("recieve");
         if (isRefreshing) {
-          // Wait for ongoing refresh to complete
-          return new Promise(function (resolve, reject) {
-            failedQueue.push({ resolve, reject });
-          })
-            .then((token) => {
-              if (token)
-                originalRequest.headers["Authorization"] = `Bearer ${token}`;
-              return api(originalRequest);
-            })
-            .catch((error) => Promise.reject(error));
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject, originalRequest });
+          });
         }
 
         isRefreshing = true;
 
         try {
-          // 🔁 Call refresh API
-          const refreshResponse = await axios.post(
-            `${API_URL}/refresh`,
-            {},
-            { withCredentials: true }
-          );
+          // 🔁 Call backend refresh endpoint (must set new cookies)
+          await axios.post(`${API_URL}/refresh`, {}, { withCredentials: true });
 
-          const { accessToken } = refreshResponse.data.data;
-          const { currentUser, setCurrentUser } = useAuthStore.getState();
-
-          // 🧠 Update token in Zustand
-          if (currentUser) {
-            setCurrentUser({ ...currentUser });
-          }
-
-          // ✅ Process queued requests
-          processQueue(null, accessToken);
           isRefreshing = false;
-
-          // ✅ Retry failed request
-          originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+          // ✅ Retry original request
+          console.log("originalRequest", originalRequest);
+          processQueue();
           return api(originalRequest);
         } catch (refreshErr) {
-          processQueue(refreshErr, null);
           isRefreshing = false;
+          processQueue(refreshErr);
 
-          // ❌ Refresh failed → logout + open login modal
+          // ❌ Refresh failed → clear user + open login modal
           const { clearUser } = useAuthStore.getState();
           const { openModal } = useAuthModal.getState();
           clearUser();
           openModal();
+
           return Promise.reject(refreshErr);
         }
       }
 
-      // For all other errors, just reject
+      // 🚫 Other errors
       return Promise.reject(err);
     }
   );

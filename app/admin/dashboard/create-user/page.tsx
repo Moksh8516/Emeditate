@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import MyBackground from "@/components/MyBackground";
 import { Loader } from "@/components/loader";
 import { API_URL } from "@/lib/config";
+import api from "@/lib/axios";
 
 type Role = "admin" | "content Manager";
 
@@ -74,7 +74,7 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${API_URL}/register`,
         {
           name: formData.name,

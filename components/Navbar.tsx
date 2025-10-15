@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useAuthModal, useAuthStore } from "@/store/useAuthModel";
 import { useRouter } from "next/navigation";
 import { API_URL } from "@/lib/config";
-import axios from "axios";
 import toast from "react-hot-toast";
+import api from "@/lib/axios";
+
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { closeModal, setMode } = useAuthModal();
@@ -20,7 +21,7 @@ const Navbar: React.FC = () => {
 
   const handleSignOut = async () => {
     try {
-      await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+      await api.post(`${API_URL}/logout`, {}, { withCredentials: true });
       router.push("/");
       setCurrentUser(null);
       toast.success("logout successfully");

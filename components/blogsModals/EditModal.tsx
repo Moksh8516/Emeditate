@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import { BlogPost } from "@/app/admin/dashboard/blog/page";
 import {
@@ -13,6 +12,7 @@ import {
   FiTag,
   FiSave,
 } from "react-icons/fi";
+import api from "@/lib/axios";
 
 interface EditPostModalProps {
   currentPost: BlogPost;
@@ -72,7 +72,7 @@ export default function EditPostModal({
         form.append("Image", file); // file upload
       }
 
-      const response = await axios.put(
+      const response = await api.put(
         `${API_URL}/blog/update/${currentPost.id}`,
         form,
         {
