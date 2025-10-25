@@ -96,9 +96,7 @@ const ChatPage = () => {
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
-<<<<<<< HEAD
       // console.log("response", data);
-=======
 
       // Save sessionId if it wasn't already
       if (!sessionRef.current && data.sessionId) {
@@ -106,7 +104,6 @@ const ChatPage = () => {
       }
 
       if (!data.isGuest) router.push(`/c/${data.sessionId}`);
->>>>>>> dev
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
