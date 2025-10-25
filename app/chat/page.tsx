@@ -90,7 +90,7 @@ const ChatPage = () => {
       const res = await api.post(`${API_URL}/auth-chat`, payload);
       const data = res.data.data;
 
-      console.log("api response", data);
+      // console.log("api response", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [
         ...prev,

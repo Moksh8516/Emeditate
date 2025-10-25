@@ -9,19 +9,16 @@ import {
   MdAlternateEmail,
   MdOutlineDriveFileRenameOutline,
 } from "react-icons/md";
-
 import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import axios from "axios";
-
 import { API_URL } from "@/lib/config";
 import { useAuthModal, useAuthStore } from "@/store/useAuthModel";
 import {
   ChatSession,
   groupSessionsByDate,
 } from "@/lib/groupedSessionTimestamp";
+import toast from "react-hot-toast";
 import Image from "next/image";
 import Button from "./Button";
 import api from "@/lib/axios";
@@ -132,7 +129,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   const createNewSession = async () => {
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `${API_URL}/new`,
         {},
         { withCredentials: true }
@@ -151,7 +148,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     if (!confirm("Delete this chat?")) return;
 
     try {
-      await axios.delete(`${API_URL}/delete-session/${id}`, {
+      await api.delete(`${API_URL}/delete-session/${id}`, {
         withCredentials: true,
       });
       setChatHistory((prev) => prev.filter((s) => s.sessionId !== id));
@@ -183,7 +180,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     if (!newTitle) return;
 
     try {
-      await axios.patch(
+      await api.patch(
         `${API_URL}/update-title/${id}`,
         { title: newTitle },
         { withCredentials: true }
@@ -201,7 +198,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   const handleSignOut = async () => {
     try {
-      await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+      await api.post(`${API_URL}/logout`, {}, { withCredentials: true });
       localStorage.removeItem("sessionId");
       setCurrentUser(null);
       clearUser();
@@ -275,8 +272,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 {label}
               </h3>
               <div className="space-y-1">
-                {sessions.map((session) => (
-                  <div key={session.sessionId} className="relative group">
+                {sessions.map((session, index) => (
+                  <div key={index} className="relative group">
                     {renamingId === session.sessionId ? (
                       <form
                         onSubmit={(e) => saveRename(session.sessionId, e)}
@@ -473,6 +470,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 onClick={() => {
                   toast("App download coming soon 📱");
                   setIsUserMenuOpen(false);
+                  window.open(
+                    "https://play.google.com/store/apps/details?id=com.sahajayoga.emeditate",
+                    "_blank"
+                  );
                 }}
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm text-gray-300 hover:bg-gray-700/70 hover:text-white transition-colors"
               >

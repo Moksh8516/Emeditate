@@ -93,7 +93,11 @@ function Home() {
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
-      console.log("api response", data);
+      // console.log("api response", data);
+      // Save sessionId if it wasn't already
+      if (!sessionRef.current && data.sessionId) {
+        sessionRef.current = data.sessionId;
+      }
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [

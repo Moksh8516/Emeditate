@@ -40,16 +40,16 @@ export const setupInterceptors = () => {
         openModal();
         return Promise.reject(err);
       }
-
+      console.log(err.response.data.message);
       // ⚠️ Case 2: Token expired or invalid
       if (
         err.response?.status === 401 &&
         !originalRequest._retry &&
-        err.response?.data?.message?.toLowerCase()?.includes("token expired")
+        err.response?.data?.message?.includes("Token expired")
       ) {
         originalRequest._retry = true;
         // If refresh is already in progress → queue this request
-        console.log("recieve");
+        // console.log("recieve");
         if (isRefreshing) {
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject, originalRequest });
@@ -64,7 +64,7 @@ export const setupInterceptors = () => {
 
           isRefreshing = false;
           // ✅ Retry original request
-          console.log("originalRequest", originalRequest);
+          // console.log("originalRequest", originalRequest);
           processQueue();
           return api(originalRequest);
         } catch (refreshErr) {
