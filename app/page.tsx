@@ -38,6 +38,8 @@ function Home() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const sessionRef = useRef<string | null>(null);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -73,13 +75,17 @@ function Home() {
     setIsLoading(true);
     setInput("");
     try {
-      const res = await api.post(
-        `${API_URL}/auth-chat`,
-        { message: input },
-        {
-          withCredentials: true,
-        }
-      );
+      // 🔹 Prepare payload
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: Record<string, any> = { message: input };
+      // If a session already exists (resume chat)
+      if (sessionRef.current) {
+        payload.sessionId = sessionRef.current;
+      }
+      console.log(payload);
+      const res = await api.post(`${API_URL}/auth-chat`, payload, {
+        withCredentials: true,
+      });
       const data = res.data.data;
       const pagecontent = data.chatResult.kwargs.content;
       // console.log("Response data:", data);
@@ -87,6 +93,7 @@ function Home() {
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
+      console.log("api response", data);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [

@@ -56,6 +56,7 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const sessionRef = useRef<string | null>(null);
 
   const goToAuthPage = () => {
     closeModal();
@@ -78,15 +79,30 @@ const ChatPage = () => {
     setIsLoading(true);
     setInput("");
     try {
-      const res = await api.post(`${API_URL}/auth-chat`, { message: input });
+      // 🔹 Prepare payload
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: Record<string, any> = { message: input };
+      // If a session already exists (resume chat)
+      if (sessionRef.current) {
+        payload.sessionId = sessionRef.current;
+      }
+      console.log(payload);
+      const res = await api.post(`${API_URL}/auth-chat`, payload);
       const data = res.data.data;
+
       console.log("api response", data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
-      router.push(`/c/${data.sessionId}`);
+
+      // Save sessionId if it wasn't already
+      if (!sessionRef.current && data.sessionId) {
+        sessionRef.current = data.sessionId;
+      }
+
+      if (!data.isGuest) router.push(`/c/${data.sessionId}`);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -114,6 +130,23 @@ const ChatPage = () => {
     }
   };
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await api.post(
+          `${API_URL}/profile`,
+          {},
+          { withCredentials: true }
+        );
+        setCurrentUser(res.data.data);
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        // Optionally clear user or redirect
+      }
+    };
+
+    checkAuth();
+  }, []); // ✅ Empty deps — runs once on mount
   // console.log("current user", currentUser);
 
   return (
@@ -158,7 +191,7 @@ const ChatPage = () => {
                       alt="Profile"
                       className="w-10 h-10 rounded-full object-cover border-2 border-gray-300"
                     />
-                    <span>{currentUser.name}</span>
+                    <span className="hidden md:block">{currentUser.name}</span>
                   </>
                 ) : (
                   <>
