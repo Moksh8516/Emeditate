@@ -144,6 +144,9 @@ const Navbar: React.FC = () => {
           <Link href="/blog" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">Blog</span>
           </Link>
+          <Link href="/broadcast" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">Live</span>
+          </Link>
           <Link href="/contact-us" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">
               Contact us
