@@ -18,6 +18,7 @@ import { API_URL } from "@/lib/config";
 import { GiLotus } from "react-icons/gi";
 import api from "@/lib/axios";
 import { DocType } from "./chat/page";
+import { useAuthStore } from "@/store/useAuthModel";
 
 type MessageType = {
   text: string;
@@ -33,13 +34,33 @@ function Home() {
       isUser: false,
     },
   ]);
-
+  const { setCurrentUser } = useAuthStore();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const sessionRef = useRef<string | null>(null);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await api.post(
+          `${API_URL}/profile`,
+          {},
+          { withCredentials: true }
+        );
+        setCurrentUser(res.data.data);
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        // Optionally clear user or redirect
+      }
+    };
+
+    checkAuth();
+  }, []); // ✅ Empty deps — runs once on mount
 
   useEffect(() => {
     scrollToBottom();
@@ -54,13 +75,17 @@ function Home() {
     setIsLoading(true);
     setInput("");
     try {
-      const res = await api.post(
-        `${API_URL}/chat`,
-        { message: input },
-        {
-          withCredentials: true,
-        }
-      );
+      // 🔹 Prepare payload
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: Record<string, any> = { message: input };
+      // If a session already exists (resume chat)
+      if (sessionRef.current) {
+        payload.sessionId = sessionRef.current;
+      }
+      console.log(payload);
+      const res = await api.post(`${API_URL}/auth-chat`, payload, {
+        withCredentials: true,
+      });
       const data = res.data.data;
       const pagecontent = data.chatResult.kwargs.content;
       // console.log("Response data:", data);
@@ -68,6 +93,11 @@ function Home() {
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
+      // console.log("api response", data);
+      // Save sessionId if it wasn't already
+      if (!sessionRef.current && data.sessionId) {
+        sessionRef.current = data.sessionId;
+      }
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -87,7 +117,6 @@ function Home() {
   return (
     <MyBackground>
       <Navbar />
-
       <div className="flex flex-col md:flex-row justify-center min-h-[85vh]">
         {/* Left Column - Hero Content */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">

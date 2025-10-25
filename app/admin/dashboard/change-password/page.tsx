@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import MyBackground from "@/components/MyBackground";
 import { Loader } from "@/components/loader";
 import { API_URL } from "@/lib/config";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthModel";
+import api from "@/lib/axios";
 
 interface PasswordChangeFormData {
   oldPassword: string;
@@ -65,7 +65,7 @@ function ChangePassword() {
 
     try {
       // Send password change request to backend
-      await axios.post(
+      await api.post(
         `${API_URL}/change-password`,
         {
           oldPassword: formData.oldPassword,

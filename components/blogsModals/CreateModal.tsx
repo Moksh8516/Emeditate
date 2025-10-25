@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import { BlogPost } from "@/app/admin/dashboard/blog/page"; // Adjust the import path as needed
+import api from "@/lib/axios";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -68,7 +68,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
         formData.append("Image", imageFile); // 👈 send actual file
       }
 
-      const response = await axios.post(`${API_URL}/blog/create`, formData, {
+      const response = await api.post(`${API_URL}/blog/create`, formData, {
         withCredentials: true,
       });
 

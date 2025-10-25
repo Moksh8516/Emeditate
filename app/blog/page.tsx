@@ -3,12 +3,12 @@ import MyBackground from "@/components/MyBackground";
 import { Loader } from "@/components/loader";
 import Pagination from "@/components/Pagination";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
+import api from "@/lib/axios";
 interface Blog {
   id: string;
   Title: string;
@@ -32,7 +32,7 @@ function BlogPage() {
       try {
         setLoading(true);
         // Replace with your actual API endpoint
-        const response = await axios.get(
+        const response = await api.get(
           `${API_URL}/blog/publish/blogs?page=${currentPage}&limit=${blogsPerPage}`
         );
         // Check the actual structure of your API response

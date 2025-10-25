@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { Loader } from "@/components/loader";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import { MdDeleteOutline, MdEditNote } from "react-icons/md";
 import { CreatePostModal } from "@/components/blogsModals/CreateModal";
@@ -15,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { FiChevronDown } from "react-icons/fi";
 import { useAuthStore } from "@/store/useAuthModel";
 import EditPostModal from "@/components/blogsModals/EditModal";
+import api from "@/lib/axios";
 
 export interface BlogPost {
   id: number;
@@ -34,6 +34,10 @@ interface CurrentUser {
   name: string;
   email: string;
   initial: string;
+  role?: string;
+  dob?: Date;
+  profileImage?: string;
+  age?: number;
 }
 
 export default function BlogDashboard() {
@@ -55,7 +59,7 @@ export default function BlogDashboard() {
 
   const getProfile = async () => {
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `${API_URL}/profile`,
         {},
         { withCredentials: true }
@@ -70,7 +74,7 @@ export default function BlogDashboard() {
         useAuthStore.getState().setCurrentUser({
           name: res.data.data.name,
           email: res.data.data.email,
-          role: res.data.data.role,
+          role: res.data.data?.role,
           initial: res.data.data.name.charAt(0).toUpperCase(),
           dob: res.data.data?.dob,
           profileImage: res.data.data?.profileImage,
@@ -87,7 +91,7 @@ export default function BlogDashboard() {
   };
 
   const handleSignOut = async () => {
-    const res = await axios.post(
+    const res = await api.post(
       `${API_URL}/logout`,
       {},
       { withCredentials: true }
@@ -105,9 +109,7 @@ export default function BlogDashboard() {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/blog`, {
-        withCredentials: true,
-      });
+      const response = await api.get(`${API_URL}/blog`);
       const data = response.data;
       if (data.success) {
         setPosts(data.data.blogs || []);
@@ -130,7 +132,7 @@ export default function BlogDashboard() {
       currentPost.status === "published" ? "draft" : "published";
 
     try {
-      const response = await axios.patch(
+      const response = await api.patch(
         `${API_URL}/blog/changeStatus/${currentPost.id}`,
         {
           status: newStatus,
@@ -185,7 +187,7 @@ export default function BlogDashboard() {
     if (!currentPost) return;
 
     try {
-      const response = await axios.delete(
+      const response = await api.delete(
         `${API_URL}/blog/delete/${currentPost.id}`,
         { withCredentials: true }
       );

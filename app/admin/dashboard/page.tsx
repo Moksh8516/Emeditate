@@ -13,11 +13,12 @@ import {
 import { BiBookContent } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { FiChevronDown } from "react-icons/fi";
-import axios from "axios";
 import { API_URL } from "@/lib/config";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthModel";
 import { MdOutlineVideoLibrary } from "react-icons/md";
+import { IoMdMusicalNote } from "react-icons/io";
+import api from "@/lib/axios";
 interface CurrentUser {
   name: string;
   email: string;
@@ -43,9 +44,7 @@ function DashboardPage() {
 
   const authuser = async () => {
     try {
-      const res = await axios.get(`${API_URL}/all-auth-user`, {
-        withCredentials: true,
-      });
+      const res = await api.get(`${API_URL}/all-auth-user`);
       if (res.data.success) {
         setAdmins(res.data.data);
       }
@@ -57,7 +56,7 @@ function DashboardPage() {
 
   const getProfile = async () => {
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `${API_URL}/profile`,
         {},
         { withCredentials: true }
@@ -88,7 +87,7 @@ function DashboardPage() {
   };
 
   const handleSignOut = async () => {
-    const res = await axios.post(
+    const res = await api.post(
       `${API_URL}/logout`,
       {},
       { withCredentials: true }
@@ -273,6 +272,20 @@ function DashboardPage() {
               </div>
               <div className="ml-4">
                 <h2 className="text-xl font-bold">Register New videos</h2>
+                <p className="opacity-80 mt-1">Add new videos</p>
+              </div>
+            </div>
+          </Link>
+          <Link
+            href="/admin/dashboard/lyrics"
+            className="bg-gradient-to-r from-red-500 to-yellow-300  rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
+          >
+            <div className="flex items-center">
+              <div className="bg-white/20 p-3 rounded-lg">
+                <IoMdMusicalNote className="h-8 w-8" />
+              </div>
+              <div className="ml-4">
+                <h2 className="text-xl font-bold">Register New Lyrics</h2>
                 <p className="opacity-80 mt-1">Add new videos</p>
               </div>
             </div>
