@@ -37,7 +37,7 @@ function Footer() {
           {/* Social Media Links */}
           <div className="flex justify-center gap-4 mt-6">
             <a
-              href="https://www.facebook.com/people/Sahaja-Yoga-Karnataka"
+              href="https://www.facebook.com/SahajaYogaKarnataka/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-purple-400 transition-colors"

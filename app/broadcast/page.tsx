@@ -120,7 +120,7 @@ function Broadcast() {
               <div className="flex gap-3 justify-center">
                 {/* Facebook */}
                 <a
-                  href="https://www.facebook.com/people/Sahaja-Yoga-Karnataka"
+                  href="https://www.facebook.com/SahajaYogaKarnataka/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-xl bg-gray-700 flex items-center justify-center text-lg hover:bg-purple-500 transition-colors"
