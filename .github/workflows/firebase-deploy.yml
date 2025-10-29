@@ -42,7 +42,7 @@ jobs:
       # ✅ Step 5: Build the Next.js project
       - name: Build static project
         run: |
-          npm run build:static
+          npm run build
 
       # ✅ Step 6: Deploy to Firebase Hosting
       - name: Deploy to Firebase
