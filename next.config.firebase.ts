@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
+  // ✅ Define only static paths for export
+  async exportPathMap() {
+    return {
+      "/": { page: "/" },
+      "/about": { page: "/about" },
+      "/contact-us": { page: "/contact-us" },
+      "/broadcast": { page: "/broadcast" },
+      "/blog": { page: "/blog" },
+    };
+  },
 };
 
 export default nextConfig;
