@@ -10,9 +10,6 @@
       }
     ]
   },
-  "github": {
-    "enabled": true
-  },
   "apphosting": {
     "backendId": "emeditate",
     "rootDir": "/",
