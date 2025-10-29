@@ -97,6 +97,7 @@ const ChatPage = () => {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     const fetchSessionMessages = async () => {
       if (!sessionId) {
