@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    unoptimized: true, // optional if you use <img> tags
     domains: [
       "lh3.googleusercontent.com", // allow Google profile images
       "storage.googleapis.com",
