@@ -40,6 +40,7 @@ jobs:
       - name: Build project
         run: |
           npm run build
+          npm run export
 
       # ✅ Step 6: Deploy to Firebase Hosting
       - name: Deploy to Firebase
