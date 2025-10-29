@@ -3,41 +3,41 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main # or 'master' if that's your default branch
-  workflow_dispatch: # also allows manual deploy from GitHub Actions tab
+      - master # or 'main' if that's your default branch
+  workflow_dispatch: # allows manual deploy
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ Step 1: Checkout your repo
+      # ✅ Step 1: Checkout repo
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # ✅ Step 2: Set up Node.js
+      # ✅ Step 2: Setup Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # or 20, depending on your Next.js version
+          node-version: 20 # (recommended for Next.js 14+)
 
       # ✅ Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # ✅ Step 4: Set up environment variables
-      - name: Inject environment variables
+      # ✅ Step 4: Inject environment variables into .env
+      - name: Create .env file from GitHub Secrets
         run: |
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env             
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
           echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> .env
           echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> .env
           echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}" >> .env
           echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}" >> .env
         shell: bash
 
-      # ✅ Step 5: Build and export the static site
-      - name: Build and export
+      # ✅ Step 5: Build the Next.js project
+      - name: Build project
         run: |
           npm run build
           npm run export
@@ -47,6 +47,6 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SITA_NEWSEEKERAPP_2020}}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SITA_NEWSEEKERAPP_2020 }}"
           channelId: live
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
