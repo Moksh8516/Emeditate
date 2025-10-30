@@ -27,10 +27,28 @@ jobs:
 
       # ✅ Step 4: Use Firebase-specific Next.js config
       - name: Use Firebase static Next.js config
-        run: cp next.config.firebase.ts next.config.ts
+        run:
+          cp next.config.firebase.ts next.config.ts
 
-      # ✅ Step 5: Build Next.js project
-      - name: Build static project
+          # ✅ Step 5: Debug env vars (remove after first success)
+      - name: Debug env variables
+        run: |
+          echo "Checking Firebase environment variables..."
+          echo "PROJECT_ID: $NEXT_PUBLIC_FIREBASE_PROJECT_ID"
+          echo "API_KEY length: ${#NEXT_PUBLIC_FIREBASE_API_KEY}"
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+
+      # ✅ Step 6: Build the Next.js project
+      - name: Build Next.js project
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
         run: npm run build
 
       # ✅ Step 6: Deploy to Firebase Hosting / App Hosting
