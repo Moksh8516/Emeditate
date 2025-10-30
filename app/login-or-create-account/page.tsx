@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 import { useEffect } from "react";
 import { completeMagicLinkLogin, getIdToken } from "@/lib/firebaseClient";
 import { API_URL } from "@/lib/config";
