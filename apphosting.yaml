@@ -6,10 +6,6 @@ runConfig:
 
 build:
   env:
-    - variable: NEXT_PUBLIC_API_URL
-      secret: NEXT_PUBLIC_API_URL
-    - variable: JWT_SECRET
-      secret: JWT_SECRET
     - variable: NEXT_PUBLIC_FIREBASE_API_KEY
       secret: NEXT_PUBLIC_FIREBASE_API_KEY
     - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
@@ -18,13 +14,13 @@ build:
       secret: NEXT_PUBLIC_FIREBASE_PROJECT_ID
     - variable: NEXT_PUBLIC_FIREBASE_APP_ID
       secret: NEXT_PUBLIC_FIREBASE_APP_ID
+    - variable: NEXT_PUBLIC_API_URL
+      secret: NEXT_PUBLIC_API_URL
+    - variable: JWT_SECRET
+      secret: JWT_SECRET
 
 run:
   env:
-    - variable: NEXT_PUBLIC_API_URL
-      secret: NEXT_PUBLIC_API_URL
-    - variable: JWT_SECRET
-      secret: JWT_SECRET
     - variable: NEXT_PUBLIC_FIREBASE_API_KEY
       secret: NEXT_PUBLIC_FIREBASE_API_KEY
     - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
@@ -33,3 +29,7 @@ run:
       secret: NEXT_PUBLIC_FIREBASE_PROJECT_ID
     - variable: NEXT_PUBLIC_FIREBASE_APP_ID
       secret: NEXT_PUBLIC_FIREBASE_APP_ID
+    - variable: NEXT_PUBLIC_API_URL
+      secret: NEXT_PUBLIC_API_URL
+    - variable: JWT_SECRET
+      secret: JWT_SECRET
