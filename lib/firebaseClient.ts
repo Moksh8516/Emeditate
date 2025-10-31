@@ -17,7 +17,9 @@ import {
 } from "firebase/auth";
 import toast from "react-hot-toast";
 
-// ✅ Initialize Firebase only in browser
+// ==============================
+// 🔹 Initialize Firebase (client only)
+// ==============================
 let app: any = null;
 if (typeof window !== "undefined") {
   const firebaseConfig = {
@@ -30,7 +32,6 @@ if (typeof window !== "undefined") {
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
   };
-
   app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 }
 
@@ -46,7 +47,7 @@ appleProvider.addScope("email");
 appleProvider.addScope("name");
 
 // ==============================
-// 🔹 Utility Checks
+// 🔹 Environment Checks
 // ==============================
 export const isStandalone = () => {
   if (typeof window === "undefined") return false;
@@ -58,7 +59,7 @@ export const isStandalone = () => {
 
 export const isInWebView = () => {
   if (typeof window === "undefined") return false;
-  return /(FBAN|FBAV|Instagram|Line|WebView|wv)/i.test(navigator.userAgent);
+  return /(FBAN|FBAV|Instagram|Line|wv|WebView)/i.test(navigator.userAgent);
 };
 
 // ==============================
@@ -70,22 +71,58 @@ export const getIdToken = async () => {
 };
 
 // ==============================
-// 🔹 Google Sign-In
+// 🔹 Core Auth Logic
 // ==============================
+
+// ✅ UNIVERSAL: Handles popup, redirect, and WebView fallback
 export const signInWithGoogle = async () => {
   try {
+    if (isInWebView()) {
+      // 🔸 WebView → Google blocks this → open system browser
+      const redirectUrl = encodeURIComponent(
+        `${window.location.origin}/auth/callback?provider=google`
+      );
+      const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${
+        process.env.NEXT_PUBLIC_FIREBASE_CLIENT_ID
+      }&redirect_uri=${redirectUrl}&response_type=code&scope=openid%20email%20profile`;
+      window.open(googleAuthUrl, "_system");
+      return;
+    }
+
+    if (isStandalone()) {
+      // 🔸 PWA → redirect flow (popup not allowed in standalone)
+      await signInWithRedirect(auth!, googleProvider);
+      return;
+    }
+
+    // 🔸 Normal browser → popup flow
     const result = await signInWithPopup(auth!, googleProvider);
     const idToken = await result.user.getIdToken();
     return sendTokenToBackend("google", idToken);
   } catch (err: any) {
+    console.error("Google sign-in failed:", err);
     toast.error("Google login failed");
-    console.error(err);
   }
 };
 
-// ==============================
-// 🔹 Facebook Sign-In
-// ==============================
+// ✅ Apple sign-in (same logic)
+export const signInWithApple = async () => {
+  try {
+    if (isInWebView() || isStandalone()) {
+      await signInWithRedirect(auth!, appleProvider);
+      return;
+    }
+
+    const result = await signInWithPopup(auth!, appleProvider);
+    const idToken = await result.user.getIdToken();
+    return sendTokenToBackend("apple", idToken);
+  } catch (err: any) {
+    console.error("Apple sign-in failed:", err);
+    toast.error("Apple login failed");
+  }
+};
+
+// ✅ Facebook login (less strict)
 export const signInWithFacebook = async () => {
   try {
     const result = await signInWithPopup(auth!, facebookProvider);
@@ -97,42 +134,23 @@ export const signInWithFacebook = async () => {
   }
 };
 
-// ==============================
-// 🔹 Apple Sign-In (handles WebView / PWA / Browser)
-// ==============================
-export const signInWithApple = async () => {
-  try {
-    if (isInWebView() || isStandalone()) {
-      // In WebView or PWA → redirect flow
-      await signInWithRedirect(auth!, appleProvider);
-    } else {
-      // Normal browser → popup flow
-      const result = await signInWithPopup(auth!, appleProvider);
-      const idToken = await result.user.getIdToken();
-      return sendTokenToBackend("apple", idToken);
-    }
-  } catch (err: any) {
-    toast.error("Apple login failed");
-    console.error("Apple sign-in error:", err);
-  }
-};
-
-// ✅ Handle redirect results (important for Apple on WebView)
+// ✅ Handle redirect result (Apple, Google)
 export const handleRedirectResult = async () => {
   try {
     const result = await getRedirectResult(auth!);
-    if (result && result.user) {
+    if (result?.user) {
+      const providerId = result.providerId?.includes("apple")
+        ? "apple"
+        : "google";
       const idToken = await result.user.getIdToken();
-      return sendTokenToBackend("apple", idToken);
+      return sendTokenToBackend(providerId, idToken);
     }
   } catch (err) {
     console.error("Redirect sign-in error:", err);
   }
 };
 
-// ==============================
-// 🔹 Email / Password Sign-In
-// ==============================
+// ✅ Email/password login
 export const signInWithEmail = async (email: string, password: string) => {
   try {
     const result = await signInWithEmailAndPassword(auth!, email, password);
@@ -144,9 +162,7 @@ export const signInWithEmail = async (email: string, password: string) => {
   }
 };
 
-// ==============================
-// 🔹 Magic Link Authentication
-// ==============================
+// ✅ Magic link
 export async function sendMagicLink(email: string) {
   if (!auth) throw new Error("Auth not initialized");
   const actionCodeSettings = {
@@ -185,9 +201,7 @@ export async function completeMagicLinkLogin() {
   return null;
 }
 
-// ==============================
-// 🔹 Common Function: Send ID Token to Backend
-// ==============================
+// ✅ Common backend communication
 async function sendTokenToBackend(provider: string, idToken: string) {
   try {
     const response = await fetch(
