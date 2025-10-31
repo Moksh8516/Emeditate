@@ -199,7 +199,7 @@ const ChatPage = () => {
                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center text-white font-semibold">
                       {currentUser.name?.charAt(0).toUpperCase() || "U"}
                     </div>
-                    <span>{currentUser.name}</span>
+                    <span className="hidden md:block">{currentUser.name}</span>
                   </>
                 )}
               </button>

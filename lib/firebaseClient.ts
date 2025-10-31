@@ -14,12 +14,12 @@ import {
 } from "firebase/auth";
 import toast from "react-hot-toast";
 
-console.log("✅ Firebase ENV check:", {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-});
+// console.log("✅ Firebase ENV check:", {
+//   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+//   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+//   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+//   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+// });
 
 // ✅ Only initialize Firebase if running in browser
 let app;
