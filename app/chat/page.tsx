@@ -219,6 +219,7 @@ const ChatPage = () => {
                     onClick={() => {
                       // Handle profile navigation
                       setIsDropdownOpen(false);
+                      router.push("/profile");
                     }}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-indigo-900/50 transition-colors"
                   >
