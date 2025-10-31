@@ -122,7 +122,7 @@ const ChatPage = () => {
   const handleSignOut = async () => {
     try {
       await api.post(`${API_URL}/logout`, {}, { withCredentials: true });
-      router.push("/");
+      router.push("/chat");
       setCurrentUser(null);
       toast.success("logout successfully");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

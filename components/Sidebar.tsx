@@ -202,7 +202,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       localStorage.removeItem("sessionId");
       setCurrentUser(null);
       clearUser();
-      router.push("/");
+      router.push("/chat");
       toast.success("Signed out successfully");
     } catch (error) {
       toast.error("Failed to sign out");
