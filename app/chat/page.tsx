@@ -86,7 +86,7 @@ const ChatPage = () => {
       if (sessionRef.current) {
         payload.sessionId = sessionRef.current;
       }
-      console.log(payload);
+      // console.log(payload);
       const res = await api.post(`${API_URL}/auth-chat`, payload);
       const data = res.data.data;
 

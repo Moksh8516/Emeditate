@@ -76,13 +76,13 @@ const ChatPage = () => {
         sessionId,
       });
       const data = res.data.data;
-      console.log(data);
+      // console.log(data);
       const pagecontent = data.chatResult.kwargs.content;
       setMessages((prev) => [
         ...prev,
         { text: pagecontent, doc: data.doc, isUser: false },
       ]);
-      console.log("response", data);
+      // console.log("response", data);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
