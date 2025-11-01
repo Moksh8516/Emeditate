@@ -163,7 +163,7 @@ const ChatPage = () => {
           <div className="flex items-center">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 rounded-full hover:bg-indigo-900/50 mr-2 transition-colors"
+              className="p-2 hidden md:block rounded-full hover:bg-indigo-900/50 mr-2 transition-colors"
               aria-label="Open sidebar"
             >
               <IoIosArrowForward className="text-indigo-300 text-xl" />
