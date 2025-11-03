@@ -32,7 +32,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
 
-    // 👇 Other protected routes → go to /login-or-create
+    // 👇 Other protected routes → go to /login-or-create-account
     const generalLoginUrl = new URL("/login-or-create-account", req.url);
     generalLoginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(generalLoginUrl);
@@ -82,6 +82,8 @@ function getDefaultPath(role: string): string {
       return "/admin/dashboard";
     case "content Manager":
       return "/admin/dashboard/blog";
+    case "user":
+      return "/chat";
     default:
       return "/login-or-create-account";
   }

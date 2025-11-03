@@ -9,8 +9,6 @@ import {
   BsCheck,
   BsX,
   BsTrash,
-  BsEye,
-  BsEyeSlash,
   BsBoxArrowRight,
 } from "react-icons/bs";
 import { useRouter } from "next/navigation";
@@ -19,6 +17,7 @@ import api from "@/lib/axios";
 import { API_URL } from "@/lib/config";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthModel";
+import { v4 as uuidv4 } from "uuid";
 
 // User interface
 interface User {
@@ -45,10 +44,22 @@ function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [editedUser, setEditedUser] = useState<Partial<User>>({});
-  const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
-  const { setCurrentUser } = useAuthStore();
+  const [captcherInput, setcaptcherInput] = useState("");
+  const { setCurrentUser, currentUser } = useAuthStore();
   const router = useRouter();
+
+  // Captcha generation (fixed)
+  const generateCaptchaFromUuid = (): string => {
+    const cleanUuid = uuidv4().replace(/-/g, "");
+    const length = Math.floor(Math.random() * 2) + 7; // 7 or 8
+    return cleanUuid.substring(0, length);
+  };
+
+  // Stable captcha value
+  const captcherString = React.useMemo(() => {
+    const uuid = generateCaptchaFromUuid();
+    return (currentUser?.name || "User") + uuid;
+  }, [currentUser?.name]);
 
   // Mock API call to fetch user data
   useEffect(() => {
@@ -98,7 +109,7 @@ function ProfilePage() {
 
     setIsSaving(true);
     try {
-      const response = await fetch("/api/update-profile", {
+      const response = await fetch(`${API_URL}/update-profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -166,20 +177,21 @@ function ProfilePage() {
 
   const handleClearData = async () => {
     try {
-      const response = await fetch("/api/clear-data", {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({ password }),
+      if (captcherInput.trim() !== captcherString) {
+        toast.error("Captcher does not match");
+        return;
+      }
+      const response = await api.delete(`${API_URL}/delete-all-sessions`, {
+        withCredentials: true,
       });
 
-      const result = await response.json();
-
-      if (result.success) {
+      if (response.data.success) {
         setShowClearDataPopup(false);
-        setPassword("");
+        setcaptcherInput("");
+        toast.success("All data cleared successfully");
         console.log("Data cleared successfully");
       } else {
-        throw new Error(result.message || "Failed to clear data");
+        throw new Error(response.data || "Failed to clear data");
       }
     } catch (error) {
       console.error("Error clearing data:", error);
@@ -607,27 +619,23 @@ function ProfilePage() {
 
               <div className="mb-3">
                 <label className="text-gray-300 text-sm font-medium mb-2 block">
-                  Confirm Password
+                  Type the text below to confirm
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type={"text"}
+                    value={captcherInput}
+                    onChange={(e) => setcaptcherInput(e.target.value)}
                     className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-sm"
-                    placeholder="Enter your password"
+                    placeholder="Enter the captcha text"
+                    autoComplete="off"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-                  >
-                    {showPassword ? (
-                      <BsEyeSlash size={14} />
-                    ) : (
-                      <BsEye size={14} />
-                    )}
-                  </button>
+                  {/* Display captcha */}
+                  <div className="mt-2 p-3 bg-black/30 rounded-lg border border-amber-500/30">
+                    <p className="text-amber-300 text-sm font-mono tracking-wider break-all">
+                      {captcherString}
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -637,7 +645,7 @@ function ProfilePage() {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     setShowClearDataPopup(false);
-                    setPassword("");
+                    setcaptcherInput("");
                   }}
                   className="flex-1 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all text-sm"
                 >
@@ -647,9 +655,11 @@ function ProfilePage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleClearData}
-                  disabled={!password}
+                  disabled={
+                    !captcherInput || captcherInput.trim() !== captcherString
+                  }
                   className={`flex-1 py-2 rounded-lg font-medium transition-all text-sm ${
-                    password
+                    captcherInput.trim() === captcherString
                       ? "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white"
                       : "bg-gray-600 text-gray-400 cursor-not-allowed"
                   }`}

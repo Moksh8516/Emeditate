@@ -34,13 +34,13 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
 
     try {
       const formData = { email, password };
-      console.log(API_URL);
       const res = await api.post(`${API_URL}/login`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       });
+      // console.log(res.data);
 
       if (res.data.success) {
         const callback = callbackUrl as string;
