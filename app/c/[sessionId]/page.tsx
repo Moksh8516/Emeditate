@@ -13,6 +13,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import api from "@/lib/axios";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Link } from "lucide-react";
 
 export type DocType = {
   metadata?: {
@@ -177,13 +178,13 @@ const ChatPage = () => {
             <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-1 rounded-full mr-3">
               <GiLotus className="text-white text-lg" />
             </div>
-            <div>
+            <Link href="/">
               <h1 className="text-xl font-bold text-white">Sahaja Yoga AI</h1>
               <p className="text-xs text-indigo-300 flex items-center">
                 <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
                 Online - Ready to guide you
               </p>
-            </div>
+            </Link>
           </div>
         </div>
       </header>

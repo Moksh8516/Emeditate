@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import Button from "@/components/Button";
 import api from "@/lib/axios";
 import Sidebar from "@/components/Sidebar";
+import Link from "next/link";
 export type DocType = {
   metadata?: {
     title?: string;
@@ -171,13 +172,13 @@ const ChatPage = () => {
             <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-1 rounded-full mr-3">
               <GiLotus className="text-white text-lg" />
             </div>
-            <div>
+            <Link href="/">
               <h1 className="text-xl font-bold text-white">Sahaja Yoga AI </h1>
               <p className="text-xs text-indigo-300 flex items-center">
                 <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
                 Online - Ready to guide you
               </p>
-            </div>
+            </Link>
           </div>
 
           {/* User Dropdown */}
