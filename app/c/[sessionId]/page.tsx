@@ -9,11 +9,11 @@ import { useParams, useRouter } from "next/navigation";
 import { API_URL } from "@/lib/config";
 // import { useAuthStore } from "@/store/useAuthModel";
 import Sidebar from "@/components/Sidebar"; // ✅ Import Sidebar
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import api from "@/lib/axios";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link } from "lucide-react";
+import Link from "next/link";
 
 export type DocType = {
   metadata?: {
@@ -172,7 +172,7 @@ const ChatPage = () => {
               className="p-2 rounded-full hover:bg-indigo-900/50 mr-2 transition-colors"
               aria-label="Open sidebar"
             >
-              <IoIosArrowBack className="text-indigo-300 text-xl" />{" "}
+              <IoIosArrowForward className="text-indigo-300 text-xl" />{" "}
               {/* ✅ Updated Icon */}
             </button>
             <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-1 rounded-full mr-3">

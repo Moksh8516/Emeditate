@@ -115,6 +115,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     }
   }, [isMenuOpen]);
 
+  // Refetch sessions when sidebar opens
+  useEffect(() => {
+    if (isOpen && currentUser) {
+      fetchSessions(1);
+    }
+  }, [isOpen, currentUser, fetchSessions]);
+
   // ======================
   // Navigation & Actions
   // ======================
