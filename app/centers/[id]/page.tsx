@@ -279,7 +279,7 @@ const CenterDetailPage: React.FC = () => {
     setIsSubmitting(true);
     try {
       const response = await api.put(
-        `${API_URL}/centers/${centerId}`,
+        `${API_URL}/centers/update/${centerId}`,
         {
           Country: editData.Country || undefined,
           State: editData.State || undefined,

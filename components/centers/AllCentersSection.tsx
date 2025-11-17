@@ -9,7 +9,7 @@ interface AllCentersSectionProps {
 }
 
 const AllCentersSection: React.FC<AllCentersSectionProps> = ({
-  centers,
+  centers = [],
   searchQuery,
   loading,
 }) => {
@@ -20,8 +20,8 @@ const AllCentersSection: React.FC<AllCentersSectionProps> = ({
   const formatSchedule = (schedule: string) => {
     return schedule.replace(/\n/g, ", ");
   };
-  console.log("centers in AllCenter page", centers);
-  console.log(searchQuery);
+  // console.log("centers in AllCenter page", centers);
+  // console.log(searchQuery);
   if (loading) {
     return (
       <section className="mb-12">
@@ -33,7 +33,9 @@ const AllCentersSection: React.FC<AllCentersSectionProps> = ({
     );
   }
 
-  if (!centers.length && searchQuery) {
+  const count = centers?.length ?? 0;
+
+  if (count === 0 && searchQuery) {
     return (
       <section className="mb-12">
         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
@@ -62,8 +64,21 @@ const AllCentersSection: React.FC<AllCentersSectionProps> = ({
     );
   }
 
-  if (!centers.length) {
-    return null;
+  if (count === 0) {
+    // When no centers and no search query, show friendly empty state
+    return (
+      <section className="mb-12">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/10">
+          <h3 className="text-xl font-semibold text-white mb-2">
+            No Centers Available
+          </h3>
+          <p className="text-gray-300">
+            No centers are available at the moment. Try changing filters or
+            check back later.
+          </p>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -76,7 +91,7 @@ const AllCentersSection: React.FC<AllCentersSectionProps> = ({
               : "Found Centers"}
           </h2>
           <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
-            {centers.length} {centers.length === 1 ? "Center" : "Centers"}
+            {count} {count === 1 ? "Center" : "Centers"}
           </span>
         </div>
 

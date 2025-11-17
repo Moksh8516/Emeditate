@@ -19,7 +19,7 @@ export const centerService = {
     const response = await axios.get<CountriesResponse>(
       `${API_URL}/centers/countries`
     );
-    console.log(response.data.data);
+    // console.log(response.data.data);
     return response.data.data.countries;
   },
 
@@ -89,7 +89,7 @@ export const centerService = {
         withCredentials: true,
       }
     );
-    console.log(response.data.data.centers);
+    // console.log(response.data.data.centers);
     return response.data.data.centers;
   },
 
@@ -98,7 +98,7 @@ export const centerService = {
     const response = await axios.get(`${API_URL}/centers/search`, {
       params: { q: query, ...filters },
     });
-    console.log(response.data.data);
+    // console.log(response.data.data);
     return response.data.data.results;
   },
 };

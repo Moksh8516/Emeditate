@@ -11,6 +11,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSearch, loading }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(query);
+    setQuery("");
   };
 
   return (
@@ -26,13 +27,13 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSearch, loading }) => {
             {/* Search Input */}
             <div className="md:col-span-3">
               <label className="block text-sm font-medium text-gray-200 mb-2">
-                Search by name, keyword, or location
+                Search by Country, State, or District
               </label>
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Enter center name, location, or keywords..."
+                placeholder="Enter center country, District, or Address..."
                 className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>

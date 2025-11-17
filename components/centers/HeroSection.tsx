@@ -1,9 +1,9 @@
 import React from "react";
 import { Country } from "@/types/centers";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store/useAuthModel";
+// import { Plus } from "lucide-react";
+// import { useRouter } from "next/navigation";
+// import { useAuthStore } from "@/store/useAuthModel";
 interface HeroSectionProps {
   countries?: Country[];
 }
@@ -26,8 +26,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ countries }) => {
   const totalCenters =
     countries?.reduce((acc, country) => acc + country.count, 0) || 0;
   const totalCountries = countries?.length || 0;
-  const { currentUser } = useAuthStore();
-  const router = useRouter();
+  // const { currentUser } = useAuthStore();
+  // const router = useRouter();
 
   return (
     <motion.section
@@ -188,7 +188,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ countries }) => {
           </motion.div>
         ))}
       </motion.div>
-      <div className="flex justify-end mr-5 md:justify-end mt-3 ">
+      {/* <div className="flex justify-end mr-5 md:justify-end mt-3 ">
         <button
           className="bg-green-600 hover:bg-green-500 font-semibold text-white flex gap-3 px-3 py-2 justify-center rounded-lg"
           onClick={() =>
@@ -202,7 +202,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ countries }) => {
           </span>
           <span>ADD Center</span>
         </button>
-      </div>
+      </div> */}
     </motion.section>
   );
 };
