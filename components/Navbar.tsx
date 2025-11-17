@@ -54,6 +54,9 @@ const Navbar: React.FC = () => {
           <Link href="/blog" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">Blog</span>
           </Link>
+          <Link href="/centers" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">Centers</span>
+          </Link>
           <Link href="/broadcast" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">Live</span>
           </Link>
@@ -143,6 +146,9 @@ const Navbar: React.FC = () => {
           </Link>
           <Link href="/blog" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">Blog</span>
+          </Link>
+          <Link href="/centers" className="decoration-none no-underline">
+            <span className="hover:text-gray-300 cursor-pointer">Centers</span>
           </Link>
           <Link href="/broadcast" className="decoration-none no-underline">
             <span className="hover:text-gray-300 cursor-pointer">Live</span>

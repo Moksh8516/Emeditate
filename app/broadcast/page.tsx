@@ -15,7 +15,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 function Broadcast() {
   const isLive = true; // You can toggle this manually or via your own logic
-  const youtubeVideoId = "_3txRYKXDwA"; // Replace with your live stream ID
+  const youtubeVideoId = "uMSunbqWctQ"; // Replace with your live stream ID
 
   const upcomingStreams = [
     { date: "Tomorrow", time: "7:00 PM", title: "Special Guest Interview" },

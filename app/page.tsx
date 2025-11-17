@@ -34,7 +34,7 @@ function Home() {
       isUser: false,
     },
   ]);
-  const { setCurrentUser } = useAuthStore();
+  const { setCurrentUser, clearUser } = useAuthStore();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -56,6 +56,15 @@ function Home() {
       } catch (error) {
         console.error("Auth check failed:", error);
         // Optionally clear user or redirect
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const err = error as any;
+        if (
+          err?.response?.status === 401 &&
+          err?.response?.data?.message === "No token provided"
+        ) {
+          console.log("recieved");
+          clearUser();
+        }
       }
     };
 
@@ -141,7 +150,7 @@ function Home() {
               transition={{ duration: 0.5 }}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 text-gray-50"
             >
-              Emeditate App
+              e-Meditate App
             </motion.h1>
 
             {/* Description with Fade-in */}
@@ -170,7 +179,15 @@ function Home() {
                 <span>Android</span>
               </Button>
 
-              <Button className="z-10 flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-gray-600 to-black hover:from-gray-800 hover:to-gray-700">
+              <Button
+                onClick={() => {
+                  window.open(
+                    "https://apps.apple.com/in/app/e-meditate/id6754014229",
+                    "_blank"
+                  );
+                }}
+                className="z-10 flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-gray-600 to-black hover:from-gray-800 hover:to-gray-700"
+              >
                 <FaAppStore className="text-xl text-white" />
                 <span className="text-white">iOS</span>
               </Button>

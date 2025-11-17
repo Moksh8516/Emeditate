@@ -1,6 +1,6 @@
-# Emeditate - AI-Powered Meditation Assistant
+# e-Meditate - AI-Powered Meditation Assistant
 
-Emeditate is a modern web application that combines artificial intelligence with Sahaja Yoga principles to provide personalized meditation guidance and spiritual insights.
+e-Meditate is a modern web application that combines artificial intelligence with Sahaja Yoga principles to provide personalized meditation guidance and spiritual insights.
 
 ![Emeditate App Screenshot](public/heroImage.jpg)
 
@@ -25,19 +25,21 @@ Emeditate is a modern web application that combines artificial intelligence with
 
 ### Prerequisites
 
-- Node.js 16+ 
+- Node.js 16+
 - npm or yarn
 - Backend API running (separate repository)
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/Moksh8516/Emeditate.git
 cd emeditate
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 # or
@@ -45,12 +47,14 @@ yarn install
 ```
 
 3. Set up environment variables:
-Create a `.env.local` file in the root directory:
+   Create a `.env.local` file in the root directory:
+
 ```env
 NEXT_PUBLIC_API_URL=http://your-backend-url
 ```
 
 4. Start the development server:
+
 ```bash
 npm run dev
 # or
@@ -77,6 +81,7 @@ emeditate/
 ## Authentication
 
 The application uses a secure authentication system with:
+
 - Protected routes using Next.js middleware
 - HTTP-Only cookies for token storage
 - Automatic redirect to login for unauthorized access
@@ -102,20 +107,25 @@ The application uses a secure authentication system with:
 ### Deploy on Firebase
 
 1. Install Firebase CLI globally:
+
 ```bash
 npm install -g firebase-tools
 ```
 
 2. Login to Firebase:
+
 ```bash
 firebase login
 ```
 
 3. Initialize Firebase in your project:
+
 ```bash
 firebase init
 ```
+
 Select the following options:
+
 - Choose 'Hosting'
 - Select your Firebase project or create a new one
 - Use `.next` as your public directory
@@ -123,11 +133,13 @@ Select the following options:
 - Set up automatic builds and deploys with GitHub: `No`
 
 4. Build your Next.js application:
+
 ```bash
 npm run build
 ```
 
 5. Deploy to Firebase:
+
 ```bash
 firebase deploy
 ```
@@ -137,6 +149,7 @@ Your application will be live at `https://your-project-id.web.app`
 ### Environment Setup for Firebase
 
 1. Set up Firebase configuration in your `.env.local`:
+
 ```env
 NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -147,15 +160,16 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 ```
 
 2. Update your `next.config.js` to include Firebase domain in images config:
+
 ```javascript
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['your-project-id.web.app']
-  }
-}
+    domains: ["your-project-id.web.app"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
 ```
 
 ## License

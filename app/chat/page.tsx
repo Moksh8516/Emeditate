@@ -50,7 +50,7 @@ const ChatPage = () => {
     },
   ]);
 
-  const { currentUser, setCurrentUser } = useAuthStore();
+  const { currentUser, setCurrentUser, clearUser } = useAuthStore();
   const { closeModal, setMode } = useAuthModal();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -146,6 +146,15 @@ const ChatPage = () => {
       } catch (error) {
         console.error("Auth check failed:", error);
         // Optionally clear user or redirect
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const err = error as any;
+        if (
+          err?.response?.status === 401 &&
+          err?.response?.data?.message === "No token provided"
+        ) {
+          console.log("recieved");
+          clearUser();
+        }
       }
     };
 
