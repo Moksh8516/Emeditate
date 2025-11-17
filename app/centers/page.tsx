@@ -113,7 +113,7 @@ const CentersPage: React.FC = () => {
     setSelectedDistrict(null);
     setCurrentStep("district");
   };
-  console.log("centers", centers);
+  // console.log("centers", centers);
   return (
     <MyBackground>
       <Navbar />

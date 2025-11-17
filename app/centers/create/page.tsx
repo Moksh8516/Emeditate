@@ -7,48 +7,10 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthModel";
-import dynamic from "next/dynamic";
 import { API_URL } from "@/lib/config";
-
-// Dynamically import Leaflet components
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.MapContainer),
-  { ssr: false }
-);
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.TileLayer),
-  { ssr: false }
-);
-const Marker = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Marker),
-  { ssr: false }
-);
-
-// MapClickHandler inline (or you can keep it as a separate component)
-import { useMapEvents } from "react-leaflet";
-import type * as L from "leaflet";
-
-interface MapClickHandlerProps {
-  onClick: (e: L.LeafletMouseEvent) => void;
-}
-const MapClickHandler: React.FC<MapClickHandlerProps> = ({ onClick }) => {
-  useMapEvents({ click: onClick });
-  return null;
-};
-
-// Fix Leaflet default marker icon
-import "leaflet/dist/leaflet.css";
-import { Icon } from "leaflet";
+import LeafletMap from "@/components/centers/LeafletMap"; // ✅ New import
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-
-delete (Icon.Default.prototype as any)._getIconUrl;
-Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
 
 // TypeScript interfaces
 interface Coordinator {
@@ -170,8 +132,7 @@ const CreateCenter: React.FC = () => {
   };
 
   // 🗺️ Handle map click + auto-fill address
-  const handleMapClick = async (e: L.LeafletMouseEvent) => {
-    const { lat, lng } = e.latlng;
+  const handleMapClick = async (lat: number, lng: number) => {
     const latRounded = parseFloat(lat.toFixed(6));
     const lngRounded = parseFloat(lng.toFixed(6));
 
@@ -399,19 +360,12 @@ const CreateCenter: React.FC = () => {
                 Click anywhere on the map to set the {"center's"} location.
               </p>
               <div className="h-80 rounded-xl overflow-hidden border border-white/20">
-                <MapContainer
+                <LeafletMap
                   center={mapCenter}
                   zoom={5}
-                  scrollWheelZoom={true}
-                  className="w-full h-full"
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  {markerPosition && <Marker position={markerPosition} />}
-                  <MapClickHandler onClick={handleMapClick} />
-                </MapContainer>
+                  markerPosition={markerPosition}
+                  onMapClick={handleMapClick}
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
