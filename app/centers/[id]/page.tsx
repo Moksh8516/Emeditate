@@ -392,7 +392,7 @@ const CenterDetailPage: React.FC = () => {
               </svg>
               <span>Back to Centers</span>
             </button>
-            <button
+            {/* <button
               onClick={() =>
                 currentUser
                   ? setIsEditing(true)
@@ -401,7 +401,7 @@ const CenterDetailPage: React.FC = () => {
               className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors"
             >
               Edit Center
-            </button>
+            </button> */}
           </div>
 
           {/* Main Content */}
@@ -595,9 +595,17 @@ const CenterDetailPage: React.FC = () => {
                         </span>
                       </div>
                     </div>
-                    <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors duration-200 font-medium">
-                      Contact Coordinator
-                    </button>
+                    {/* ✅ Only show Contact button if first coordinator has a phone */}
+                    {center.coordinators &&
+                      center.coordinators.length > 0 &&
+                      center.coordinators[0].phone && (
+                        <a
+                          href={`tel:${center.coordinators[0].phone}`}
+                          className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors duration-200 font-medium text-sm text-center block px-3"
+                        >
+                          Contact Coordinator
+                        </a>
+                      )}
                   </div>
                 ))}
               </div>
