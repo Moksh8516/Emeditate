@@ -89,7 +89,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ countries }) => {
       </motion.div>
 
       {/* Feature Cards */}
-      <motion.div
+      {/* <motion.div
         className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
         variants={staggerContainer}
       >
@@ -187,7 +187,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ countries }) => {
             <p className="text-gray-300 text-sm">{feature.description}</p>
           </motion.div>
         ))}
-      </motion.div>
+      </motion.div> */}
       {/* <div className="flex justify-end mr-5 md:justify-end mt-3 ">
         <button
           className="bg-green-600 hover:bg-green-500 font-semibold text-white flex gap-3 px-3 py-2 justify-center rounded-lg"
