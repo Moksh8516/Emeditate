@@ -14,6 +14,7 @@ import api from "@/lib/axios";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import ReactMark from "@/components/ReactMarkdown";
 
 export type DocType = {
   metadata?: {
@@ -38,6 +39,7 @@ type MessageType = {
   text: string;
   doc: DocType[];
   isUser: boolean;
+  suggestions?: null | string;
 };
 
 const ChatPage = () => {
@@ -46,6 +48,7 @@ const ChatPage = () => {
       text: "Namaste 🙏 I'm your Sahaja Yoga AI Assistant. How can I help you find inner peace today?",
       doc: [],
       isUser: false,
+      suggestions: null,
     },
   ]);
   const router = useRouter();
@@ -53,6 +56,7 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false); // ✅ Sidebar state
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const sessionRef = useRef<string | null>(null);
   const param = useParams();
   const sessionId = param.sessionId;
 
@@ -63,27 +67,49 @@ const ChatPage = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const sendMessage = async (messageText: string) => {
+    if (!messageText.trim()) return;
 
-    const userMessage = { text: input, doc: [], isUser: true };
+    const userMessage: MessageType = {
+      text: messageText,
+      doc: [],
+      isUser: true,
+    };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
-    setInput("");
+
     try {
-      const res = await api.post(`${API_URL}/auth-chat`, {
-        message: input,
-        sessionId,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: Record<string, any> = { message: messageText };
+      if (sessionRef.current) {
+        payload.sessionId = sessionRef.current;
+      }
+
+      const res = await api.post(`${API_URL}/auth-chat`, payload, {
+        withCredentials: true,
       });
       const data = res.data.data;
-      // console.log(data);
-      const pagecontent = data.chatResult.kwargs.content;
+      console.log("api response", data);
+      const pagecontent = data.chatResult?.kwargs?.content || "No response.";
+      const suggestion = data.chatResult?.kwargs?.suggestion || null;
+
       setMessages((prev) => [
         ...prev,
-        { text: pagecontent, doc: data.doc, isUser: false },
+        {
+          text: pagecontent,
+          doc: data.doc,
+          isUser: false,
+          suggestions: suggestion,
+        },
       ]);
-      // console.log("response", data);
+
+      if (!sessionRef.current && data.sessionId) {
+        sessionRef.current = data.sessionId;
+      }
+
+      if (!data.isGuest) {
+        router.push(`/c/${data.sessionId}`);
+      }
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -97,6 +123,13 @@ const ChatPage = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    setInput(""); // clear input after sending
+    await sendMessage(input);
   };
 
   useEffect(() => {
@@ -256,14 +289,78 @@ const ChatPage = () => {
                       ? "bg-gradient-to-r from-indigo-700 to-purple-700 text-white rounded-br-none"
                       : "bg-gray-800/80 backdrop-blur-md text-gray-100 rounded-bl-none border border-gray-700"
                   }`}
-                  style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+                  style={{ wordBreak: "break-word" }}
                 >
+                  {/* 📝 Markdown Text */}
                   <div
-                    className={msg.isUser ? "text-indigo-50" : "text-gray-200"}
+                    className={`${
+                      msg.isUser ? "text-indigo-50" : "text-gray-200"
+                    }`}
                   >
-                    {msg.text}
+                    <ReactMark text={msg.text} />
                   </div>
+                  {!msg.isUser && msg.suggestions && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3, duration: 0.5 }}
+                      className="mt-4 bg-gradient-to-r from-indigo-900/40 to-purple-900/40 backdrop-blur-md rounded-2xl p-4 border border-indigo-700/30 shadow-lg"
+                    >
+                      {/* Suggestions Header */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-1 rounded-full">
+                          <FaLeaf className="text-white text-xs" />
+                        </div>
+                        <h4 className="text-sm font-semibold text-indigo-200">
+                          Continue Your Journey
+                        </h4>
+                      </div>
 
+                      {/* Suggestions Content */}
+                      <div className="space-y-2">
+                        {msg.suggestions
+                          .split("\n")
+                          .filter((line) => line.trim())
+                          .map((suggestion, index) => (
+                            <motion.button
+                              key={index}
+                              whileHover={{ scale: 1.02, x: 4 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => sendMessage(suggestion.trim())}
+                              className="w-full text-left p-3 bg-white/5 hover:bg-white/10 rounded-xl border border-indigo-600/20 transition-all duration-300 group cursor-pointer"
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full flex items-center justify-center mt-0.5 group-hover:from-purple-300 group-hover:to-indigo-300 transition-colors">
+                                  <IoIosArrowForward className="text-white text-xs" />
+                                </div>
+                                <div>
+                                  <p className="text-indigo-100 text-sm leading-relaxed group-hover:text-white transition-colors">
+                                    {suggestion.trim()}
+                                  </p>
+                                  <div className="flex items-center gap-1 mt-1">
+                                    <div className="w-1 h-1 bg-indigo-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity delay-100"></div>
+                                    <span className="text-xs text-indigo-400/70 group-hover:text-indigo-300/80 transition-colors">
+                                      Click to explore
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.button>
+                          ))}
+                      </div>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-indigo-700/30">
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                          <span className="text-xs text-indigo-400/60">
+                            AI-guided suggestions
+                          </span>
+                        </div>
+                        <GiLotus className="text-indigo-500/40 text-sm" />
+                      </div>
+                    </motion.div>
+                  )}
                   {/* 🎥 Video Response */}
                   {msg.doc &&
                     msg.doc.length > 0 &&
