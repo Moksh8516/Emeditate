@@ -422,6 +422,64 @@ const ChatPage = () => {
                     >
                       <ReactMark text={msg.text} />
                     </div>
+                    {/* 🎥 Video Response */}
+                    {msg.doc &&
+                      msg.doc.length > 0 &&
+                      msg.doc[0].metadata?.type === "video" && (
+                        <div className="my-4 w-full max-w-2xl">
+                          {/* First video card */}
+                          <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-700 shadow-lg">
+                            <div className="p-4">
+                              <h3 className="text-lg font-semibold text-indigo-300">
+                                {msg.doc[0]?.metadata?.title}
+                              </h3>
+                            </div>
+                            <div className="relative w-full pb-[56.25%]">
+                              <iframe
+                                className="absolute top-0 left-0 w-full h-full"
+                                src={
+                                  msg.doc[0]?.metadata?.url
+                                    ? msg.doc[0]?.metadata?.url.replace(
+                                        "watch?v=",
+                                        "embed/"
+                                      )
+                                    : ""
+                                }
+                                title={msg.doc[0]?.metadata?.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            </div>
+                          </div>
+
+                          {/* Additional videos */}
+                          {msg.doc.length > 1 && (
+                            <div className="mt-4 bg-gray-800/70 rounded-xl p-3 border border-gray-700">
+                              <h4 className="text-sm text-gray-300 mb-2">
+                                More related videos:
+                              </h4>
+                              <ul className="space-y-2">
+                                {msg.doc
+                                  .slice(1)
+                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                  .map((video: any, i: number) => (
+                                    <li key={i}>
+                                      <a
+                                        href={video.metadata.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-indigo-400 flex gap-2 items-center hover:text-indigo-300 transition-colors"
+                                      >
+                                        <FaYoutube className="text-red-500 text-2xl" />{" "}
+                                        {video.metadata.title}
+                                      </a>
+                                    </li>
+                                  ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     {!msg.isUser && msg.suggestions && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -484,64 +542,6 @@ const ChatPage = () => {
                         </div>
                       </motion.div>
                     )}
-                    {/* 🎥 Video Response */}
-                    {msg.doc &&
-                      msg.doc.length > 0 &&
-                      msg.doc[0].metadata?.type === "video" && (
-                        <div className="my-4 w-full max-w-2xl">
-                          {/* First video card */}
-                          <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-700 shadow-lg">
-                            <div className="p-4">
-                              <h3 className="text-lg font-semibold text-indigo-300">
-                                {msg.doc[0]?.metadata?.title}
-                              </h3>
-                            </div>
-                            <div className="relative w-full pb-[56.25%]">
-                              <iframe
-                                className="absolute top-0 left-0 w-full h-full"
-                                src={
-                                  msg.doc[0]?.metadata?.url
-                                    ? msg.doc[0]?.metadata?.url.replace(
-                                        "watch?v=",
-                                        "embed/"
-                                      )
-                                    : ""
-                                }
-                                title={msg.doc[0]?.metadata?.title}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                              />
-                            </div>
-                          </div>
-
-                          {/* Additional videos */}
-                          {msg.doc.length > 1 && (
-                            <div className="mt-4 bg-gray-800/70 rounded-xl p-3 border border-gray-700">
-                              <h4 className="text-sm text-gray-300 mb-2">
-                                More related videos:
-                              </h4>
-                              <ul className="space-y-2">
-                                {msg.doc
-                                  .slice(1)
-                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                  .map((video: any, i: number) => (
-                                    <li key={i}>
-                                      <a
-                                        href={video.metadata.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-indigo-400 flex gap-2 items-center hover:text-indigo-300 transition-colors"
-                                      >
-                                        <FaYoutube className="text-red-500 text-2xl" />{" "}
-                                        {video.metadata.title}
-                                      </a>
-                                    </li>
-                                  ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                      )}
                   </div>
                 </div>
               </motion.div>
