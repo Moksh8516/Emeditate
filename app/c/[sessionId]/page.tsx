@@ -80,7 +80,10 @@ const ChatPage = () => {
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const payload: Record<string, any> = { message: messageText };
+      const payload: Record<string, any> = {
+        message: messageText,
+        sessionId: sessionId,
+      };
       if (sessionRef.current) {
         payload.sessionId = sessionRef.current;
       }
@@ -102,14 +105,6 @@ const ChatPage = () => {
           suggestions: suggestion,
         },
       ]);
-
-      if (!sessionRef.current && data.sessionId) {
-        sessionRef.current = data.sessionId;
-      }
-
-      if (!data.isGuest) {
-        router.push(`/c/${data.sessionId}`);
-      }
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
