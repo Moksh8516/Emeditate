@@ -56,7 +56,6 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false); // ✅ Sidebar state
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const sessionRef = useRef<string | null>(null);
   const param = useParams();
   const sessionId = param.sessionId;
 
@@ -84,9 +83,6 @@ const ChatPage = () => {
         message: messageText,
         sessionId: sessionId,
       };
-      if (sessionRef.current) {
-        payload.sessionId = sessionRef.current;
-      }
 
       const res = await api.post(`${API_URL}/auth-chat`, payload, {
         withCredentials: true,
