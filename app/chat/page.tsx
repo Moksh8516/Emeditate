@@ -153,7 +153,7 @@ const ChatPage = () => {
         withCredentials: true,
       });
       const data = res.data.data;
-      console.log("api response", data);
+      // console.log("api response", data);
       const pagecontent = data.chatResult?.kwargs?.content || "No response.";
       const suggestion = data.chatResult?.kwargs?.suggestion || null;
 
@@ -226,7 +226,7 @@ const ChatPage = () => {
           err?.response?.status === 401 &&
           err?.response?.data?.message === "No token provided"
         ) {
-          console.log("recieved");
+          // console.log("recieved");
           clearUser();
         }
       }

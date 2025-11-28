@@ -88,7 +88,7 @@ const ChatPage = () => {
         withCredentials: true,
       });
       const data = res.data.data;
-      console.log("api response", data);
+      // console.log("api response", data);
       const pagecontent = data.chatResult?.kwargs?.content || "No response.";
       const suggestion = data.chatResult?.kwargs?.suggestion || null;
 
