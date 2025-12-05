@@ -99,10 +99,11 @@ function Home() {
         payload.sessionId = sessionRef.current;
       }
 
-      const res = await api.post(`${API_URL}/auth-chat`, payload, {
+      const res = await api.post(`${API_URL}/chat`, payload, {
         withCredentials: true,
       });
       const data = res.data.data;
+      console.log(data);
       const pagecontent = data.chatResult?.kwargs?.content || "No response.";
       const suggestion = data.chatResult?.kwargs?.suggestion || null;
 
