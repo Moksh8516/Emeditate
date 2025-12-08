@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone", // ✅ Required for Firebase static hosting
   reactStrictMode: true,
-  swcMinify: true,
 
   images: {
     unoptimized: true,
