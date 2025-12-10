@@ -226,7 +226,7 @@ const ChatPage = () => {
           err?.response?.status === 401 &&
           err?.response?.data?.message === "No token provided"
         ) {
-          console.log("recieved");
+          // console.log("recieved");
           clearUser();
         }
       }
