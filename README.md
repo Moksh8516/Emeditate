@@ -1,8 +1,8 @@
-# e-Meditate - AI-Powered Meditation Assistant
+# eMeditate - AI-Powered Meditation Assistant
 
-e-Meditate is a modern web application that combines artificial intelligence with Sahaja Yoga principles to provide personalized meditation guidance and spiritual insights.
+eMeditate is a modern web application that combines artificial intelligence with Sahaja Yoga principles to provide personalized meditation guidance and spiritual insights.
 
-![Emeditate App Screenshot](public/heroImage.jpg)
+![eMeditate App Screenshot](public/heroImage.jpg)
 
 ## Features
 

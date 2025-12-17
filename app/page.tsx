@@ -103,7 +103,7 @@ function Home() {
         withCredentials: true,
       });
       const data = res.data.data;
-      console.log(data);
+      // console.log(data);
       const pagecontent = data.chatResult?.kwargs?.content || "No response.";
       const suggestion = data.chatResult?.kwargs?.suggestion || null;
 
@@ -216,7 +216,7 @@ function Home() {
               transition={{ duration: 0.5 }}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 text-gray-50"
             >
-              e-Meditate App
+              eMeditate App
             </motion.h1>
 
             {/* Description with Fade-in */}

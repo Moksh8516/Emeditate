@@ -410,13 +410,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* User Footer */}
       <div className="relative p-4 border-t border-indigo-800/30 bg-gray-800/20">
-        <button
+        {/* <button
           className="text-white flex gap-3 items-center hover:bg-gray-700/30 mb-2 rounded-lg cursor-pointer w-full px-3 py-2 transition"
           onClick={() => router.push("/")}
         >
           <ArrowLeft />
           <span>Back</span>
-        </button>
+        </button> */}
         {currentUser ? (
           <div
             onClick={() => setIsUserMenuOpen((prev) => !prev)}
