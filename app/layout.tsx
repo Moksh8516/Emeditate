@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title:
-    "Sahaja Yoga AI | eMeditate.ai – Your Guide to Inner Silence & Self-Realization",
+    "Sahaja Yoga AI | emeditate.ai – Your Guide to Inner Silence & Self-Realization",
   description:
-    "eMeditate.ai's Sahaja Yoga AI chatbot offers spiritual insights from Shri Mataji’s talks and books, guiding you to inner silence and self-realization.",
+    "emeditate.ai's Sahaja Yoga AI chatbot offers spiritual insights from Shri Mataji’s talks and books, guiding you to inner silence and self-realization.",
   keywords: [
     "E-Meditate",
     "e-Meditate",
@@ -90,7 +90,8 @@ export default function RootLayout({
                     "Guided Sahaja Yoga meditations and AI coaching to reduce stress, improve sleep, and deepen spiritual growth.",
                   potentialAction: {
                     "@type": "SearchAction",
-                    target: "https://chat.emeditate.ai/chat?q={search_term_string}",
+                    target:
+                      "https://chat.emeditate.ai/chat?q={search_term_string}",
                     "query-input": "required name=search_term_string",
                   },
                 },
