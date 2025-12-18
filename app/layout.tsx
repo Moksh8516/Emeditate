@@ -17,50 +17,61 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title:
-    "Sahaja Yoga AI | emeditate.ai – Your Guide to Inner Silence & Self-Realization",
+    "Sahaja Yoga AI | eMeditate – Your Guide to Inner Silence & Self-Realization",
+
   description:
-    "emeditate.ai's Sahaja Yoga AI chatbot offers spiritual insights from Shri Mataji’s talks and books, guiding you to inner silence and self-realization.",
+    "eMeditate is a Sahaja Yoga AI chatbot offering spiritual guidance from Shri Mataji’s talks and books to help you experience inner silence and self-realization.",
+
   keywords: [
-    "E-Meditate",
-    "e-Meditate",
     "eMeditate",
-    "meditation",
-    "meditate",
-    "meditation app",
     "Sahaja Yoga",
+    "AI meditation",
+    "meditation chatbot",
     "guided meditation",
-    "AI meditation coach",
+    "Shri Mataji",
+    "self realization",
+    "inner silence",
     "mindfulness",
+    "stress relief",
     "sleep meditation",
-    "stress relief meditation",
     "meditation app India",
   ],
+
   authors: [{ name: "eMeditate", url: "https://chat.emeditate.ai" }],
+
+  metadataBase: new URL("https://chat.emeditate.ai"),
+
+  alternates: {
+    canonical: "https://chat.emeditate.ai",
+  },
+
   icons: {
     icon: "/favicon.ico",
   },
+
   openGraph: {
-    title:
-      "Sahaja Yoga AI | emeditate.ai – Your Guide to Inner Silence & Self-Realization",
+    title: "Sahaja Yoga AI | eMeditate – Inner Silence & Self-Realization",
     description:
-      "Guided Sahaja Yoga meditations and AI coaching to reduce stress, improve sleep, and deepen spiritual growth.",
+      "Guided Sahaja Yoga meditations and AI-powered spiritual coaching inspired by Shri Mataji.",
     url: "https://chat.emeditate.ai",
     siteName: "eMeditate",
     images: [
       {
         url: "/heroImage.jpg",
-        alt: "eMeditate – Sahaja Yoga AI",
+        width: 1200,
+        height: 630,
+        alt: "eMeditate – Sahaja Yoga AI Meditation",
       },
     ],
     locale: "en_US",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
-    title:
-      "Sahaja Yoga AI | emeditate.ai – Your Guide to Inner Silence & Self-Realization",
+    title: "Sahaja Yoga AI | eMeditate – Inner Silence & Self-Realization",
     description:
-      "Guided Sahaja Yoga meditations and AI coaching to reduce stress, improve sleep, and deepen spiritual growth.",
+      "Experience Sahaja Yoga meditation with AI guidance inspired by Shri Mataji.",
     images: ["/heroImage.jpg"],
   },
 };
