@@ -103,7 +103,7 @@ function Home() {
         withCredentials: true,
       });
       const data = res.data.data;
-      // console.log(data);
+      console.log(data);
       const pagecontent = data.chatResult?.kwargs?.content || "No response.";
       const suggestion = data.chatResult?.kwargs?.suggestion || null;
 
