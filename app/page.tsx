@@ -216,7 +216,7 @@ function Home() {
               transition={{ duration: 0.5 }}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 text-gray-50"
             >
-              eMeditate App
+              e-Meditate App
             </motion.h1>
 
             {/* Description with Fade-in */}
