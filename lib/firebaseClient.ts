@@ -43,6 +43,10 @@ export const auth = app ? getAuth(app) : null;
 export const googleProvider = new GoogleAuthProvider();
 export const facebookProvider = new FacebookAuthProvider();
 export const appleProvider = new OAuthProvider("apple.com");
+// Configure Apple provider scopes/parameters recommended by Firebase
+appleProvider.addScope("email");
+appleProvider.addScope("name");
+appleProvider.setCustomParameters({ prompt: "select_account" });
 
 // Reusable login functions
 export const signInWithGoogle = () => signInWithPopup(auth!, googleProvider);

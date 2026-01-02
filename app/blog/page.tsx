@@ -101,7 +101,7 @@ function BlogPage() {
               key={blog.id}
               className="bg-white/10 backdrop-blur-md rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition duration-300"
             >
-              <div className="relative w-full aspect-[16/9]">
+              <div className="relative w-full aspect-[16/9] ">
                 <img
                   src={blog.image}
                   alt={blog.Title}
@@ -127,9 +127,9 @@ function BlogPage() {
               <div className="p-4 text-center bg-gray-800/20">
                 <Link
                   href={`/blog/${blog.id}`}
-                  className="text-gray-200 hover:underline"
+                  className="text-gray-200 hover:text-white hover:underline font-medium transition-colors"
                 >
-                  Read More
+                  Read More →
                 </Link>
               </div>
             </div>
