@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     title: "Sahaja Yoga AI | eMeditate – Inner Silence & Self-Realization",
     description:
       "Guided Sahaja Yoga meditations and AI-powered spiritual coaching inspired by Shri Mataji.",
-    url: "https://chat.emeditate.ai",
+    url: "https://testing.emeditate.ai",
     siteName: "eMeditate",
     images: [
       {
