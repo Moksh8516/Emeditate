@@ -23,25 +23,6 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  openGraph: {
-    title: "Sahaja Yoga AI",
-    description:
-      "emeditate.ai's Sahaja Yoga AI chatbot offers spiritual insights from Shri Mataji’s talks and books.",
-    images: [
-      {
-        url: "/promoImage.jpeg", // ✅ promo icon for sharing
-        width: 800,
-        height: 600,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sahaja Yoga AI",
-    description:
-      "emeditate.ai's Sahaja Yoga AI chatbot offers spiritual insights from Shri Mataji’s talks and books.",
-    images: ["/promoImage.jpeg"], // ✅ promo icon for Twitter/WhatsApp
-  },
 };
 
 export default function RootLayout({
