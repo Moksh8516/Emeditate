@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import MyBackground from "@/components/MyBackground";
 import Navbar from "@/components/Navbar";
 import { API_URL } from "@/lib/config";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaFacebookF,
   FaInstagram,
