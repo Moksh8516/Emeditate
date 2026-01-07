@@ -10,7 +10,6 @@ import { useAuthStore } from "@/store/useAuthModel";
 import dynamic from "next/dynamic";
 import { API_URL } from "@/lib/config";
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 
 // Dynamically import ALL Leaflet-related components with ssr: false
 const MapContainer = dynamic(
@@ -314,7 +313,7 @@ const CreateCenter: React.FC = () => {
 
       if (response.data?.success) {
         toast.success("Center created successfully!");
-        router.push("/admin/dashboard");
+        router.push("/admin/dashboard/centers");
       } else {
         throw new Error("Failed to create center");
       }
@@ -332,7 +331,6 @@ const CreateCenter: React.FC = () => {
 
   return (
     <MyBackground>
-      <Navbar />
       <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

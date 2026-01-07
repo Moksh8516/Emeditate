@@ -250,7 +250,7 @@ function DashboardPage() {
           </Link>
           <Link
             href="/admin/dashboard/centers"
-            className="bg-gradient-to-r from-red-600 to-yellow-500 rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
+            className="bg-gradient-to-r from-purple-600 to-zinc-400 rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
           >
             <div className="flex items-center">
               <div className="bg-white/20 p-3 rounded-lg">

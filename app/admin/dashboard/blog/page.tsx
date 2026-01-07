@@ -30,7 +30,7 @@ export interface BlogPost {
   imagePreview?: string;
 }
 
-interface CurrentUser {
+export interface CurrentUser {
   name: string;
   email: string;
   initial: string;
