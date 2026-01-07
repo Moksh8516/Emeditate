@@ -249,6 +249,20 @@ function DashboardPage() {
             </div>
           </Link>
           <Link
+            href="/admin/dashboard/centers"
+            className="bg-gradient-to-r from-red-600 to-yellow-500 rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
+          >
+            <div className="flex items-center">
+              <div className="bg-white/20 p-3 rounded-lg">
+                <BiBookContent className="h-8 w-8" />
+              </div>
+              <div className="ml-4">
+                <h2 className="text-xl font-bold">Center Dashboard</h2>
+                <p className="opacity-80 mt-1">Add new Centers for Site</p>
+              </div>
+            </div>
+          </Link>
+          <Link
             href="/admin/dashboard/blog"
             className="bg-gradient-to-r from-purple-600 to-cyan-500 rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all"
           >
