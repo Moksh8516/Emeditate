@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Center, Coordinator } from "@/types/centers";
+import { usePathname } from "next/navigation";
 
 interface AllCentersSectionProps {
   centers: Center[];
@@ -16,6 +17,9 @@ const AllCentersSection: React.FC<AllCentersSectionProps> = ({
   const formatName = (name: string) => {
     return name.replace(/_/g, " ");
   };
+  const pathname = usePathname();
+
+  const isAdminRoute = pathname.startsWith("/admin/dashboard/centers");
 
   const formatSchedule = (schedule: string) => {
     return schedule.replace(/\n/g, ", ");
@@ -209,7 +213,11 @@ const AllCentersSection: React.FC<AllCentersSectionProps> = ({
               {/* Action Buttons */}
               <div className="flex space-x-2">
                 <Link
-                  href={`/centers/${center.id}`}
+                  href={
+                    isAdminRoute
+                      ? `/admin/dashboard/centers/${center.id}`
+                      : `/centers/${center.id}`
+                  }
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors duration-200 font-medium text-sm text-center"
                 >
                   View Details

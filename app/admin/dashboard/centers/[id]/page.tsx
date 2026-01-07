@@ -43,6 +43,7 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import { API_URL } from "@/lib/config";
+import { EditIcon, TrashIcon } from "lucide-react";
 
 delete (Icon.Default.prototype as any)._getIconUrl;
 Icon.Default.mergeOptions({
@@ -84,7 +85,6 @@ const CenterDetailPage: React.FC = () => {
   const params = useParams();
   const router = useRouter();
   const { currentUser } = useAuthStore();
-
   const [center, setCenter] = useState<Center | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -207,6 +207,22 @@ const CenterDetailPage: React.FC = () => {
         id: "geocode",
         duration: 2000,
       });
+    }
+  };
+
+  const deleteCenter = async (id: string) => {
+    if (!currentUser) {
+      toast.error("You must be logged in to delete a center.");
+      router.push("/login-or-create-account");
+    }
+    const resp = await api.delete(`${API_URL}/centers/delete/${id}`, {
+      withCredentials: true,
+    });
+    if (resp.data.success) {
+      toast.success("Center deleted successfully.");
+      router.push("/admin/dashboard/centers");
+    } else {
+      toast.error("Failed to delete center. Please try again.");
     }
   };
 
@@ -388,18 +404,27 @@ const CenterDetailPage: React.FC = () => {
               </svg>
               <span>Back to Centers</span>
             </button>
-            <button
-              onClick={() =>
-                currentUser
-                  ? setIsEditing(true)
-                  : router.push("/login-or-create-account")
-              }
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors"
-            >
-              Edit Center
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() =>
+                  currentUser
+                    ? setIsEditing(true)
+                    : router.push("/login-or-create-account")
+                }
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm flex flex-col items-center rounded-lg transition-colors"
+              >
+                <EditIcon className="w-4 h-4" />
+                <span>Edit Center</span>
+              </button>
+              <button
+                onClick={() => currentUser && deleteCenter(center.id)}
+                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm flex flex-col items-center rounded-lg transition-colors"
+              >
+                <TrashIcon className="w-4 h-4" />
+                <span>Delete</span>
+              </button>
+            </div>
           </div>
-
           {/* Main Content */}
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20 mb-6">
             <div className="flex flex-col md:flex-row md:items-start justify-between mb-6">
