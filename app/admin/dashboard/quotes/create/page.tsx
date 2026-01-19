@@ -97,9 +97,16 @@ export default function CreateQuotePage() {
         formData.append("quoteimage", imageFile);
       }
 
-      const response = await api.post(`${API_URL}/quotes/create`, formData, {
-        withCredentials: true,
-      });
+      const response = await api.post(
+        `${API_URL}/quotes/create`,
+        {
+          translations,
+          enabled,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       if (response.data.success) {
         toast.success("Quote created successfully!");
