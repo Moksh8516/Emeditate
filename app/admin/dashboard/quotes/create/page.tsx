@@ -99,9 +99,6 @@ export default function CreateQuotePage() {
 
       const response = await api.post(`${API_URL}/quotes/create`, formData, {
         withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       });
 
       if (response.data.success) {
