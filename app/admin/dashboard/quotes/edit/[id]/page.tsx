@@ -126,9 +126,6 @@ export default function EditQuotePage() {
         formData,
         {
           withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
         }
       );
 
