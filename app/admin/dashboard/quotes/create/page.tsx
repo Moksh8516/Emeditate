@@ -96,7 +96,6 @@ export default function CreateQuotePage() {
       if (imageFile) {
         formData.append("quoteimage", imageFile);
       }
-
       const response = await api.post(
         `${API_URL}/quotes/create`,
         {
