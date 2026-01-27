@@ -13,6 +13,7 @@ import api from "@/lib/axios";
 interface Translation {
   text: string;
   author: string;
+  place?: string;
   date: string;
 }
 
@@ -43,7 +44,9 @@ export default function EditQuotePage() {
           const quote = response.data.data;
           setEnabled(quote.enabled);
           setTranslations(
-            quote.translations || { en: { text: "", author: "", date: "" } }
+            quote.translations || {
+              en: { text: "", place: "", author: "", date: "" },
+            }
           );
           setImagePreview(quote.imageUrl || "");
         } else {
@@ -79,7 +82,7 @@ export default function EditQuotePage() {
     if (newLanguage && !translations[newLanguage]) {
       setTranslations({
         ...translations,
-        [newLanguage]: { text: "", author: "", date: "" },
+        [newLanguage]: { text: "", author: "", place: "", date: "" },
       });
       setNewLanguage("");
     }
@@ -314,7 +317,7 @@ export default function EditQuotePage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Author {lang === "en" && "*"}
@@ -328,6 +331,21 @@ export default function EditQuotePage() {
                         required={lang === "en"}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         placeholder="Author name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Place {lang === "en" && "*"}
+                      </label>
+                      <input
+                        type="text"
+                        value={translation.place || ""}
+                        onChange={(e) =>
+                          updateTranslation(lang, "place", e.target.value)
+                        }
+                        required={lang === "en"}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Place name"
                       />
                     </div>
                     <div>

@@ -15,6 +15,7 @@ interface DailyQuoteResponse {
   translations: {
     text: string;
     author: string;
+    place?: string;
     date: string;
   };
   lang: string;
@@ -162,17 +163,22 @@ export default function DailyQuotePage() {
                       <p className="text-lg font-medium text-gray-900">
                         — {dailyQuote.translations.author || "Unknown"}
                       </p>
-                      {dailyQuote.translations.date && (
-                        <p className="text-sm text-gray-500 mt-2">
-                          {new Date(
-                            dailyQuote.translations.date
-                          ).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
+                      <div className="flex gap-2 justify-center">
+                        {dailyQuote.translations.date && (
+                          <p className="text-sm text-gray-500 mt-2">
+                            {new Date(
+                              dailyQuote.translations.date
+                            ).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })}
+                          </p>
+                        )}
+                        <p className="text-sm text-gray-700 italic font-semibold mt-2">
+                          ,{dailyQuote.translations.place || ""}
                         </p>
-                      )}
+                      </div>
                     </div>
                   </div>
                 </div>

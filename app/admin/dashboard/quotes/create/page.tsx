@@ -12,6 +12,7 @@ import api from "@/lib/axios";
 interface Translation {
   text: string;
   author: string;
+  place?: string;
   date: string;
 }
 
@@ -25,7 +26,7 @@ export default function CreateQuotePage() {
   // English is default and required
   const [translations, setTranslations] = useState<Record<string, Translation>>(
     {
-      en: { text: "", author: "", date: "" },
+      en: { text: "", author: "", place: "", date: "" },
     }
   );
 
@@ -49,7 +50,7 @@ export default function CreateQuotePage() {
     if (newLanguage && !translations[newLanguage]) {
       setTranslations({
         ...translations,
-        [newLanguage]: { text: "", author: "", date: "" },
+        [newLanguage]: { text: "", author: "", place: "", date: "" },
       });
       setNewLanguage("");
     }
@@ -284,7 +285,7 @@ export default function CreateQuotePage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Author *
@@ -298,6 +299,21 @@ export default function CreateQuotePage() {
                         required={lang === "en"}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         placeholder="Author name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Place
+                      </label>
+                      <input
+                        type="text"
+                        value={translation.place || ""}
+                        onChange={(e) =>
+                          updateTranslation(lang, "place", e.target.value)
+                        }
+                        required={lang === "en"}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Place name"
                       />
                     </div>
                     <div>
