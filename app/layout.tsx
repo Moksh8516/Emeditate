@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "eMeditate",
     images: [
       {
-        url: "/promoImage.jpeg",
+        url: "/heroImage.jpeg",
         width: 1200,
         height: 630,
         alt: "eMeditate – Sahaja Yoga AI Meditation",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     title: "Sahaja Yoga AI | eMeditate – Inner Silence & Self-Realization",
     description:
       "Experience Sahaja Yoga meditation with AI guidance inspired by Shri Mataji.",
-    images: ["/promoImage.jpeg"],
+    images: ["/heroImage.jpeg"],
   },
 };
 
