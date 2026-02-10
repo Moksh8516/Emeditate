@@ -45,10 +45,11 @@ const FALLBACK_VIDEOS: Video[] = [
     viewers: 5000,
   },
   {
-    id: "dQw4w9WgXcQ", // replace with your real upcoming video
-    title: "Upcoming: Weekly Sahaja Yoga Session",
-    description: "Join us for our weekly collective meditation.",
-    thumbnailUrl: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+    id: "fJ4hWW36ij8", // replace with your real upcoming video
+    title: "The Supreme Source Of Love",
+    description:
+      "A documentary about the dedicative life of Shri Mataji Nirmala Devi – The Founder of Sahaja Yoga Meditati",
+    thumbnailUrl: "https://i.ytimg.com/vi/fJ4hWW36ij8/hqdefault.jpg",
     scheduledStartTime: new Date(Date.now() + 24 * 3600000).toISOString(), // tomorrow
     channelTitle: "Sahaja Yoga Karnataka",
     channelId: "UCxyz123",
@@ -57,10 +58,10 @@ const FALLBACK_VIDEOS: Video[] = [
     viewers: 0,
   },
   {
-    id: "oHg5SJYRHA0", // another fallback
-    title: "Introduction to Sahaja Yoga",
+    id: "1j1O0lGRIPM", // another fallback
+    title: "Sahaja Yoga bhajans and meditation session",
     description: "Learn the basics of Sahaja Yoga and self-realization.",
-    thumbnailUrl: "https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg",
+    thumbnailUrl: "https://i.ytimg.com/vi/1j1O0lGRIPM/hqdefault.jpg",
     scheduledStartTime: new Date(Date.now() + 3 * 24 * 3600000).toISOString(), // in 3 days
     channelTitle: "Sahaja Yoga Karnataka",
     channelId: "UCxyz123",
